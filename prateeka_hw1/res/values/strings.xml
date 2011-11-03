@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="homeActivityLabelValue">Hello Android User!</string>
+    <string name="homeActivityButtonLabel">Next</string>
+  	<string name="app_name">PrateekA First Assignment</string>   
+  	<string name="textActivityLabelValue">Random String</string>
+  	<string name="textActivityHomeButtonLabel">Home</string>
+  	
+  	<string-array name="textActivityRandomLabelArray">
+  		<item>Random String 1 - You are on Text Activity screen</item>
+  		<item>Random String 2 - Random string functionality welcomes you</item>
+  		<item>Random String 3 - This is the second activity of the first assignment </item>
+  	</string-array>   
+
+</resources>
