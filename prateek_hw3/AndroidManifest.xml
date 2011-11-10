@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.androidcourse.hw3"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="8" />
+
+    <application
+        android:theme="@style/SampleTextTheme"
+        android:icon="@drawable/good"
+        android:label="@string/app_name" >
+        <activity
+            android:label="@string/app_name"
+            android:name=".activity.splash.SplashScreenActivity" >
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.displayQuote.DisplayQuoteActivity" >
+            <intent-filter>
+                <action android:name="com.androidcourse.hw3.activity.displayQuote.DisplayQuoteActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.ratingCapture.RatingCaptureActivity" >
+        </activity>
+    </application>
+
+</manifest>

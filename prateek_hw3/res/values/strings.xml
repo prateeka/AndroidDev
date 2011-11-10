@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Prateek_hw3</string>
+    <string name="displayQuoteActivityButtonLabel">Add Quotes</string>
+    <string name="ratingCaptureActivityHeaderLabelValue">Quote to be rated:</string>
+    <string name="ratingCaptureActivityRatingLabelValue">Rating:</string>
+    <string name="paramQuoteToBeRated">quoteToBeRated</string>
+    <string name="paramExistingRatingForQuoteToBeRated">existingRating</string>
+    <string name="paramIDForQuoteToBeRated">quoteToBeRatedID</string>
+    <string name="paramDisplayActivityToRatingActivityCallID">0</string>
+    <string name="paramQuoteRating">quoteRating</string>
+    <string name="paramQuoteKey">quote</string>
+    <string name="paramRatingKey">rating</string>
+    <string name="splashScreen">SplashScreen will stay for 5 seconds or touch screen to make it disappear earlier.</string>
+
+    <string-array name="quotes">
+        <item>Knowledge is power</item>
+        <item>With Power comes responsibility</item>
+        <item>Facebook. Twitter. What next?</item>
+        <item>Desktops getting outdated soon</item>
+        <item>Will Apple be able to carry the innovations trend set by Steve?</item>
+        <item>Bing...Google..need more to increase the competition</item>
+        <item>Will new gadgets help or damage the cause of Art?</item>
+        <item>Memory becoming redundant due to gadgets</item>
+    </string-array>
+    
+    <string name="defaultQuoteRating">0</string>
+    <string name="defaultIDForQuote">0</string>
+    <string name="paramNumberOfQuotesStored">numberOfQuotesPersisted</string>
+    <string name="paramQuoteStored">quotePersisted</string>
+    <string name="paramRatingStored">ratingPersisted</string>
+	<string name="numberOfRatings">4</string>
+    
+
+   
+</resources>
