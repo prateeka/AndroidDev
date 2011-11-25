@@ -2,15 +2,13 @@ package com.androidcourse.hw4.activity.listTranslations;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.androidcourse.hw4.R;
-import com.androidcourse.hw4.dao.CategoryDAO;
 import com.androidcourse.hw4.factory.Factory;
 
 public class DisplayTranslation extends Activity {
-	CategoryDAO categoryDAO;
 	Factory factory;
 
 	/** Called when the activity is first created. */
@@ -22,34 +20,23 @@ public class DisplayTranslation extends Activity {
 	}
 
 	protected void init() {
-		factory = Factory.getFactory();
-		initSpinner();
+		factory = Factory.getFactory(this);
+		initCategories();
+		initTranslation();
 	}
 
-	protected void initSpinner() {
+	protected void initTranslation() {
+		ListView translationListView = (ListView) findViewById(R.id.listView1);
+		translationListView.setAdapter(factory.getTranslationAdapter());
+	}
+
+	protected void initCategories() {
 		Spinner spinner = (Spinner) findViewById(R.id.spinner1);
 
-		if (categoryDAO == null) {
-			categoryDAO = factory.getCategoryDAO();
-		}
-
-		spinner.setAdapter(getSpinnerAdapter());
+		spinner.setAdapter(factory.getCategoriesAdapter());
 		spinner.setOnItemSelectedListener(new SpinnerOnItemSelectedListener(
 				this));
 		spinner.setSelection(1);
-	}
-
-	protected ArrayAdapter<String> getSpinnerAdapter() {
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-				this, android.R.layout.simple_spinner_item,
-				categoryDAO.getCategories()
-				);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		return adapter;
-	}
-
-	public void setCategoryDAO(CategoryDAO categoryDAO) {
-		this.categoryDAO = categoryDAO;
 	}
 
 	protected void refreshTranslation(int pos) {
