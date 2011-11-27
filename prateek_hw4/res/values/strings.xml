@@ -5,5 +5,7 @@
     <string name="app_name">Prateek_hw4</string>
     <string name="translationKey">translationKey</string>
     <string name="translationValue">translationValue</string>
+    <string name="translationKeyLang1">englishLang</string>
+    <string name="translationKeyLang2">frenchLang</string>
 
 </resources>

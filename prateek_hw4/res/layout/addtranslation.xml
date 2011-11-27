@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="152dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/lablel1"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_weight="0.18"
+            android:text="English"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/translationText1"
+            android:layout_width="38dp"
+            android:layout_height="88dp"
+            android:layout_weight="0.99"
+            android:inputType="textMultiLine" >
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="152dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/lablel2"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_weight="0.18"
+            android:text="French"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/translationText2"
+            android:layout_width="38dp"
+            android:layout_height="88dp"
+            android:layout_weight="0.99"
+            android:inputType="textMultiLine" >
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="152dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:onClick="onAddButtonClick"
+            android:text="Add" />
+
+        <Button
+            android:id="@+id/clearButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:onClick="onClearButtonClick"
+            android:text="Clear" />
+    </LinearLayout>
+
+</LinearLayout>

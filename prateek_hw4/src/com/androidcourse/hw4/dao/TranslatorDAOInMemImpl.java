@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import com.androidcourse.hw4.R;
 import com.androidcourse.hw4.util.Category;
@@ -47,7 +48,7 @@ public class TranslatorDAOInMemImpl implements TranslatorDAO {
 	}
 
 	@Override
-	public List<Map<String, String>> getTranslations() {
+	public List<Map<String, String>> getDefaultTranslations() {
 		return getTranslations(getCategories()
 				.get(Category.DEFAULT_CATEGORY_SELECTION));
 	}
@@ -63,4 +64,13 @@ public class TranslatorDAOInMemImpl implements TranslatorDAO {
 		return translationMap;
 	}
 
+	@Override
+	public void addTranslations(Bundle bundle) {
+		translationList.add(getTranslation(
+				(String) bundle.get(context.getResources()
+						.getString(R.string.translationKeyLang1)),
+				(String) bundle.get(context
+						.getResources()
+						.getString(R.string.translationKeyLang2))));
+	}
 }
