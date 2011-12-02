@@ -12,6 +12,7 @@ import android.widget.Spinner;
 
 import com.androidcourse.hw4.R;
 import com.androidcourse.hw4.factory.TranslationDisplayFactory;
+import com.androidcourse.hw4.factory.TranslationDisplayFactoryInMemImpl;
 import com.androidcourse.hw4.listeners.result.ActivityResultListener;
 import com.androidcourse.hw4.util.Category;
 
@@ -32,7 +33,7 @@ public class DisplayTranslation extends Activity {
 	}
 
 	protected void init() {
-		factory = TranslationDisplayFactory.getFactory(this);
+		factory = TranslationDisplayFactoryInMemImpl.getFactory(this);
 		activityResultListener = factory.getActivityResultListener();
 		initCategories();
 		initTranslation();
