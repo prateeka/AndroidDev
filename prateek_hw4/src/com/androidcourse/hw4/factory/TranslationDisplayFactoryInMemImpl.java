@@ -17,13 +17,12 @@ import com.androidcourse.hw4.listeners.result.ActivityResultListener;
 
 public class TranslationDisplayFactoryInMemImpl extends
 		TranslationDisplayFactory {
-	private static TranslationDisplayFactoryInMemImpl factory;
-
+	
 	private TranslationDisplayFactoryInMemImpl(Context context) {
 		super(context, new TranslatorDAOInMemImpl(context));
 	}
 
-	static public TranslationDisplayFactoryInMemImpl getFactory(Context pContext) {
+	static public TranslationDisplayFactory getFactory(Context pContext) {
 		if (factory == null) {
 			factory = new TranslationDisplayFactoryInMemImpl(pContext);
 		}

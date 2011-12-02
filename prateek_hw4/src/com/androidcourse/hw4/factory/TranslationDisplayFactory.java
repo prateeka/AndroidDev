@@ -13,6 +13,7 @@ import com.androidcourse.hw4.listeners.result.ActivityResultListener;
 
 public abstract class TranslationDisplayFactory {
 
+	protected static TranslationDisplayFactory factory;
 	protected final Context context;
 	protected final TranslatorDAO translatorDAO;
 

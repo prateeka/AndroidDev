@@ -52,12 +52,12 @@ public class DisplayTranslation extends Activity {
 	}
 
 	protected void initCategories() {
-		Spinner spinner = (Spinner) findViewById(R.id.spinner1);
+		Spinner categorySpinner = (Spinner) findViewById(R.id.spinner1);
 
-		spinner.setAdapter(factory.getCategoriesAdapter());
-		spinner.setOnItemSelectedListener(factory
+		categorySpinner.setAdapter(factory.getCategoriesAdapter());
+		categorySpinner.setOnItemSelectedListener(factory
 				.getCategorySelectedListener());
-		spinner.setSelection(Category.DEFAULT_CATEGORY_SELECTION);
+		categorySpinner.setSelection(Category.DEFAULT_CATEGORY_SELECTION);
 	}
 
 	protected void refreshTranslation() {
