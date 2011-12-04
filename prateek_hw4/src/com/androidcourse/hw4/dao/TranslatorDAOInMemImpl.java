@@ -76,7 +76,7 @@ public class TranslatorDAOInMemImpl implements TranslatorDAO {
 	}
 
 	@Override
-	public Cursor getCategoriesCursor() {
+	public Cursor getCategoryCursor() {
 		throw new RuntimeException("Operation not supported");
 	}
 }

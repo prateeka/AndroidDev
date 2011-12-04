@@ -51,21 +51,17 @@ public class TranslationDisplayFactoryDBImpl extends TranslationDisplayFactory {
 
 	@Override
 	public Cursor getCategoryCursor() {
-		return translatorDAO.getCategoriesCursor();
+		return translatorDAO.getCategoryCursor();
 	}
 
 	@Override
 	public SpinnerAdapter getCategoriesAdapter(Cursor categoryCursor) {
-		String[] from = new String[] { TranslatorDAODBImpl.KEY_CATEGORY };
+		String[] from = new String[] { TranslatorDAODBImpl.KEY_CATEGORY_CATEGORY };
 		int[] to = new int[] { android.R.id.text1 };
 
 		SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context,
 				android.R.layout.simple_spinner_item, categoryCursor, from, to);
 
-		// ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-		// context, android.R.layout.simple_spinner_item,
-		// translatorDAO.getCategories()
-		// );
 		cursorAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		return cursorAdapter;

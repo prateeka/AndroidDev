@@ -37,7 +37,7 @@ public class DisplayTranslation extends Activity {
 		factory = TranslationDisplayFactoryDBImpl.getFactory(this);
 		activityResultListener = factory.getActivityResultListener();
 		initCategories();
-		// initTranslation();
+		initTranslation();
 	}
 
 	protected void initCategories() {

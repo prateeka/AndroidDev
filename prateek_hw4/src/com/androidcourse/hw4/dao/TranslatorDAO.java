@@ -15,5 +15,5 @@ public interface TranslatorDAO {
 
 	void addTranslations(Bundle bundle);
 
-	Cursor getCategoriesCursor();
+	Cursor getCategoryCursor();
 }
