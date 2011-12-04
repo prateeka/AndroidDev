@@ -2,6 +2,7 @@ package com.androidcourse.hw4.factory;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
@@ -29,11 +30,16 @@ public abstract class TranslationDisplayFactory {
 
 	abstract public BaseAdapter getTranslationAdapter();
 
-	public abstract SpinnerAdapter getCategoriesAdapter();
+	abstract public Cursor getCategoryCursor();
 
-	public abstract OnItemSelectedListener getCategorySelectedListener();
+	abstract public SpinnerAdapter getCategoriesAdapter(Cursor categoryCursor);
+
+	abstract public OnItemSelectedListener getCategorySelectedListener();
+
+	abstract public BaseAdapter getCategoriesAdapter();
 
 	public Intent getIntentToAddNewTranslation() {
 		return new Intent(context, AddTranslation.class);
 	}
+
 }

@@ -1,11 +1,13 @@
 package com.androidcourse.hw4.factory;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.SimpleAdapter;
+import android.widget.SpinnerAdapter;
 
 import com.androidcourse.hw4.R;
 import com.androidcourse.hw4.activity.displayTranslations.CategorySelectedListener;
@@ -17,7 +19,7 @@ import com.androidcourse.hw4.listeners.result.ActivityResultListener;
 
 public class TranslationDisplayFactoryInMemImpl extends
 		TranslationDisplayFactory {
-	
+
 	private TranslationDisplayFactoryInMemImpl(Context context) {
 		super(context, new TranslatorDAOInMemImpl(context));
 	}
@@ -68,6 +70,16 @@ public class TranslationDisplayFactoryInMemImpl extends
 		return new DisplayTranslationResultListener(
 				(DisplayTranslation) context,
 				translatorDAO);
+	}
+
+	@Override
+	public Cursor getCategoryCursor() {
+		throw new RuntimeException("Operation not supported");
+	}
+
+	@Override
+	public SpinnerAdapter getCategoriesAdapter(Cursor categoryCursor) {
+		throw new RuntimeException("Operation not supported");
 	}
 
 }

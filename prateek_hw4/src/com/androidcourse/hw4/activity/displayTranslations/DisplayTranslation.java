@@ -2,6 +2,7 @@ package com.androidcourse.hw4.activity.displayTranslations;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +13,7 @@ import android.widget.Spinner;
 
 import com.androidcourse.hw4.R;
 import com.androidcourse.hw4.factory.TranslationDisplayFactory;
-import com.androidcourse.hw4.factory.TranslationDisplayFactoryInMemImpl;
+import com.androidcourse.hw4.factory.TranslationDisplayFactoryDBImpl;
 import com.androidcourse.hw4.listeners.result.ActivityResultListener;
 import com.androidcourse.hw4.util.Category;
 
@@ -33,10 +34,21 @@ public class DisplayTranslation extends Activity {
 	}
 
 	protected void init() {
-		factory = TranslationDisplayFactoryInMemImpl.getFactory(this);
+		factory = TranslationDisplayFactoryDBImpl.getFactory(this);
 		activityResultListener = factory.getActivityResultListener();
 		initCategories();
-		initTranslation();
+		// initTranslation();
+	}
+
+	protected void initCategories() {
+		Spinner categorySpinner = (Spinner) findViewById(R.id.spinner1);
+		Cursor categoryCursor = factory.getCategoryCursor();
+		startManagingCursor(categoryCursor);
+		categorySpinner
+				.setAdapter(factory.getCategoriesAdapter(categoryCursor));
+		categorySpinner.setSelection(Category.DEFAULT_CATEGORY_SELECTION);
+		categorySpinner.setOnItemSelectedListener(factory
+				.getCategorySelectedListener());
 	}
 
 	protected void initTranslation() {
@@ -49,15 +61,6 @@ public class DisplayTranslation extends Activity {
 				.getTranslationClickListener();
 		translationListView
 				.setOnItemClickListener(translationClickListener);
-	}
-
-	protected void initCategories() {
-		Spinner categorySpinner = (Spinner) findViewById(R.id.spinner1);
-
-		categorySpinner.setAdapter(factory.getCategoriesAdapter());
-		categorySpinner.setOnItemSelectedListener(factory
-				.getCategorySelectedListener());
-		categorySpinner.setSelection(Category.DEFAULT_CATEGORY_SELECTION);
 	}
 
 	protected void refreshTranslation() {

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import com.androidcourse.hw4.R;
@@ -72,5 +73,10 @@ public class TranslatorDAOInMemImpl implements TranslatorDAO {
 				(String) bundle.get(context
 						.getResources()
 						.getString(R.string.translationKeyLang2))));
+	}
+
+	@Override
+	public Cursor getCategoriesCursor() {
+		throw new RuntimeException("Operation not supported");
 	}
 }
