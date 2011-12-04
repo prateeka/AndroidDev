@@ -53,15 +53,17 @@ public class DisplayTranslation extends Activity {
 
 	protected void initTranslation() {
 		ListView translationListView = (ListView) findViewById(R.id.listView1);
-		translationAdapter = factory
-				.getTranslationAdapter();
-		translationListView
-				.setAdapter(translationAdapter);
-		translationClickListener = (TranslationClickListener) factory
-				.getTranslationClickListener();
-		translationListView
-				.setOnItemClickListener(translationClickListener);
-	}
+		Cursor translationCursor = factory.getTranslationCursor();
+
+		/*-		translationAdapter = factory
+		 .getTranslationAdapter();
+		 translationListView
+		 .setAdapter(translationAdapter);
+		 translationClickListener = (TranslationClickListener) factory
+		 .getTranslationClickListener();
+		 translationListView
+		 .setOnItemClickListener(translationClickListener);
+		 */}
 
 	protected void refreshTranslation() {
 		translationAdapter.notifyDataSetChanged();

@@ -30,13 +30,15 @@ public abstract class TranslationDisplayFactory {
 
 	abstract public BaseAdapter getTranslationAdapter();
 
-	abstract public Cursor getCategoryCursor();
+	abstract public BaseAdapter getCategoriesAdapter();
 
 	abstract public SpinnerAdapter getCategoriesAdapter(Cursor categoryCursor);
 
-	abstract public OnItemSelectedListener getCategorySelectedListener();
+	abstract public Cursor getCategoryCursor();
 
-	abstract public BaseAdapter getCategoriesAdapter();
+	abstract public Cursor getTranslationCursor();
+
+	abstract public OnItemSelectedListener getCategorySelectedListener();
 
 	public Intent getIntentToAddNewTranslation() {
 		return new Intent(context, AddTranslation.class);

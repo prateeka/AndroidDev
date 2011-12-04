@@ -82,4 +82,9 @@ public class TranslationDisplayFactoryInMemImpl extends
 		throw new RuntimeException("Operation not supported");
 	}
 
+	@Override
+	public Cursor getTranslationCursor() {
+		throw new RuntimeException("Operation not supported");
+	}
+
 }

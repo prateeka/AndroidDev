@@ -55,6 +55,11 @@ public class TranslationDisplayFactoryDBImpl extends TranslationDisplayFactory {
 	}
 
 	@Override
+	public Cursor getTranslationCursor() {
+		return translatorDAO.getTranslationCursor();
+	}
+
+	@Override
 	public SpinnerAdapter getCategoriesAdapter(Cursor categoryCursor) {
 		String[] from = new String[] { TranslatorDAODBImpl.KEY_CATEGORY_CATEGORY };
 		int[] to = new int[] { android.R.id.text1 };

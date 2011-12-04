@@ -14,12 +14,18 @@ import com.androidcourse.hw4.util.Category;
 public class TranslatorDAODBImpl extends SQLiteOpenHelper implements
 		TranslatorDAO {
 
-	private static final String DATABASE_NAME = "applicationTranslator";
+	private static final String DATABASE_NAME = "APPLICATION_TRANSLATOR";
 	private static final int DATABASE_VERSION = 1;
-	private static final String CATEGORY_TABLE_NAME = "categories";
-	private SQLiteDatabase database = null;
-	public static final String KEY_CATEGORY_CATEGORY = "category";
+
+	private static final String CATEGORY_TABLE_NAME = "CATEGORIES";
+	private static final String TRANSLATION_TABLE_NAME = "TRANSLATIONS";
+
+	public static final String KEY_CATEGORY_CATEGORY = "CATEGORY";
 	private static final String KEY_CATEGORY_ROWID = "_id";
+	private static final String KEY_CATEGORY_LANG1 = "LANGUAGE_1_TRANSLATION";
+	private static final String KEY_CATEGORY_LANG2 = "LANGUAGE_2_TRANSLATION";
+
+	private SQLiteDatabase database = null;
 
 	public TranslatorDAODBImpl(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -50,10 +56,12 @@ public class TranslatorDAODBImpl extends SQLiteOpenHelper implements
 	}
 
 	@Override
-	public void onCreate(SQLiteDatabase db) {
+	public void onOpen(SQLiteDatabase db) {
+		super.onOpen(db);
 		database = db;
 		createCategoryTable();
 		insertCategories();
+		createTranslationTable();
 	}
 
 	@Override
@@ -64,24 +72,46 @@ public class TranslatorDAODBImpl extends SQLiteOpenHelper implements
 
 	@Override
 	public Cursor getCategoryCursor() {
-		database = getWritableDatabase();
+		if (database == null) {
+			getWritableDatabase();
+		}
 		return database.query(CATEGORY_TABLE_NAME, new String[] {
 				KEY_CATEGORY_ROWID,
 				KEY_CATEGORY_CATEGORY }, null, null, null,
 				null, null);
 	}
 
-	protected void createCategoryTable() {
-		final String CATEGORY_TABLE_DROP = "DROP table "
-				+ CATEGORY_TABLE_NAME + ";";
-		database.execSQL(CATEGORY_TABLE_DROP);
+	@Override
+	public Cursor getTranslationCursor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-		final String CATEGORY_TABLE_CREATE = "create table "
-				+ " if not exists "
+	protected void createCategoryTable() {
+		/*-		final String CATEGORY_TABLE_DROP = "DROP table "
+		 + CATEGORY_TABLE_NAME + ";";
+		 database.execSQL(CATEGORY_TABLE_DROP);
+		 */
+		final String CATEGORY_TABLE_CREATE = "CREATE TABLE "
+				+ " IF NOT EXISTS "
 				+ CATEGORY_TABLE_NAME
-				+ " (_id integer primary key autoincrement, "
-				+ "category text not null) ;";
+				+ " ("
+				+ KEY_CATEGORY_ROWID + " integer primary key autoincrement, "
+				+ KEY_CATEGORY_CATEGORY + " text not null"
+				+ ") ;";
 		database.execSQL(CATEGORY_TABLE_CREATE);
+	}
+
+	private void createTranslationTable() {
+		final String TRANSLATION_TABLE_CREATE = "create table "
+				+ " if not exists "
+				+ TRANSLATION_TABLE_NAME
+				+ " ( "
+				+ KEY_CATEGORY_ROWID + " integer primary key autoincrement, "
+				+ KEY_CATEGORY_LANG1 + " text not null, "
+				+ KEY_CATEGORY_LANG2 + " text not null "
+				+ ") ;";
+		database.execSQL(TRANSLATION_TABLE_CREATE);
 	}
 
 	private void insertCategories() {
@@ -106,10 +136,15 @@ public class TranslatorDAODBImpl extends SQLiteOpenHelper implements
 		database.execSQL(CATEGORY_TABLE_INSERT.replaceAll(VAL_TO_REPLACE,
 				Category.SOCIAL));
 	}
+
 	/*-private ContentValues getCategoryContentValues(String category) {
 		ContentValues values = new ContentValues();
 		values.put(KEY_CATEGORY_CATEGORY, category);
 		return values;
 	}*/
+
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+	}
 
 }
