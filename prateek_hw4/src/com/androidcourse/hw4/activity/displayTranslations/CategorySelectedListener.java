@@ -3,8 +3,10 @@ package com.androidcourse.hw4.activity.displayTranslations;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Toast;
 
 import com.androidcourse.hw4.dao.TranslatorDAO;
+import com.androidcourse.hw4.util.Category;
 
 public class CategorySelectedListener implements OnItemSelectedListener {
 
@@ -20,7 +22,9 @@ public class CategorySelectedListener implements OnItemSelectedListener {
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {
-		translationDAO.getTranslations(translationDAO.getCategories().get(pos));
+		Toast.makeText(displayTranslation,
+				"Category clicked position:id- " + pos + ":" + id,
+				Category.TOAST_DURATION).show();
 		displayTranslation.refreshTranslation();
 	}
 

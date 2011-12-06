@@ -22,7 +22,6 @@ public class DisplayTranslation extends Activity {
 	private static final int ID_ADD_TRANSLATION = 1;
 	TranslationDisplayFactory factory;
 	BaseAdapter translationAdapter;
-	TranslationClickListener translationClickListener;
 	ActivityResultListener activityResultListener;
 
 	/** Called when the activity is first created. */
@@ -54,16 +53,17 @@ public class DisplayTranslation extends Activity {
 	protected void initTranslation() {
 		ListView translationListView = (ListView) findViewById(R.id.listView1);
 		Cursor translationCursor = factory.getTranslationCursor();
+		startManagingCursor(translationCursor);
 
-		/*-		translationAdapter = factory
-		 .getTranslationAdapter();
-		 translationListView
-		 .setAdapter(translationAdapter);
-		 translationClickListener = (TranslationClickListener) factory
+		translationAdapter = factory.getTranslationAdapter(translationCursor);
+		translationListView
+				.setAdapter(translationAdapter);
+		/*-TranslationClickListener translationClickListener =(TranslationClickListener) factory
 		 .getTranslationClickListener();
 		 translationListView
 		 .setOnItemClickListener(translationClickListener);
-		 */}
+		 */
+	}
 
 	protected void refreshTranslation() {
 		translationAdapter.notifyDataSetChanged();

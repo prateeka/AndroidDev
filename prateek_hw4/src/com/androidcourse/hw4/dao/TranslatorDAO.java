@@ -13,7 +13,7 @@ public interface TranslatorDAO {
 
 	List<Map<String, String>> getDefaultTranslations();
 
-	void addTranslations(Bundle bundle);
+	long addTranslations(Bundle bundle);
 
 	Cursor getCategoryCursor();
 

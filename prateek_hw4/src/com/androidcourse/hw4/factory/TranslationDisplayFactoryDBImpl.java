@@ -3,13 +3,11 @@ package com.androidcourse.hw4.factory;
 import android.content.Context;
 import android.database.Cursor;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SpinnerAdapter;
 
 import com.androidcourse.hw4.dao.TranslatorDAODBImpl;
-import com.androidcourse.hw4.listeners.result.ActivityResultListener;
 
 public class TranslationDisplayFactoryDBImpl extends TranslationDisplayFactory {
 
@@ -23,18 +21,6 @@ public class TranslationDisplayFactoryDBImpl extends TranslationDisplayFactory {
 	private TranslationDisplayFactoryDBImpl(Context context) {
 		// To Do: is context reqd to be passed to TranslatorDAODBImpl
 		super(context, new TranslatorDAODBImpl(context));
-	}
-
-	@Override
-	public OnItemSelectedListener getCategorySelectedListener() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ActivityResultListener getActivityResultListener() {
-		// To Do: see what should come here
-		return null;
 	}
 
 	@Override
@@ -61,7 +47,7 @@ public class TranslationDisplayFactoryDBImpl extends TranslationDisplayFactory {
 
 	@Override
 	public SpinnerAdapter getCategoriesAdapter(Cursor categoryCursor) {
-		String[] from = new String[] { TranslatorDAODBImpl.KEY_CATEGORY_CATEGORY };
+		String[] from = new String[] { TranslatorDAODBImpl.KEY_CATEGORY_TYPE };
 		int[] to = new int[] { android.R.id.text1 };
 
 		SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context,
@@ -69,6 +55,19 @@ public class TranslationDisplayFactoryDBImpl extends TranslationDisplayFactory {
 
 		cursorAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		return cursorAdapter;
+	}
+
+	@Override
+	public BaseAdapter getTranslationAdapter(Cursor translationCursor) {
+		String[] from = new String[] {
+				TranslatorDAODBImpl.KEY_TRANSLATION_LANG1,
+				TranslatorDAODBImpl.KEY_TRANSLATION_LANG2 };
+		int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
+
+		SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context,
+				android.R.layout.two_line_list_item, translationCursor, from,
+				to);
 		return cursorAdapter;
 	}
 

@@ -9,6 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.SpinnerAdapter;
 
 import com.androidcourse.hw4.activity.addTranslations.AddTranslation;
+import com.androidcourse.hw4.activity.displayTranslations.CategorySelectedListener;
+import com.androidcourse.hw4.activity.displayTranslations.DisplayTranslation;
+import com.androidcourse.hw4.activity.displayTranslations.TranslationResultListener;
 import com.androidcourse.hw4.dao.TranslatorDAO;
 import com.androidcourse.hw4.listeners.result.ActivityResultListener;
 
@@ -24,13 +27,13 @@ public abstract class TranslationDisplayFactory {
 		this.translatorDAO = translatorDAO;
 	}
 
-	abstract public ActivityResultListener getActivityResultListener();
-
 	abstract public OnItemClickListener getTranslationClickListener();
 
 	abstract public BaseAdapter getTranslationAdapter();
 
 	abstract public BaseAdapter getCategoriesAdapter();
+
+	abstract public BaseAdapter getTranslationAdapter(Cursor translationCursor);
 
 	abstract public SpinnerAdapter getCategoriesAdapter(Cursor categoryCursor);
 
@@ -38,10 +41,19 @@ public abstract class TranslationDisplayFactory {
 
 	abstract public Cursor getTranslationCursor();
 
-	abstract public OnItemSelectedListener getCategorySelectedListener();
-
 	public Intent getIntentToAddNewTranslation() {
 		return new Intent(context, AddTranslation.class);
+	}
+
+	public ActivityResultListener getActivityResultListener() {
+		return new TranslationResultListener(
+				(DisplayTranslation) context,
+				translatorDAO);
+	}
+
+	public OnItemSelectedListener getCategorySelectedListener() {
+		return new CategorySelectedListener((DisplayTranslation) context,
+				translatorDAO);
 	}
 
 }

@@ -3,19 +3,14 @@ package com.androidcourse.hw4.factory;
 import android.content.Context;
 import android.database.Cursor;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.SimpleAdapter;
 import android.widget.SpinnerAdapter;
 
 import com.androidcourse.hw4.R;
-import com.androidcourse.hw4.activity.displayTranslations.CategorySelectedListener;
-import com.androidcourse.hw4.activity.displayTranslations.DisplayTranslation;
-import com.androidcourse.hw4.activity.displayTranslations.DisplayTranslationResultListener;
 import com.androidcourse.hw4.activity.displayTranslations.TranslationClickListener;
 import com.androidcourse.hw4.dao.TranslatorDAOInMemImpl;
-import com.androidcourse.hw4.listeners.result.ActivityResultListener;
 
 public class TranslationDisplayFactoryInMemImpl extends
 		TranslationDisplayFactory {
@@ -42,12 +37,6 @@ public class TranslationDisplayFactoryInMemImpl extends
 	}
 
 	@Override
-	public OnItemSelectedListener getCategorySelectedListener() {
-		return new CategorySelectedListener((DisplayTranslation) context,
-				translatorDAO);
-	}
-
-	@Override
 	public BaseAdapter getTranslationAdapter() {
 		return new SimpleAdapter(context,
 				translatorDAO.getDefaultTranslations(),
@@ -66,13 +55,6 @@ public class TranslationDisplayFactoryInMemImpl extends
 	}
 
 	@Override
-	public ActivityResultListener getActivityResultListener() {
-		return new DisplayTranslationResultListener(
-				(DisplayTranslation) context,
-				translatorDAO);
-	}
-
-	@Override
 	public Cursor getCategoryCursor() {
 		throw new RuntimeException("Operation not supported");
 	}
@@ -84,6 +66,11 @@ public class TranslationDisplayFactoryInMemImpl extends
 
 	@Override
 	public Cursor getTranslationCursor() {
+		throw new RuntimeException("Operation not supported");
+	}
+
+	@Override
+	public BaseAdapter getTranslationAdapter(Cursor translationCursor) {
 		throw new RuntimeException("Operation not supported");
 	}
 

@@ -66,13 +66,17 @@ public class TranslatorDAOInMemImpl implements TranslatorDAO {
 	}
 
 	@Override
-	public void addTranslations(Bundle bundle) {
+	public long addTranslations(Bundle bundle) {
 		translationList.add(getTranslation(
 				(String) bundle.get(context.getResources()
 						.getString(R.string.translationKeyLang1)),
 				(String) bundle.get(context
 						.getResources()
 						.getString(R.string.translationKeyLang2))));
+
+		// Return 0 just to make it compliant with the interface return value.
+		// This was incorporated as the DB version could return a value
+		return 0;
 	}
 
 	@Override
