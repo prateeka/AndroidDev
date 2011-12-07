@@ -37,10 +37,11 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f040001;
+        public static final int categoryID=0x7f040006;
         public static final int hello=0x7f040000;
         public static final int translationKey=0x7f040002;
-        public static final int translationKeyLang1=0x7f040004;
-        public static final int translationKeyLang2=0x7f040005;
+        public static final int translationLang1=0x7f040004;
+        public static final int translationLang2=0x7f040005;
         public static final int translationValue=0x7f040003;
     }
 }

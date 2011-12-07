@@ -41,13 +41,13 @@ public class TranslationDisplayFactoryDBImpl extends TranslationDisplayFactory {
 	}
 
 	@Override
-	public Cursor getTranslationCursor() {
-		return translatorDAO.getTranslationCursor();
+	public Cursor getTranslationCursor(long selectedCategoryItemID) {
+		return translatorDAO.getTranslationCursor(selectedCategoryItemID);
 	}
 
 	@Override
 	public SpinnerAdapter getCategoriesAdapter(Cursor categoryCursor) {
-		String[] from = new String[] { TranslatorDAODBImpl.KEY_CATEGORY_TYPE };
+		String[] from = new String[] { TranslatorDAODBImpl.COLUMN_CATEGORY_TYPE };
 		int[] to = new int[] { android.R.id.text1 };
 
 		SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context,
@@ -61,8 +61,8 @@ public class TranslationDisplayFactoryDBImpl extends TranslationDisplayFactory {
 	@Override
 	public BaseAdapter getTranslationAdapter(Cursor translationCursor) {
 		String[] from = new String[] {
-				TranslatorDAODBImpl.KEY_TRANSLATION_LANG1,
-				TranslatorDAODBImpl.KEY_TRANSLATION_LANG2 };
+				TranslatorDAODBImpl.COLUMN_TRANSLATION_LANG1,
+				TranslatorDAODBImpl.COLUMN_TRANSLATION_LANG2 };
 		int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
 
 		SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(context,

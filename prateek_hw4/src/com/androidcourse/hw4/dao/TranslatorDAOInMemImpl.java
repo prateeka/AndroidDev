@@ -69,10 +69,10 @@ public class TranslatorDAOInMemImpl implements TranslatorDAO {
 	public long addTranslations(Bundle bundle) {
 		translationList.add(getTranslation(
 				(String) bundle.get(context.getResources()
-						.getString(R.string.translationKeyLang1)),
+						.getString(R.string.translationLang1)),
 				(String) bundle.get(context
 						.getResources()
-						.getString(R.string.translationKeyLang2))));
+						.getString(R.string.translationLang2))));
 
 		// Return 0 just to make it compliant with the interface return value.
 		// This was incorporated as the DB version could return a value
@@ -85,7 +85,7 @@ public class TranslatorDAOInMemImpl implements TranslatorDAO {
 	}
 
 	@Override
-	public Cursor getTranslationCursor() {
+	public Cursor getTranslationCursor(long selectedCategoryItemID) {
 		throw new RuntimeException("Operation not supported");
 	}
 }

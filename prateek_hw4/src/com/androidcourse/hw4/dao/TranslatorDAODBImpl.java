@@ -22,11 +22,11 @@ public class TranslatorDAODBImpl extends SQLiteOpenHelper implements
 	private static final String CATEGORY_TABLE_NAME = "CATEGORIES";
 	private static final String TRANSLATION_TABLE_NAME = "TRANSLATIONS";
 
-	public static final String KEY_ID = "_id";
-	public static final String KEY_CATEGORY_TYPE = "CATEGORY";
-	public static final String KEY_TRANSLATION_LANG1 = "LANGUAGE_1_TRANSLATION";
-	public static final String KEY_TRANSLATION_LANG2 = "LANGUAGE_2_TRANSLATION";
-	public static final String KEY_CATEGORY_REF = "CATEGORY_ID";
+	public static final String COLUMN_ID = "_id";
+	public static final String COLUMN_CATEGORY_TYPE = "CATEGORY";
+	public static final String COLUMN_TRANSLATION_LANG1 = "LANGUAGE_1_TRANSLATION";
+	public static final String COLUMN_TRANSLATION_LANG2 = "LANGUAGE_2_TRANSLATION";
+	public static final String COLUMN_CATEGORY_REF = "CATEGORY_ID";
 	private final Context context;
 
 	private SQLiteDatabase database = null;
@@ -56,12 +56,7 @@ public class TranslatorDAODBImpl extends SQLiteOpenHelper implements
 
 	@Override
 	public long addTranslations(Bundle bundle) {
-		ContentValues translationsToInsert = createTranslationContentValues(
-				(String) bundle.get(context.getResources()
-						.getString(R.string.translationKeyLang1)),
-				(String) bundle.get(context.getResources()
-						.getString(R.string.translationKeyLang2))
-				);
+		ContentValues translationsToInsert = createTranslationContentValues(bundle);
 
 		return database.insert(TRANSLATION_TABLE_NAME, null,
 				translationsToInsert);
@@ -88,50 +83,54 @@ public class TranslatorDAODBImpl extends SQLiteOpenHelper implements
 			getWritableDatabase();
 		}
 		return database.query(CATEGORY_TABLE_NAME, new String[] {
-				KEY_ID,
-				KEY_CATEGORY_TYPE }, null, null, null,
+				COLUMN_ID,
+				COLUMN_CATEGORY_TYPE }, null, null, null,
 				null, null);
 	}
 
 	@Override
-	public Cursor getTranslationCursor() {
-		return database.query(TRANSLATION_TABLE_NAME, new String[] {
-				KEY_ID,
-				KEY_TRANSLATION_LANG1,
-				KEY_TRANSLATION_LANG2,
-				KEY_CATEGORY_REF }, null, null, null,
-				null, null);
+	public Cursor getTranslationCursor(long selectedCategoryItemID) {
+		System.out.println("selectedCategoryItemID is "
+				+ String.valueOf(selectedCategoryItemID));
+		return database.query(TRANSLATION_TABLE_NAME,
+				new String[] {
+						COLUMN_ID,
+						COLUMN_TRANSLATION_LANG1,
+						COLUMN_TRANSLATION_LANG2,
+						COLUMN_CATEGORY_REF },
+				COLUMN_CATEGORY_REF + "=" + selectedCategoryItemID,
+				null, null, null, null);
 	}
 
 	protected void createCategoryTable() {
-		final String CATEGORY_TABLE_DROP = "DROP TABLE IF EXISTS "
-				+ CATEGORY_TABLE_NAME + ";";
-		database.execSQL(CATEGORY_TABLE_DROP);
-
+		/*-		final String CATEGORY_TABLE_DROP = "DROP TABLE IF EXISTS "
+		 + CATEGORY_TABLE_NAME + ";";
+		 database.execSQL(CATEGORY_TABLE_DROP);
+		 */
 		final String CATEGORY_TABLE_CREATE = "CREATE TABLE "
 				+ " IF NOT EXISTS "
 				+ CATEGORY_TABLE_NAME
 				+ " ("
-				+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ KEY_CATEGORY_TYPE + " TEXT NOT NULL"
+				+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ COLUMN_CATEGORY_TYPE + " TEXT NOT NULL"
 				+ ") ;";
 		database.execSQL(CATEGORY_TABLE_CREATE);
 	}
 
 	protected void createTranslationTable() {
-		final String CATEGORY_TABLE_DROP = "DROP TABLE IF EXISTS "
-				+ TRANSLATION_TABLE_NAME + ";";
-		database.execSQL(CATEGORY_TABLE_DROP);
-
+		/*-		final String CATEGORY_TABLE_DROP = "DROP TABLE IF EXISTS "
+		 + TRANSLATION_TABLE_NAME + ";";
+		 database.execSQL(CATEGORY_TABLE_DROP);
+		 */
 		final String TRANSLATION_TABLE_CREATE = "CREATE TABLE "
 				+ " IF NOT EXISTS "
 				+ TRANSLATION_TABLE_NAME
 				+ " ( "
-				+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-				+ KEY_TRANSLATION_LANG1 + " TEXT NOT NULL, "
-				+ KEY_TRANSLATION_LANG2 + " TEXT NOT NULL, "
-				+ KEY_CATEGORY_REF + " REFERENCES "
-				+ CATEGORY_TABLE_NAME + "(" + KEY_ID + ")  NOT NULL"
+				+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ COLUMN_TRANSLATION_LANG1 + " TEXT NOT NULL, "
+				+ COLUMN_TRANSLATION_LANG2 + " TEXT NOT NULL, "
+				+ COLUMN_CATEGORY_REF + " REFERENCES "
+				+ CATEGORY_TABLE_NAME + "(" + COLUMN_ID + ")  NOT NULL"
 				+ ") ;";
 		database.execSQL(TRANSLATION_TABLE_CREATE);
 	}
@@ -141,7 +140,7 @@ public class TranslatorDAODBImpl extends SQLiteOpenHelper implements
 		final String CATEGORY_TABLE_INSERT = "INSERT INTO "
 				+ CATEGORY_TABLE_NAME
 				+ " ("
-				+ KEY_CATEGORY_TYPE
+				+ COLUMN_CATEGORY_TYPE
 				+ ") "
 				+ " SELECT "
 				+ "'" + VAL_TO_REPLACE + "'"
@@ -149,7 +148,7 @@ public class TranslatorDAODBImpl extends SQLiteOpenHelper implements
 				+ " ( "
 				+ "SELECT 1 FROM "
 				+ CATEGORY_TABLE_NAME
-				+ " WHERE " + KEY_CATEGORY_TYPE + "="
+				+ " WHERE " + COLUMN_CATEGORY_TYPE + "="
 				+ "'" + VAL_TO_REPLACE + "'"
 				+ ");";
 
@@ -159,11 +158,17 @@ public class TranslatorDAODBImpl extends SQLiteOpenHelper implements
 				Category.SOCIAL));
 	}
 
-	private ContentValues createTranslationContentValues(String lang1,
-			String lang2) {
+	private ContentValues createTranslationContentValues(Bundle bundle) {
 		ContentValues translations = new ContentValues();
-		translations.put(KEY_TRANSLATION_LANG1, lang1);
-		translations.put(KEY_TRANSLATION_LANG2, lang2);
+		translations.put(COLUMN_TRANSLATION_LANG1,
+				(String) bundle.get(context.getResources()
+						.getString(R.string.translationLang1)));
+		translations.put(COLUMN_TRANSLATION_LANG2,
+				(String) bundle.get(context.getResources()
+						.getString(R.string.translationLang2)));
+		translations.put(COLUMN_CATEGORY_REF,
+				bundle.getLong(context.getResources().
+						getString(R.string.categoryID)));
 		return translations;
 	}
 

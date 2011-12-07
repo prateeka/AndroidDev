@@ -37,9 +37,9 @@ public class AddTranslation extends Activity {
 
 	protected Intent getIntentWithTranslations() {
 		Intent intent = this.getIntent();
-		intent.putExtra(getResources().getString(R.string.translationKeyLang1),
+		intent.putExtra(getResources().getString(R.string.translationLang1),
 				translationText1.getText().toString());
-		intent.putExtra(getResources().getString(R.string.translationKeyLang2),
+		intent.putExtra(getResources().getString(R.string.translationLang2),
 				translationText2.getText().toString());
 		return intent;
 	}

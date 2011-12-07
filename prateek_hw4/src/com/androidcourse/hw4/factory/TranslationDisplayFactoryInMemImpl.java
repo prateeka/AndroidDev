@@ -65,7 +65,7 @@ public class TranslationDisplayFactoryInMemImpl extends
 	}
 
 	@Override
-	public Cursor getTranslationCursor() {
+	public Cursor getTranslationCursor(long selectedCategoryItemID) {
 		throw new RuntimeException("Operation not supported");
 	}
 

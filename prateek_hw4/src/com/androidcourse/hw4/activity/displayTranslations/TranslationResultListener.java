@@ -2,9 +2,12 @@ package com.androidcourse.hw4.activity.displayTranslations;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.Toast;
 
+import com.androidcourse.hw4.R;
 import com.androidcourse.hw4.dao.TranslatorDAO;
 import com.androidcourse.hw4.listeners.result.ActivityResultListener;
+import com.androidcourse.hw4.util.Category;
 
 public class TranslationResultListener implements ActivityResultListener {
 	private final DisplayTranslation displayTranslation;
@@ -19,8 +22,15 @@ public class TranslationResultListener implements ActivityResultListener {
 	@Override
 	public void processResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
+			long selectedCategoryID = data.getExtras().getLong(
+					displayTranslation.getResources().
+							getString(R.string.categoryID)
+					);
+			Toast.makeText(displayTranslation, "Category selected id : "
+					+ selectedCategoryID, Category.TOAST_DURATION).show();
+
 			translationDAO.addTranslations(data.getExtras());
-			displayTranslation.refreshTranslation();
+			displayTranslation.refreshTranslation(selectedCategoryID);
 		}
 	}
 }

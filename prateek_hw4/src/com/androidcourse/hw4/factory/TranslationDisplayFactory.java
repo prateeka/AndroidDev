@@ -39,10 +39,10 @@ public abstract class TranslationDisplayFactory {
 
 	abstract public Cursor getCategoryCursor();
 
-	abstract public Cursor getTranslationCursor();
+	abstract public Cursor getTranslationCursor(long selectedCategoryItemID);
 
-	public Intent getIntentToAddNewTranslation() {
-		return new Intent(context, AddTranslation.class);
+	public Intent getIntentToAddNewTranslation(Class<AddTranslation> toActivity) {
+		return new Intent(context, toActivity);
 	}
 
 	public ActivityResultListener getActivityResultListener() {
@@ -52,8 +52,7 @@ public abstract class TranslationDisplayFactory {
 	}
 
 	public OnItemSelectedListener getCategorySelectedListener() {
-		return new CategorySelectedListener((DisplayTranslation) context,
-				translatorDAO);
+		return new CategorySelectedListener((DisplayTranslation) context);
 	}
 
 }

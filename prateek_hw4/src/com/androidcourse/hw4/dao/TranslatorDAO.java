@@ -17,5 +17,5 @@ public interface TranslatorDAO {
 
 	Cursor getCategoryCursor();
 
-	Cursor getTranslationCursor();
+	Cursor getTranslationCursor(long selectedCategoryItemID);
 }

@@ -10,8 +10,10 @@ import android.view.MenuItem;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.androidcourse.hw4.R;
+import com.androidcourse.hw4.activity.addTranslations.AddTranslation;
 import com.androidcourse.hw4.factory.TranslationDisplayFactory;
 import com.androidcourse.hw4.factory.TranslationDisplayFactoryDBImpl;
 import com.androidcourse.hw4.listeners.result.ActivityResultListener;
@@ -23,6 +25,9 @@ public class DisplayTranslation extends Activity {
 	TranslationDisplayFactory factory;
 	BaseAdapter translationAdapter;
 	ActivityResultListener activityResultListener;
+	Spinner categorySpinner;
+	ListView translationListView;
+	Cursor translationCursor;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -40,7 +45,7 @@ public class DisplayTranslation extends Activity {
 	}
 
 	protected void initCategories() {
-		Spinner categorySpinner = (Spinner) findViewById(R.id.spinner1);
+		categorySpinner = (Spinner) findViewById(R.id.spinner1);
 		Cursor categoryCursor = factory.getCategoryCursor();
 		startManagingCursor(categoryCursor);
 		categorySpinner
@@ -51,13 +56,8 @@ public class DisplayTranslation extends Activity {
 	}
 
 	protected void initTranslation() {
-		ListView translationListView = (ListView) findViewById(R.id.listView1);
-		Cursor translationCursor = factory.getTranslationCursor();
-		startManagingCursor(translationCursor);
-
-		translationAdapter = factory.getTranslationAdapter(translationCursor);
-		translationListView
-				.setAdapter(translationAdapter);
+		translationListView = (ListView) findViewById(R.id.listView1);
+		refreshTranslation(getSelectedCategoryId());
 		/*-TranslationClickListener translationClickListener =(TranslationClickListener) factory
 		 .getTranslationClickListener();
 		 translationListView
@@ -65,14 +65,20 @@ public class DisplayTranslation extends Activity {
 		 */
 	}
 
-	protected void refreshTranslation() {
+	protected void refreshTranslation(long selectedCategoryID) {
+		translationCursor = factory
+				.getTranslationCursor(selectedCategoryID);
+		startManagingCursor(translationCursor);
+
+		translationAdapter = factory.getTranslationAdapter(translationCursor);
+		translationListView.setAdapter(translationAdapter);
 		translationAdapter.notifyDataSetChanged();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		MenuInflater inflater = getMenuInflater(); // from activity
+		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.displaytranslationmenu, menu);
 		return true;
 	}
@@ -81,9 +87,14 @@ public class DisplayTranslation extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		boolean handled = false;
+		Toast.makeText(this, "onOptionsItemSelected Category selected id: "
+				+ getSelectedCategoryId(), Category.TOAST_DURATION)
+				.show();
 		if (item.getItemId() == R.id.menu_AddTranslation) {
-			this.startActivityForResult(
-					factory.getIntentToAddNewTranslation(), ID_ADD_TRANSLATION);
+			Intent intent = factory
+					.getIntentToAddNewTranslation(AddTranslation.class);
+			addDataToIntent(intent);
+			this.startActivityForResult(intent, ID_ADD_TRANSLATION);
 			handled = true;
 		}
 		return handled;
@@ -92,5 +103,14 @@ public class DisplayTranslation extends Activity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		activityResultListener.processResult(requestCode, resultCode, data);
+	}
+
+	private void addDataToIntent(Intent intent) {
+		intent.putExtra(getResources().getString(R.string.categoryID),
+				getSelectedCategoryId());
+	}
+
+	private long getSelectedCategoryId() {
+		return categorySpinner.getSelectedItemId();
 	}
 }
