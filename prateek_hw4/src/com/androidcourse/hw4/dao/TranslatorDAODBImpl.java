@@ -1,8 +1,5 @@
 package com.androidcourse.hw4.dao;
 
-import java.util.List;
-import java.util.Map;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -34,24 +31,6 @@ public class TranslatorDAODBImpl extends SQLiteOpenHelper implements
 	public TranslatorDAODBImpl(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		this.context = context;
-	}
-
-	@Override
-	public List<String> getCategories() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Map<String, String>> getTranslations(String category) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Map<String, String>> getDefaultTranslations() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
