@@ -19,7 +19,6 @@ public class TranslationDisplayFactoryDBImpl extends TranslationDisplayFactory {
 	}
 
 	private TranslationDisplayFactoryDBImpl(Context context) {
-		// To Do: is context reqd to be passed to TranslatorDAODBImpl
 		super(context, new TranslatorDAODBImpl(context));
 	}
 
