@@ -69,8 +69,8 @@ public class TranslatorDAODBImpl extends SQLiteOpenHelper implements
 
 	@Override
 	public Cursor getTranslationCursor(long selectedCategoryItemID) {
-		System.out.println("selectedCategoryItemID is "
-				+ String.valueOf(selectedCategoryItemID));
+		// System.out.println("selectedCategoryItemID is "
+		// + String.valueOf(selectedCategoryItemID));
 		return database.query(TRANSLATION_TABLE_NAME,
 				new String[] {
 						COLUMN_ID,
