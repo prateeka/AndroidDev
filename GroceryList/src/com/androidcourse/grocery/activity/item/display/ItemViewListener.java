@@ -1,24 +1,27 @@
 package com.androidcourse.grocery.activity.item.display;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.androidcourse.grocery.util.GroceryConstants;
+
 public class ItemViewListener implements OnItemClickListener {
 
-	Context context;
+	DisplayTraderItemActivity activity;
 
-	public ItemViewListener(Context context) {
-		super();
-		this.context = context;
+	public ItemViewListener(DisplayTraderItemActivity activity) {
+		this.activity = activity;
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> adapterView, View view,
-			int position, long rowID) {
-		/*-		Toast.makeText(context, position + " No action defined",
+			int position, long rowId) {
+		/*-		Toast.makeText(activity,
+		 " No action defined: position:rowID" + position + ":" + rowId,
 		 GroceryConstants.TOAST_DURATION).show();
-		 */}
-
+		 */
+		activity.startItemAddUpdateActivity(GroceryConstants.UPDATE_ITEM_OPERATION,
+				rowId);
+	}
 }

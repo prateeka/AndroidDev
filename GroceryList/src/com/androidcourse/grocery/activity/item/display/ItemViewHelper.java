@@ -1,6 +1,7 @@
 package com.androidcourse.grocery.activity.item.display;
 
 import android.database.Cursor;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -31,11 +32,9 @@ public class ItemViewHelper {
 	public void init() {
 		itemListView = (ListView) activity.findViewById(R.id.listView1);
 		refreshItemView(activity.getSelectedTraderId());
-		/*-TranslationClickListener translationClickListener =(TranslationClickListener) factory
-		 .getTranslationClickListener();
-		 translationListView
-		 .setOnItemClickListener(translationClickListener);
-		 */
+		OnItemClickListener itemViewListener = factory
+				.getItemViewListener();
+		itemListView.setOnItemClickListener(itemViewListener);
 	}
 
 	protected void refreshItemView(long traderId) {

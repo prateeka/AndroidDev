@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 
-import com.androidcourse.grocery.R;
 import com.androidcourse.grocery.util.GroceryConstants;
 
 public class GroceryDAODBImpl extends SQLiteOpenHelper implements
@@ -25,13 +24,11 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 	public static final String TABLE_ITEM_COLUMN_ITEM_QTY = "QUANTITY";
 	public static final String TABLE_ITEM_COLUMN_ITEM_NOTE = "NOTE";
 	public static final String TABLE_ITEM_COLUMN_TRADER_REF = "TRADER_ID";
-	private final Context context;
 
 	private SQLiteDatabase database = null;
 
 	public GroceryDAODBImpl(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		this.context = context;
 	}
 
 	@Override
@@ -141,14 +138,11 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 	private ContentValues createItemContentValues(Bundle bundle) {
 		ContentValues itemContentValues = new ContentValues();
 		itemContentValues.put(TABLE_ITEM_COLUMN_ITEM_NAME,
-				(String) bundle.get(context.getResources()
-						.getString(R.string.itemName)));
+				(String) bundle.get(GroceryConstants.ITEM_NAME));
 		itemContentValues.put(TABLE_ITEM_COLUMN_ITEM_QTY,
-				bundle.getFloat(context.getResources()
-						.getString(R.string.itemQty)));
+				bundle.getFloat(GroceryConstants.ITEM_QTY));
 		itemContentValues.put(TABLE_ITEM_COLUMN_TRADER_REF,
-				bundle.getLong(context.getResources().
-						getString(R.string.traderId)));
+				bundle.getLong(GroceryConstants.TRADER_ID));
 		return itemContentValues;
 	}
 

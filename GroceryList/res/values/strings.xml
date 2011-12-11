@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">GroceryListapp</string>
-    <string name="itemName">itemName</string>
-    <string name="itemQty">itemQty</string>
-    <string name="itemNote">itemNote</string>
-	<string name="traderId">traderId</string>
 </resources>

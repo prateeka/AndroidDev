@@ -1,6 +1,5 @@
 package com.androidcourse.grocery.factory;
 
-import android.content.Context;
 import android.content.Intent;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -17,18 +16,18 @@ import com.androidcourse.grocery.listeners.result.ActivityResultListener;
 public class GroceryFactory {
 
 	protected static GroceryFactory factory;
-	protected final Context context;
+	protected final DisplayTraderItemActivity activity;
 	protected final GroceryDAO groceryDAO;
 
-	static public GroceryFactory getFactory(Context context) {
+	static public GroceryFactory getFactory(DisplayTraderItemActivity context) {
 		if (factory == null) {
 			factory = new GroceryFactory(context);
 		}
 		return factory;
 	}
 
-	private GroceryFactory(Context context) {
-		this.context = context;
+	private GroceryFactory(DisplayTraderItemActivity context) {
+		activity = context;
 		groceryDAO = new GroceryDAODBImpl(context);
 	}
 
@@ -36,28 +35,22 @@ public class GroceryFactory {
 		return groceryDAO;
 	}
 
-	protected GroceryFactory(Context context,
-			GroceryDAO groceryDAO) {
-		this.context = context;
-		this.groceryDAO = groceryDAO;
-	}
-
-	public Intent getIntentToAddNewItem(Class<ItemAddUpdateActivity> toActivity) {
-		return new Intent(context, toActivity);
-	}
-
-	public OnItemClickListener getItemViewListener() {
-		return new ItemViewListener(context);
+	public Intent getIntentToAddItem(Class<ItemAddUpdateActivity> toActivity) {
+		return new Intent(activity, toActivity);
 	}
 
 	public ActivityResultListener getActivityResultListener() {
 		return new DisplayTraderItemResultListener(
-				(DisplayTraderItemActivity) context,
+				activity,
 				groceryDAO);
 	}
 
+	public OnItemClickListener getItemViewListener() {
+		return new ItemViewListener(activity);
+	}
+
 	public OnItemSelectedListener getTraderViewListener() {
-		return new TraderViewListener((DisplayTraderItemActivity) context);
+		return new TraderViewListener(activity);
 	}
 
 }

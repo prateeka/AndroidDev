@@ -12,10 +12,10 @@ import com.androidcourse.grocery.activity.item.update.ItemAddUpdateActivity;
 import com.androidcourse.grocery.dao.GroceryDAO;
 import com.androidcourse.grocery.factory.GroceryFactory;
 import com.androidcourse.grocery.listeners.result.ActivityResultListener;
+import com.androidcourse.grocery.util.GroceryConstants;
 
 public class DisplayTraderItemActivity extends Activity {
 
-	private static final int ID_ADD_ITEM = 1;
 	GroceryFactory factory;
 	ActivityResultListener activityResultListener;
 
@@ -47,11 +47,9 @@ public class DisplayTraderItemActivity extends Activity {
 				+ getSelectedTraderId(), GroceryConstants.TOAST_DURATION)
 				.show();*/
 		if (item.getItemId() == R.id.menu_AddItem) {
-			Intent intent = factory
-					.getIntentToAddNewItem(ItemAddUpdateActivity.class);
-			addDataToIntent(intent);
-			this.startActivityForResult(intent, ID_ADD_ITEM);
-			handled = true;
+			handled = startItemAddUpdateActivity(
+					GroceryConstants.ADD_ITEM_OPERATION,
+					GroceryConstants.ID_UNDEFINED);
 		}
 		return handled;
 	}
@@ -59,6 +57,27 @@ public class DisplayTraderItemActivity extends Activity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		activityResultListener.processResult(requestCode, resultCode, data);
+	}
+
+	protected boolean startItemAddUpdateActivity(int operation, long itemId) {
+		/*-		Toast.makeText(this,
+		 "DisplayTraderItemActivity.startItemAddUpdateActivity - operation:itemId is  "
+		 + operation + ":" + itemId,
+		 GroceryConstants.TOAST_DURATION)
+		 .show();
+		 */
+		Intent intent = factory
+				.getIntentToAddItem(ItemAddUpdateActivity.class);
+		addDataToIntent(intent, GroceryConstants.OPERATION, operation);
+
+		long traderId = getSelectedTraderId();
+		addDataToIntent(intent, GroceryConstants.TRADER_ID, traderId);
+
+		if (operation == GroceryConstants.UPDATE_ITEM_OPERATION) {
+			addDataToIntent(intent, GroceryConstants.ITEM_ID, itemId);
+		}
+		this.startActivityForResult(intent, operation);
+		return true;
 	}
 
 	protected void init() {
@@ -79,9 +98,8 @@ public class DisplayTraderItemActivity extends Activity {
 		itemViewHelper.init();
 	}
 
-	private void addDataToIntent(Intent intent) {
-		intent.putExtra(getResources().getString(R.string.traderId),
-				getSelectedTraderId());
+	private void addDataToIntent(Intent intent, String key, long id) {
+		intent.putExtra(key, id);
 	}
 
 	long getSelectedTraderId() {
