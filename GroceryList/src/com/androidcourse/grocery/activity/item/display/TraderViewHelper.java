@@ -32,7 +32,7 @@ public class TraderViewHelper {
 				.setAdapter(getTraderAdapter(traderCursor));
 		traderView.setSelection(GroceryConstants.DEFAULT_TRADER_INDEX);
 		traderView.setOnItemSelectedListener(factory
-				.getItemViewListener());
+				.getTraderViewListener());
 	}
 
 	public SpinnerAdapter getTraderAdapter(Cursor traderCursor) {

@@ -11,7 +11,6 @@ import com.androidcourse.grocery.R;
 import com.androidcourse.grocery.activity.item.update.ItemAddUpdateActivity;
 import com.androidcourse.grocery.dao.GroceryDAO;
 import com.androidcourse.grocery.factory.GroceryFactory;
-import com.androidcourse.grocery.factory.GroceryFactoryDBImpl;
 import com.androidcourse.grocery.listeners.result.ActivityResultListener;
 
 public class DisplayTraderItemActivity extends Activity {
@@ -63,7 +62,7 @@ public class DisplayTraderItemActivity extends Activity {
 	}
 
 	protected void init() {
-		factory = GroceryFactoryDBImpl.getFactory(this);
+		factory = GroceryFactory.getFactory(this);
 		groceryDAO = factory.getGroceryDAO();
 		activityResultListener = factory.getActivityResultListener();
 		initTrader();
