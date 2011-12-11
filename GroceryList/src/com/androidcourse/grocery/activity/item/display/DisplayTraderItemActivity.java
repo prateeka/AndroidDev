@@ -16,12 +16,12 @@ import com.androidcourse.grocery.util.GroceryConstants;
 
 public class DisplayTraderItemActivity extends Activity {
 
-	GroceryFactory factory;
-	ActivityResultListener activityResultListener;
+	private GroceryFactory factory;
+	private ActivityResultListener activityResultListener;
 
-	GroceryDAO groceryDAO;
-	TraderViewHelper traderViewHelper;
-	ItemViewHelper itemViewHelper;
+	private GroceryDAO groceryDAO;
+	private TraderViewHelper traderViewHelper;
+	private ItemViewHelper itemViewHelper;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -67,7 +67,7 @@ public class DisplayTraderItemActivity extends Activity {
 		 .show();
 		 */
 		Intent intent = factory
-				.getIntentToAddItem(ItemAddUpdateActivity.class);
+				.getIntentToAddItem(this, ItemAddUpdateActivity.class);
 		addDataToIntent(intent, GroceryConstants.OPERATION, operation);
 
 		long traderId = getSelectedTraderId();
@@ -83,18 +83,20 @@ public class DisplayTraderItemActivity extends Activity {
 	protected void init() {
 		factory = GroceryFactory.getFactory(this);
 		groceryDAO = factory.getGroceryDAO();
-		activityResultListener = factory.getActivityResultListener();
+		activityResultListener = factory.getActivityResultListener(this);
 		initTrader();
 		initItem();
 	}
 
 	protected void initTrader() {
-		traderViewHelper = new TraderViewHelper(this, groceryDAO, factory);
+		traderViewHelper = new TraderViewHelper(this, groceryDAO,
+				factory.getTraderViewListener(this));
 		traderViewHelper.init();
 	}
 
 	protected void initItem() {
-		itemViewHelper = new ItemViewHelper(this, groceryDAO, factory);
+		itemViewHelper = new ItemViewHelper(this, groceryDAO,
+				factory.getItemViewListener(this));
 		itemViewHelper.init();
 	}
 

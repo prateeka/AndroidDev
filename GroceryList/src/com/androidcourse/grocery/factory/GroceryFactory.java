@@ -1,5 +1,6 @@
 package com.androidcourse.grocery.factory;
 
+import android.content.Context;
 import android.content.Intent;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -16,18 +17,26 @@ import com.androidcourse.grocery.listeners.result.ActivityResultListener;
 public class GroceryFactory {
 
 	protected static GroceryFactory factory;
-	protected final DisplayTraderItemActivity activity;
+	protected final Context context;
 	protected final GroceryDAO groceryDAO;
 
-	static public GroceryFactory getFactory(DisplayTraderItemActivity context) {
+	public static GroceryFactory getFactory(Context context) {
 		if (factory == null) {
 			factory = new GroceryFactory(context);
 		}
 		return factory;
 	}
 
-	private GroceryFactory(DisplayTraderItemActivity context) {
-		activity = context;
+	public static GroceryFactory getFactory() {
+		if (factory == null) {
+			throw new RuntimeException(
+					"Factory instance needs a context");
+		}
+		return factory;
+	}
+
+	private GroceryFactory(Context context) {
+		this.context = context;
 		groceryDAO = new GroceryDAODBImpl(context);
 	}
 
@@ -35,21 +44,25 @@ public class GroceryFactory {
 		return groceryDAO;
 	}
 
-	public Intent getIntentToAddItem(Class<ItemAddUpdateActivity> toActivity) {
-		return new Intent(activity, toActivity);
+	public Intent getIntentToAddItem(Context context,
+			Class<ItemAddUpdateActivity> toActivity) {
+		return new Intent(context, toActivity);
 	}
 
-	public ActivityResultListener getActivityResultListener() {
+	public ActivityResultListener getActivityResultListener(
+			DisplayTraderItemActivity activity) {
 		return new DisplayTraderItemResultListener(
 				activity,
 				groceryDAO);
 	}
 
-	public OnItemClickListener getItemViewListener() {
+	public OnItemClickListener getItemViewListener(
+			DisplayTraderItemActivity activity) {
 		return new ItemViewListener(activity);
 	}
 
-	public OnItemSelectedListener getTraderViewListener() {
+	public OnItemSelectedListener getTraderViewListener(
+			DisplayTraderItemActivity activity) {
 		return new TraderViewListener(activity);
 	}
 

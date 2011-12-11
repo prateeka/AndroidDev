@@ -1,6 +1,7 @@
 package com.androidcourse.grocery.activity.item.display;
 
 import android.database.Cursor;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -8,20 +9,19 @@ import android.widget.SpinnerAdapter;
 import com.androidcourse.grocery.R;
 import com.androidcourse.grocery.dao.GroceryDAO;
 import com.androidcourse.grocery.dao.GroceryDAODBImpl;
-import com.androidcourse.grocery.factory.GroceryFactory;
 import com.androidcourse.grocery.util.GroceryConstants;
 
 public class TraderViewHelper {
-	Spinner traderView;
-	DisplayTraderItemActivity activity;
-	GroceryDAO groceryDAO;
-	GroceryFactory factory;
+	private Spinner traderView;
+	private final DisplayTraderItemActivity activity;
+	private final GroceryDAO groceryDAO;
+	private final OnItemSelectedListener onItemSelectedListener;
 
 	public TraderViewHelper(DisplayTraderItemActivity activity,
-			GroceryDAO groceryDAO, GroceryFactory factory) {
+			GroceryDAO groceryDAO, OnItemSelectedListener onItemSelectedListener) {
 		this.activity = activity;
 		this.groceryDAO = groceryDAO;
-		this.factory = factory;
+		this.onItemSelectedListener = onItemSelectedListener;
 	}
 
 	public void init() {
@@ -31,8 +31,7 @@ public class TraderViewHelper {
 		traderView
 				.setAdapter(getTraderAdapter(traderCursor));
 		traderView.setSelection(GroceryConstants.DEFAULT_TRADER_INDEX);
-		traderView.setOnItemSelectedListener(factory
-				.getTraderViewListener());
+		traderView.setOnItemSelectedListener(onItemSelectedListener);
 	}
 
 	public SpinnerAdapter getTraderAdapter(Cursor traderCursor) {

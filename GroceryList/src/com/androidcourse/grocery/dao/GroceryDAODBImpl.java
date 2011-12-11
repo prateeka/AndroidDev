@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.androidcourse.grocery.util.GroceryConstants;
 
@@ -66,7 +67,7 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 	}
 
 	@Override
-	public Cursor getItemCursor(long traderId) {
+	public Cursor getItemCursorForTraderId(long traderId) {
 		// System.out.println("selectedTraderID is "
 		// + String.valueOf(selectedTraderID));
 		return database.query(TABLE_ITEM,
@@ -74,9 +75,31 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 						COLUMN_ID,
 						TABLE_ITEM_COLUMN_ITEM_NAME,
 						TABLE_ITEM_COLUMN_ITEM_QTY,
+						// TABLE_ITEM_COLUMN_ITEM_NOTE,
 						TABLE_ITEM_COLUMN_TRADER_REF },
 				TABLE_ITEM_COLUMN_TRADER_REF + "=" + traderId,
 				null, null, null, null);
+	}
+
+	@Override
+	public Cursor getItemCursorForItemId(long itemId) {
+		Log.d(this.getClass().getName(),
+				"getItemCursorForItemId searching for items matching itemId : "
+						+ itemId);
+		Cursor cursor = database.query(TABLE_ITEM,
+				new String[] {
+						COLUMN_ID,
+						TABLE_ITEM_COLUMN_ITEM_NAME,
+						TABLE_ITEM_COLUMN_ITEM_QTY,
+						// TABLE_ITEM_COLUMN_ITEM_NOTE,
+						TABLE_ITEM_COLUMN_TRADER_REF },
+				COLUMN_ID + "=" + itemId,
+				null, null, null, null);
+
+		if (cursor != null) {
+			cursor.moveToFirst();
+		}
+		return cursor;
 	}
 
 	protected void createTraderTable() {

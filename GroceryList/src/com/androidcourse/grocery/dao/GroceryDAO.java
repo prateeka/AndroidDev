@@ -9,5 +9,7 @@ public interface GroceryDAO {
 
 	Cursor getTraderCursor();
 
-	Cursor getItemCursor(long traderId);
+	Cursor getItemCursorForTraderId(long traderId);
+
+	Cursor getItemCursorForItemId(long itemId);
 }

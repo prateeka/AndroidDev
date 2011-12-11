@@ -9,37 +9,34 @@ import android.widget.SimpleCursorAdapter;
 import com.androidcourse.grocery.R;
 import com.androidcourse.grocery.dao.GroceryDAO;
 import com.androidcourse.grocery.dao.GroceryDAODBImpl;
-import com.androidcourse.grocery.factory.GroceryFactory;
 
 public class ItemViewHelper {
-	DisplayTraderItemActivity activity;
-	GroceryDAO groceryDAO;
-	GroceryFactory factory;
+	private final DisplayTraderItemActivity activity;
+	private final GroceryDAO groceryDAO;
+	private Cursor itemCursor;
+	private BaseAdapter itemAdapter;
 
-	ListView itemListView;
+	private ListView itemListView;
+	private final OnItemClickListener itemViewListener;
 
 	public ItemViewHelper(DisplayTraderItemActivity activity,
-			GroceryDAO groceryDAO, GroceryFactory factory) {
+			GroceryDAO groceryDAO,
+			OnItemClickListener itemViewListener) {
 		super();
 		this.activity = activity;
 		this.groceryDAO = groceryDAO;
-		this.factory = factory;
+		this.itemViewListener = itemViewListener;
 	}
-
-	Cursor itemCursor;
-	BaseAdapter itemAdapter;
 
 	public void init() {
 		itemListView = (ListView) activity.findViewById(R.id.listView1);
 		refreshItemView(activity.getSelectedTraderId());
-		OnItemClickListener itemViewListener = factory
-				.getItemViewListener();
 		itemListView.setOnItemClickListener(itemViewListener);
 	}
 
 	protected void refreshItemView(long traderId) {
 		itemCursor = groceryDAO
-				.getItemCursor(traderId);
+				.getItemCursorForTraderId(traderId);
 		activity.startManagingCursor(itemCursor);
 		itemAdapter = getItemAdapter(itemCursor);
 		itemListView.setAdapter(itemAdapter);
@@ -57,5 +54,4 @@ public class ItemViewHelper {
 				to);
 		return cursorAdapter;
 	}
-
 }

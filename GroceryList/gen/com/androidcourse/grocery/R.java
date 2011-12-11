@@ -14,7 +14,6 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int addButton=0x7f06000a;
         public static final int clearButton=0x7f06000b;
         public static final int editText1=0x7f060002;
         public static final int editText2=0x7f060005;
@@ -29,6 +28,7 @@ public final class R {
         public static final int listView1=0x7f06000d;
         public static final int menuGroup_Main=0x7f06000e;
         public static final int menu_AddItem=0x7f06000f;
+        public static final int operationButton=0x7f06000a;
         public static final int spinner1=0x7f06000c;
     }
     public static final class layout {
@@ -39,6 +39,8 @@ public final class R {
         public static final int displaytraderitemmenu=0x7f050000;
     }
     public static final class string {
+        public static final int ADD_BUTTON_LABEL=0x7f040001;
+        public static final int UPDATE_BUTTON_LABEL=0x7f040002;
         public static final int app_name=0x7f040000;
     }
 }
