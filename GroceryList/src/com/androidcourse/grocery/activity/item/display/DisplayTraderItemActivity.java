@@ -13,6 +13,7 @@ import com.androidcourse.grocery.dao.GroceryDAO;
 import com.androidcourse.grocery.factory.GroceryFactory;
 import com.androidcourse.grocery.listeners.result.ActivityResultListener;
 import com.androidcourse.grocery.util.GroceryConstants;
+import com.androidcourse.grocery.util.GroceryUtilFunctions;
 
 public class DisplayTraderItemActivity extends Activity {
 
@@ -56,7 +57,11 @@ public class DisplayTraderItemActivity extends Activity {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		activityResultListener.processResult(requestCode, resultCode, data);
+		if (resultCode == Activity.RESULT_OK) {
+			long selectedTraderID = GroceryUtilFunctions.getIntentData(data,
+					GroceryConstants.TRADER_ID);
+			refreshItemList(selectedTraderID);
+		}
 	}
 
 	protected boolean startItemAddUpdateActivity(int operation, long itemId) {
@@ -108,7 +113,7 @@ public class DisplayTraderItemActivity extends Activity {
 		return traderViewHelper.getSelectedItemId();
 	}
 
-	void refreshItem(long traderId) {
+	void refreshItemList(long traderId) {
 		itemViewHelper.refreshItemView(traderId);
 	}
 

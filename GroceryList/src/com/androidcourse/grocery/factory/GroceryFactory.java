@@ -51,9 +51,7 @@ public class GroceryFactory {
 
 	public ActivityResultListener getActivityResultListener(
 			DisplayTraderItemActivity activity) {
-		return new DisplayTraderItemResultListener(
-				activity,
-				groceryDAO);
+		return new DisplayTraderItemResultListener(activity);
 	}
 
 	public OnItemClickListener getItemViewListener(

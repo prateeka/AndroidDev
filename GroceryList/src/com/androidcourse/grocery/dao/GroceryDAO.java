@@ -1,11 +1,8 @@
 package com.androidcourse.grocery.dao;
 
 import android.database.Cursor;
-import android.os.Bundle;
 
 public interface GroceryDAO {
-
-	long addItem(Bundle bundle);
 
 	Cursor getTraderCursor();
 
@@ -13,5 +10,7 @@ public interface GroceryDAO {
 
 	Cursor getItemCursorForItemId(long itemId);
 
-	void updateItem(long itemId, String text, float parseFloat);
+	int updateItem(long itemId, String text, float parseFloat, long traderId);
+
+	long addItem(String text, float parseFloat, long traderId);
 }

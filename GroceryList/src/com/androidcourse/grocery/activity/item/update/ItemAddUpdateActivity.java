@@ -14,48 +14,56 @@ import com.androidcourse.grocery.dao.GroceryDAO;
 import com.androidcourse.grocery.dao.GroceryDAODBImpl;
 import com.androidcourse.grocery.factory.GroceryFactory;
 import com.androidcourse.grocery.util.GroceryConstants;
+import com.androidcourse.grocery.util.GroceryUtilFunctions;
 
 public class ItemAddUpdateActivity extends Activity {
-
+	
 	private EditText itemName;
 	private EditText itemQty;
 	private EditText itemNote;
 	private GroceryDAO groceryDAO;
 	private GroceryFactory factory;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.additem);
 		init();
 	}
-
+	
 	private void init() {
+		factory = GroceryFactory.getFactory();
+		groceryDAO = factory.getGroceryDAO();
 		itemName = (EditText) findViewById(R.id.editText1);
 		itemQty = (EditText) findViewById(R.id.editText2);
 		itemNote = (EditText) findViewById(R.id.editText3);
 		Button button = (Button) findViewById(R.id.operationButton);
+		
 		Log.d(this.getClass().getName(),
 				"init() - operation selected is : "
-						+ getIntentData(GroceryConstants.OPERATION));
-
-		if (getIntentData(GroceryConstants.OPERATION) == GroceryConstants.UPDATE_ITEM_OPERATION) {
+						+ GroceryUtilFunctions.getIntentData(getIntent(),
+								GroceryConstants.OPERATION));
+		
+		if (GroceryUtilFunctions.getIntentData(getIntent(),
+				GroceryConstants.OPERATION) == GroceryConstants.UPDATE_ITEM_OPERATION) {
 			button.setText(this.getResources().getString(
 					R.string.UPDATE_BUTTON_LABEL));
 			populateItemElements();
-		} else if (getIntentData(GroceryConstants.OPERATION) == GroceryConstants.ADD_ITEM_OPERATION) {
+		} else if (GroceryUtilFunctions.getIntentData(getIntent(),
+				GroceryConstants.OPERATION) == GroceryConstants.ADD_ITEM_OPERATION) {
 			button.setText(this.getResources().getString(
 					R.string.ADD_BUTTON_LABEL));
 		}
 	}
-
+	
 	private void populateItemElements() {
 		Log.d(this.getClass().getName(),
 				"populateItemElements() - Trader and item selected id : "
-						+ getIntentData(GroceryConstants.TRADER_ID) + ":"
-						+ +getIntentData(GroceryConstants.ITEM_ID));
-		factory = GroceryFactory.getFactory();
-		groceryDAO = factory.getGroceryDAO();
+						+ GroceryUtilFunctions.getIntentData(getIntent(),
+								GroceryConstants.TRADER_ID)
+						+ ":"
+						+ GroceryUtilFunctions.getIntentData(getIntent(),
+								GroceryConstants.ITEM_ID));
 		Cursor itemCursor = getItemCursor();
 		setText(itemName, itemCursor,
 				GroceryDAODBImpl.TABLE_ITEM_COLUMN_ITEM_NAME);
@@ -66,7 +74,7 @@ public class ItemAddUpdateActivity extends Activity {
 		 */
 		itemCursor.close();
 	}
-
+	
 	private void setText(EditText editText, Cursor itemCursor,
 			String columnName) {
 		if (columnName.equals(GroceryDAODBImpl.TABLE_ITEM_COLUMN_ITEM_NAME)) {
@@ -86,50 +94,60 @@ public class ItemAddUpdateActivity extends Activity {
 					.getColumnIndexOrThrow(columnName)));
 		}
 	}
-
+	
 	private void setText(EditText editText, String string) {
 		editText.setText(string);
 	}
-
+	
 	protected Cursor getItemCursor() {
-		long itemId = getIntentData(GroceryConstants.ITEM_ID);
+		long itemId = GroceryUtilFunctions.getIntentData(getIntent(),
+				GroceryConstants.ITEM_ID);
 		Cursor itemCursor = groceryDAO.getItemCursorForItemId(itemId);
 		return itemCursor;
 	}
-
-	private long getIntentData(String key) {
-		return this.getIntent().getExtras().getLong(key);
-	}
-
+	
 	public void onOperationButtonClick(View view) {
-		if (getIntentData(GroceryConstants.OPERATION) == GroceryConstants.ADD_ITEM_OPERATION) {
-			Intent intent = prepareIntentWithItemData();
-			returnToParentActivity(intent);
-		} else if (getIntentData(GroceryConstants.OPERATION) == GroceryConstants.UPDATE_ITEM_OPERATION) {
-			groceryDAO.updateItem(getIntentData(GroceryConstants.ITEM_ID),
+		if (GroceryUtilFunctions.getIntentData(getIntent(),
+				GroceryConstants.OPERATION) == GroceryConstants.ADD_ITEM_OPERATION) {
+			Log.d(this.getClass().getName(),
+					"onOperationButtonClick() - name, qty, traderId are : "
+							+ getText(itemName)
+							+ ":" +
+							Float.parseFloat(getText(itemQty))
+							+ ":" +
+							GroceryUtilFunctions.getIntentData(getIntent(),
+									GroceryConstants.TRADER_ID));
+			groceryDAO.addItem(
 					getText(itemName),
-					Float.parseFloat(getText(itemQty)));
+					Float.parseFloat(getText(itemQty)),
+					GroceryUtilFunctions.getIntentData(getIntent(),
+							GroceryConstants.TRADER_ID)
+					);
+			returnToParentActivity(this.getIntent());
+		} else if (GroceryUtilFunctions.getIntentData(
+				getIntent(), GroceryConstants.OPERATION)
+				== GroceryConstants.UPDATE_ITEM_OPERATION) {
+			groceryDAO.updateItem(
+					GroceryUtilFunctions.getIntentData(
+							getIntent(), GroceryConstants.ITEM_ID),
+					getText(itemName),
+					Float.parseFloat(getText(itemQty)),
+					GroceryUtilFunctions.getIntentData(getIntent(),
+							GroceryConstants.TRADER_ID)
+					);
+			returnToParentActivity(this.getIntent());
 		}
 	}
-
+	
 	private String getText(EditText editText) {
 		return editText.getText().toString();
 	}
-
-	protected Intent prepareIntentWithItemData() {
-		Intent intent = this.getIntent();
-		intent.putExtra(GroceryConstants.ITEM_NAME,
-				itemName.getText().toString());
-		intent.putExtra(GroceryConstants.ITEM_QTY,
-				Float.parseFloat(itemQty.getText().toString()));
-		return intent;
-	}
-
+	
 	protected void returnToParentActivity(Intent intent) {
 		this.setResult(Activity.RESULT_OK, intent);
 		this.finish();
 	}
-
+	
 	public void onClearButtonClick(View view) {
 		setText(itemName, "");
 		setText(itemQty, "");

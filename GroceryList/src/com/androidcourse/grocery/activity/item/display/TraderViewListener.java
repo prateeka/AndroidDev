@@ -18,7 +18,7 @@ public class TraderViewListener implements OnItemSelectedListener {
 		/*-		Toast.makeText(activity,
 		 "Trader clicked position:id- " + pos + ":" + id,
 		 GroceryConstants.TOAST_DURATION).show();
-		 */activity.refreshItem(id);
+		 */activity.refreshItemList(id);
 	}
 
 	@Override

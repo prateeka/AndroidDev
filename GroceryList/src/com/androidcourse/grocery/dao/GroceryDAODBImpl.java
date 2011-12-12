@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.androidcourse.grocery.util.GroceryConstants;
@@ -19,7 +18,7 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 	private static final String TABLE_TRADER = "TRADER_INFO";
 	private static final String TABLE_ITEM = "ITEM";
 
-	public static final String COLUMN_ID = "_id";
+	public static final String KEY_COLUMN_ID = "_id";
 	public static final String TABLE_TRADER_COLUMN_TRADER_NAME = "NAME";
 	public static final String TABLE_ITEM_COLUMN_ITEM_NAME = "NAME";
 	public static final String TABLE_ITEM_COLUMN_ITEM_QTY = "QUANTITY";
@@ -33,17 +32,20 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 	}
 
 	@Override
-	public long addItem(Bundle bundle) {
-		ContentValues itemToAdd = createItemContentValues(bundle);
-
-		return database.insert(TABLE_ITEM, null,
-				itemToAdd);
+	public long addItem(String text, float parseFloat, long traderId) {
+		ContentValues itemToAdd = createItemContentValues(text, parseFloat,
+				traderId);
+		return database.insert(TABLE_ITEM, null, itemToAdd);
 	}
 
 	@Override
-	public void updateItem(long itemId, String text, float parseFloat) {
-		// TODO Auto-generated method stub
+	public int updateItem(long itemId, String text, float parseFloat,
+			long traderId) {
+		ContentValues updateValues = createItemContentValues(text, parseFloat,
+				traderId);
 
+		return database.update(TABLE_ITEM, updateValues, KEY_COLUMN_ID + "="
+				+ itemId, null);
 	}
 
 	@Override
@@ -67,7 +69,7 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 			getWritableDatabase();
 		}
 		return database.query(TABLE_TRADER, new String[] {
-				COLUMN_ID,
+				KEY_COLUMN_ID,
 				TABLE_TRADER_COLUMN_TRADER_NAME }, null, null, null,
 				null, null);
 	}
@@ -78,7 +80,7 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 		// + String.valueOf(selectedTraderID));
 		return database.query(TABLE_ITEM,
 				new String[] {
-						COLUMN_ID,
+						KEY_COLUMN_ID,
 						TABLE_ITEM_COLUMN_ITEM_NAME,
 						TABLE_ITEM_COLUMN_ITEM_QTY,
 						// TABLE_ITEM_COLUMN_ITEM_NOTE,
@@ -94,12 +96,12 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 						+ itemId);
 		Cursor cursor = database.query(TABLE_ITEM,
 				new String[] {
-						COLUMN_ID,
+						KEY_COLUMN_ID,
 						TABLE_ITEM_COLUMN_ITEM_NAME,
 						TABLE_ITEM_COLUMN_ITEM_QTY,
 						// TABLE_ITEM_COLUMN_ITEM_NOTE,
 						TABLE_ITEM_COLUMN_TRADER_REF },
-				COLUMN_ID + "=" + itemId,
+				KEY_COLUMN_ID + "=" + itemId,
 				null, null, null, null);
 
 		if (cursor != null) {
@@ -117,7 +119,7 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 				+ " IF NOT EXISTS "
 				+ TABLE_TRADER
 				+ " ("
-				+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ KEY_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 				+ TABLE_TRADER_COLUMN_TRADER_NAME + " TEXT NOT NULL"
 				+ ") ;";
 		database.execSQL(TRADER_TABLE_CREATE_STMT);
@@ -132,11 +134,11 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 				+ " IF NOT EXISTS "
 				+ TABLE_ITEM
 				+ " ( "
-				+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ KEY_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 				+ TABLE_ITEM_COLUMN_ITEM_NAME + " TEXT NOT NULL, "
 				+ TABLE_ITEM_COLUMN_ITEM_QTY + " INTEGER, "
 				+ TABLE_ITEM_COLUMN_TRADER_REF + " REFERENCES "
-				+ TABLE_TRADER + "(" + COLUMN_ID + ")  "
+				+ TABLE_TRADER + "(" + KEY_COLUMN_ID + ")  "
 				+ ") ;";
 		database.execSQL(ITEM_TABLE_CREATE_STMT);
 	}
@@ -164,14 +166,12 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 				GroceryConstants.TRADER_COSTCO));
 	}
 
-	private ContentValues createItemContentValues(Bundle bundle) {
+	private ContentValues createItemContentValues(String itemName,
+			float itemQty, long traderId) {
 		ContentValues itemContentValues = new ContentValues();
-		itemContentValues.put(TABLE_ITEM_COLUMN_ITEM_NAME,
-				(String) bundle.get(GroceryConstants.ITEM_NAME));
-		itemContentValues.put(TABLE_ITEM_COLUMN_ITEM_QTY,
-				bundle.getFloat(GroceryConstants.ITEM_QTY));
-		itemContentValues.put(TABLE_ITEM_COLUMN_TRADER_REF,
-				bundle.getLong(GroceryConstants.TRADER_ID));
+		itemContentValues.put(TABLE_ITEM_COLUMN_ITEM_NAME, itemName);
+		itemContentValues.put(TABLE_ITEM_COLUMN_ITEM_QTY, itemQty);
+		itemContentValues.put(TABLE_ITEM_COLUMN_TRADER_REF, traderId);
 		return itemContentValues;
 	}
 
