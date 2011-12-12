@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.androidcourse.grocery.R;
 import com.androidcourse.grocery.dao.GroceryDAO;
@@ -36,11 +35,9 @@ public class ItemAddUpdateActivity extends Activity {
 		itemQty = (EditText) findViewById(R.id.editText2);
 		itemNote = (EditText) findViewById(R.id.editText3);
 		Button button = (Button) findViewById(R.id.operationButton);
-		Toast.makeText(
-				this,
-				"operation selected is : "
-						+ getIntentData(GroceryConstants.OPERATION),
-				GroceryConstants.TOAST_DURATION).show();
+		Log.d(this.getClass().getName(),
+				"init() - operation selected is : "
+						+ getIntentData(GroceryConstants.OPERATION));
 
 		if (getIntentData(GroceryConstants.OPERATION) == GroceryConstants.UPDATE_ITEM_OPERATION) {
 			button.setText(this.getResources().getString(
@@ -53,11 +50,10 @@ public class ItemAddUpdateActivity extends Activity {
 	}
 
 	private void populateItemElements() {
-		Toast.makeText(
-				this, "Trader and item selected id : "
+		Log.d(this.getClass().getName(),
+				"populateItemElements() - Trader and item selected id : "
 						+ getIntentData(GroceryConstants.TRADER_ID) + ":"
-						+ +getIntentData(GroceryConstants.ITEM_ID),
-				GroceryConstants.TOAST_DURATION).show();
+						+ +getIntentData(GroceryConstants.ITEM_ID));
 		factory = GroceryFactory.getFactory();
 		groceryDAO = factory.getGroceryDAO();
 		Cursor itemCursor = getItemCursor();
@@ -96,18 +92,28 @@ public class ItemAddUpdateActivity extends Activity {
 	}
 
 	protected Cursor getItemCursor() {
-		long itemId = getIntent().getExtras().getLong(GroceryConstants.ITEM_ID);
+		long itemId = getIntentData(GroceryConstants.ITEM_ID);
 		Cursor itemCursor = groceryDAO.getItemCursorForItemId(itemId);
 		return itemCursor;
 	}
 
-	private long getIntentData(String operation) {
-		return this.getIntent().getExtras().getLong(operation);
+	private long getIntentData(String key) {
+		return this.getIntent().getExtras().getLong(key);
 	}
 
-	public void onAddButtonClick(View view) {
-		Intent intent = prepareIntentWithItemData();
-		returnToParentActivity(intent);
+	public void onOperationButtonClick(View view) {
+		if (getIntentData(GroceryConstants.OPERATION) == GroceryConstants.ADD_ITEM_OPERATION) {
+			Intent intent = prepareIntentWithItemData();
+			returnToParentActivity(intent);
+		} else if (getIntentData(GroceryConstants.OPERATION) == GroceryConstants.UPDATE_ITEM_OPERATION) {
+			groceryDAO.updateItem(getIntentData(GroceryConstants.ITEM_ID),
+					getText(itemName),
+					Float.parseFloat(getText(itemQty)));
+		}
+	}
+
+	private String getText(EditText editText) {
+		return editText.getText().toString();
 	}
 
 	protected Intent prepareIntentWithItemData() {

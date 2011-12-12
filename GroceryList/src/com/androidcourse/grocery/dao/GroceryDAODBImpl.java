@@ -41,6 +41,12 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 	}
 
 	@Override
+	public void updateItem(long itemId, String text, float parseFloat) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public void onOpen(SQLiteDatabase db) {
 		super.onOpen(db);
 		database = db;

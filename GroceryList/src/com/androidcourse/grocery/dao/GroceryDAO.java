@@ -12,4 +12,6 @@ public interface GroceryDAO {
 	Cursor getItemCursorForTraderId(long traderId);
 
 	Cursor getItemCursorForItemId(long itemId);
+
+	void updateItem(long itemId, String text, float parseFloat);
 }
