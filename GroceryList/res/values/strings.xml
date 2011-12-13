@@ -3,4 +3,5 @@
     <string name="app_name">GroceryListapp</string>
     <string name="ADD_BUTTON_LABEL">Add</string>
     <string name="UPDATE_BUTTON_LABEL">Update</string>
+    <string name="CONTEXT_MENU_DELETE">Delete Item</string>
 </resources>

@@ -52,8 +52,17 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 		ContentValues updateValues = createItemContentValues(
 				text, parseFloat, note, traderId);
 		
-		return database.update(TABLE_ITEM, updateValues, KEY_COLUMN_ID + "="
-				+ itemId, null);
+		return database.update(TABLE_ITEM,
+				updateValues,
+				KEY_COLUMN_ID + "=" + itemId,
+				null);
+	}
+	
+	@Override
+	public int deleteItem(long itemId) {
+		Log.d(this.getClass().getName(),
+				"deleteItem for matching itemId : " + itemId);
+		return database.delete(TABLE_ITEM, KEY_COLUMN_ID + "=" + itemId, null);
 	}
 	
 	@Override
@@ -76,10 +85,11 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 		if (database == null) {
 			getWritableDatabase();
 		}
-		return database.query(TABLE_TRADER, new String[] {
-				KEY_COLUMN_ID,
-				TABLE_TRADER_COLUMN_TRADER_NAME }, null, null, null,
-				null, null);
+		return database.query(TABLE_TRADER,
+				new String[] {
+						KEY_COLUMN_ID,
+						TABLE_TRADER_COLUMN_TRADER_NAME },
+				null, null, null, null, null);
 	}
 	
 	@Override
@@ -163,6 +173,10 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 				GroceryConstants.TRADER_FREDMYER));
 		database.execSQL(ITEM_INSERT_STMT.replaceAll(VAL_TO_REPLACE,
 				GroceryConstants.TRADER_COSTCO));
+		database.execSQL(ITEM_INSERT_STMT.replaceAll(VAL_TO_REPLACE,
+				GroceryConstants.TRADER_SAFEWAY));
+		database.execSQL(ITEM_INSERT_STMT.replaceAll(VAL_TO_REPLACE,
+				GroceryConstants.TRADER_KOHL));
 	}
 	
 	private ContentValues createItemContentValues(

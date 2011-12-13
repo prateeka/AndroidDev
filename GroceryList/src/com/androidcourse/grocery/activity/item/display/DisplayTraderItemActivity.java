@@ -3,9 +3,13 @@ package com.androidcourse.grocery.activity.item.display;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.androidcourse.grocery.R;
 import com.androidcourse.grocery.activity.item.update.ItemAddUpdateActivity;
@@ -20,6 +24,7 @@ public class DisplayTraderItemActivity extends Activity {
 	private GroceryDAO groceryDAO;
 	private TraderViewHelper traderViewHelper;
 	private ItemViewHelper itemViewHelper;
+	private static final int DELETE_ID = Menu.FIRST + 1;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -50,6 +55,27 @@ public class DisplayTraderItemActivity extends Activity {
 					GroceryConstants.ID_UNDEFINED);
 		}
 		return handled;
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu,
+			View view,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, view, menuInfo);
+		menu.add(0, DELETE_ID, 0, R.string.CONTEXT_MENU_DELETE);
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case DELETE_ID:
+				AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+						.getMenuInfo();
+				groceryDAO.deleteItem(info.id);
+				refreshItemList(getSelectedTraderId());
+				return true;
+		}
+		return super.onContextItemSelected(item);
 	}
 	
 	@Override

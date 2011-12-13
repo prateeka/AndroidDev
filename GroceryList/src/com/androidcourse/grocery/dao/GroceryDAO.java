@@ -14,4 +14,6 @@ public interface GroceryDAO {
 			long traderId);
 	
 	long addItem(String text, float parseFloat, String note, long traderId);
+	
+	int deleteItem(long itemid);
 }

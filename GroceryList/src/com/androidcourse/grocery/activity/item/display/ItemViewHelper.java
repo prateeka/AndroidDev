@@ -15,10 +15,10 @@ public class ItemViewHelper {
 	private final GroceryDAO groceryDAO;
 	private Cursor itemCursor;
 	private BaseAdapter itemAdapter;
-
+	
 	private ListView itemListView;
 	private final OnItemClickListener itemViewListener;
-
+	
 	public ItemViewHelper(DisplayTraderItemActivity activity,
 			GroceryDAO groceryDAO,
 			OnItemClickListener itemViewListener) {
@@ -27,13 +27,14 @@ public class ItemViewHelper {
 		this.groceryDAO = groceryDAO;
 		this.itemViewListener = itemViewListener;
 	}
-
+	
 	public void init() {
 		itemListView = (ListView) activity.findViewById(R.id.listView1);
 		refreshItemView(activity.getSelectedTraderId());
 		itemListView.setOnItemClickListener(itemViewListener);
+		activity.registerForContextMenu(itemListView);
 	}
-
+	
 	protected void refreshItemView(long traderId) {
 		itemCursor = groceryDAO
 				.getItemCursorForTraderId(traderId);
@@ -42,13 +43,13 @@ public class ItemViewHelper {
 		itemListView.setAdapter(itemAdapter);
 		// translationAdapter.notifyDataSetChanged();
 	}
-
+	
 	public BaseAdapter getItemAdapter(Cursor itemCursor) {
 		String[] from = new String[] {
 				GroceryDAODBImpl.TABLE_ITEM_COLUMN_ITEM_NAME,
 				GroceryDAODBImpl.TABLE_ITEM_COLUMN_ITEM_QTY };
 		int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
-
+		
 		SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(activity,
 				android.R.layout.two_line_list_item, itemCursor, from,
 				to);
