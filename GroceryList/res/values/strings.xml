@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">GroceryListapp</string>
+    <string name="app_name">GroceryList</string>
     <string name="ADD_BUTTON_LABEL">Add</string>
     <string name="UPDATE_BUTTON_LABEL">Update</string>
     <string name="CONTEXT_MENU_DELETE">Delete Item</string>

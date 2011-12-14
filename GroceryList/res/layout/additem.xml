@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.06"
-            android:text="Item       "
+            android:text="Item    "
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
@@ -57,10 +57,10 @@
 
         <TextView
             android:id="@+id/lablel3"
-            android:layout_width="71dp"
+            android:layout_width="wrap_content"
             android:layout_height="70dp"
-            android:layout_weight="0.01"
-            android:text="Notes"
+            android:layout_weight="0.06"
+            android:text="Notes   "
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
