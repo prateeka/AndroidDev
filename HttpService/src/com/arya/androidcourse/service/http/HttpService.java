@@ -6,7 +6,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 
 public class HttpService extends Service {
-	public static final String TAG = "HttpService";
+	public final String TAG = "HttpService";
 	
 	private final IHttpService.Stub mBinder = new IHttpService.Stub() {
 		HttpProcessor httpProcessor = getHttpProcessor();

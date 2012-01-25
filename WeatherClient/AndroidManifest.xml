@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.arya.androidcourse.service.http"
+    package="com.androidcourse.weather"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -9,14 +9,15 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
-        <service android:name="HttpService" >
+        <activity
+            android:name="com.androidcourse.client.weather.WeatherActivity"
+            android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="com.arya.androidcourse.service.http.IHttpService" />
-            </intent-filter>
-        </service>
-    </application>
+                <action android:name="android.intent.action.MAIN" />
 
-    <uses-permission android:name="android.permission.INTERNET" >
-    </uses-permission>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
 
 </manifest>

@@ -15,6 +15,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.util.Log;
 
 public class HttpProcessor {
+	public final String TAG = "HttpProcessor";
 	
 	public String getFeed(String url) {
 		String feed = null;
@@ -56,13 +57,13 @@ public class HttpProcessor {
 		int statusCode = statusLine.getStatusCode();
 		if (statusCode == 200) {
 			Log.i(
-					"HTTPProcessor",
+					TAG,
 					"Successfully obtained response status=200 for URL: "
 							+ url);
 			entity = response.getEntity();
 		} else {
 			Log.e(
-					"HTTPProcessor",
+					TAG,
 					"Failed to get response status=200 for URL: " + url);
 		}
 		
