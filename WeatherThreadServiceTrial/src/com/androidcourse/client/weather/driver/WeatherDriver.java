@@ -5,22 +5,30 @@ import com.androidcourse.client.weather.processor.WeatherDataProvider;
 import com.androidcourse.client.weather.processor.WeatherDays;
 
 public class WeatherDriver {
-	final WeatherDataProvider processor;
+	final WeatherDataProvider weatherDataProvider;
 	
 	WeatherDriver() {
-		processor = new WeatherDataProvider();
+		weatherDataProvider = new WeatherDataProvider();
 	}
 	
-	public static void main(String args[]) {
+	public static void main(String args[]) throws InterruptedException {
 		WeatherDriver driver = new WeatherDriver();
-		driver.printData(WeatherDays.TODAY);
-		driver.printData(WeatherDays.TODAY_PLUS_1);
+		for (int i = 0; i < 100; i++) {
+			driver.printData(WeatherDays.TODAY);
+			driver.printData(WeatherDays.TODAY_PLUS_1);
+			Thread.sleep(1000);
+		}
+		driver.shutdownThread();
+	}
+	
+	private void shutdownThread() throws InterruptedException {
+		weatherDataProvider.shutdown();
 	}
 	
 	private void printData(WeatherDays day) {
 		WeatherDTO weatherDTO;
 		synchronized (day) {
-			weatherDTO = processor.getWeather(day);
+			weatherDTO = weatherDataProvider.getWeather(day);
 			if (weatherDTO != null) {
 				if (weatherDTO.isValid()) {
 					System.out.println("weatherDTO for :" + day + " is "

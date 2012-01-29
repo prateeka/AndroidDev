@@ -10,7 +10,7 @@ import com.androidcourse.client.weather.data.WeatherDTO;
 public class WeatherDataProvider {
 	ScheduledExecutorService scheduler;
 	WeatherDataGenerator[] weatherDataGenerator;
-	ScheduledFuture[] future;
+	ScheduledFuture<?>[] futures;
 	
 	public WeatherDataProvider() {
 		initWeatherDataGeneratorArray();
@@ -25,26 +25,41 @@ public class WeatherDataProvider {
 	
 	/*
 	 * This method starts the weather data retrieval and ensure the latest
-	 * weather data is retrieved every 5 mins.
+	 * weather data is retrieved as per below specified time delay.
 	 */
 	private void startWeatherDataGeneration() {
-		future = new ScheduledFuture[WeatherDays.values().length];
-		final int delay = 5;
-		for (int i = 0; i < future.length; i++) {
-			future[i] = scheduler.scheduleWithFixedDelay(
+		futures = new ScheduledFuture[WeatherDays.values().length];
+		final int delay = 1;
+		for (int i = 0; i < futures.length; i++) {
+			futures[i] = scheduler.scheduleWithFixedDelay(
 					weatherDataGenerator[i],
-					0, delay, TimeUnit.MINUTES);
+					0, delay, TimeUnit.SECONDS);
 		}
 	}
 	
 	protected void initWeatherDataGeneratorArray() {
 		weatherDataGenerator = new WeatherDataGenerator[WeatherDays.values().length];
-		for (int i = 0; i < weatherDataGenerator.length; i++) {
-			weatherDataGenerator[i] = new WeatherDataGenerator();
+		int i = 0;
+		for (WeatherDays day : WeatherDays.values()) {
+			weatherDataGenerator[i] = new WeatherDataGenerator(day);
+			i++;
 		}
 	}
 	
 	public WeatherDTO getWeather(WeatherDays day) {
 		return weatherDataGenerator[day.getRelativeDay()].getWeather();
+	}
+	
+	public void shutdown() throws InterruptedException {
+		cancelFutures();
+		scheduler.shutdownNow();
+		final int timeout = 30;
+		scheduler.awaitTermination(timeout, TimeUnit.SECONDS);
+	}
+	
+	private void cancelFutures() {
+		for (ScheduledFuture<?> future : futures) {
+			future.cancel(true);
+		}
 	}
 }

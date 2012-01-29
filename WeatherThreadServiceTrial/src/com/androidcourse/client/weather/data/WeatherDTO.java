@@ -28,4 +28,10 @@ public class WeatherDTO {
 	public void setConditions(String conditions) {
 		this.conditions = conditions;
 	}
+	
+	@Override
+	public String toString() {
+		return "WeatherDTO [celsiusTemp=" + celsiusTemp + ", farenheitTemp="
+				+ farenheitTemp + ", conditions=" + conditions + "]";
+	}
 }
