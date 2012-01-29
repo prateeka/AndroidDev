@@ -13,7 +13,7 @@ public class WeatherDriver {
 	
 	public static void main(String args[]) throws InterruptedException {
 		WeatherDriver driver = new WeatherDriver();
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10; i++) {
 			driver.printData(WeatherDays.TODAY);
 			driver.printData(WeatherDays.TODAY_PLUS_1);
 			Thread.sleep(1000);
