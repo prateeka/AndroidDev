@@ -14,18 +14,16 @@ import com.arya.androidcourse.service.http.IHttpService;
 public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> {
 	private final String TAG = "DownloadWeatherTask";
 	
-	private static final String DownLoadingData = "Downloading Data";
-	private final IHttpService httpService;
+	private final String DownLoadingData = "Downloading Data";
+	private final WeatherDataProvider weatherDataProvider;
 	private WeatherDTO weatherDTO;
 	private TextView conditionsText;
 	private TextView celsiusTempText;
 	private TextView farenTempText;
 	private TextView errorMsg;
-	private final WeatherDataProvider weatherDataProvider;
 	
 	DownloadWeatherTask(Context context, IHttpService httpService) {
 		initViews(context);
-		this.httpService = httpService;
 		weatherDataProvider = new WeatherDataProvider(httpService);
 	}
 	
@@ -114,22 +112,29 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 	private WeatherDTO downloadWeatherData(WeatherDays day) {
 		WeatherDTO weatherDTO = null;
 		
-		synchronized (day) {
-			while ((weatherDTO == null) || !weatherDTO.isValid()) {
-				weatherDTO = weatherDataProvider.getWeather(day);
-				
-				if (weatherDTO != null) {
-					if (weatherDTO.isValid()) {
-						Log.d(TAG, "weatherDTO for :" + day + " is "
-								+ weatherDTO);
-					} else {
-						Log.v(TAG, "weatherDTO for :" + day
-								+ " is invalid ");
-					}
-				}
+		while (true) {
+			if ((weatherDTO != null) && weatherDTO.isValid()) {
+				Log.d(TAG, "weatherDTO for :" + day + " is valid as : "
+						+ weatherDTO);
+				break;
 			}
+			else {
+				Log.v(TAG, "weatherDTO for :" + day
+						+ " is invalid : " + weatherDTO);
+				weatherDTO = weatherDataProvider.getWeather(day);
+			}
+			sleepFor(5000);
 		}
 		return weatherDTO;
+	}
+	
+	private void sleepFor(long msecs) {
+		try {
+			Thread.sleep(msecs);
+		}
+		catch (InterruptedException e) {
+			Log.v("sleep", "interrupted");
+		}
 	}
 }
 

@@ -15,7 +15,6 @@ import com.arya.androidcourse.service.http.IHttpService;
 public class WeatherActivity extends Activity {
 	
 	private final String TAG = "WeatherActivity";
-	private final String URL = "http://twitter.com/statuses/user_timeline/vogella.json";
 	private IHttpService httpService = null;
 	
 	private DownloadWeatherTask weatherTask;
@@ -28,7 +27,7 @@ public class WeatherActivity extends Activity {
 		
 		if ((weatherTask = (DownloadWeatherTask) getLastNonConfigurationInstance()) != null) {
 			weatherTask.setContext(this);  // Give my AsyncTask the new Activity
-										// reference
+											// reference
 			if (weatherTask.getStatus() == AsyncTask.Status.FINISHED) {
 				weatherTask.displayWeatherData();
 			}
@@ -47,7 +46,7 @@ public class WeatherActivity extends Activity {
 	
 	protected void downloadWeatherData() {
 		weatherTask = new DownloadWeatherTask(this, httpService);
-		weatherTask.execute(URL);
+		weatherTask.execute();
 	}
 	
 	private final ServiceConnection serConn = new ServiceConnection() {
