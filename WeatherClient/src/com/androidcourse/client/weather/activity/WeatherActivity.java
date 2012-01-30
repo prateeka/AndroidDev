@@ -18,7 +18,7 @@ public class WeatherActivity extends Activity {
 	private final String URL = "http://twitter.com/statuses/user_timeline/vogella.json";
 	private IHttpService httpService = null;
 	
-	private DownloadWeatherTask diTask;
+	private DownloadWeatherTask weatherTask;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -26,11 +26,11 @@ public class WeatherActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-		if ((diTask = (DownloadWeatherTask) getLastNonConfigurationInstance()) != null) {
-			diTask.setContext(this);  // Give my AsyncTask the new Activity
+		if ((weatherTask = (DownloadWeatherTask) getLastNonConfigurationInstance()) != null) {
+			weatherTask.setContext(this);  // Give my AsyncTask the new Activity
 										// reference
-			if (diTask.getStatus() == AsyncTask.Status.FINISHED) {
-				diTask.displayWeatherData();
+			if (weatherTask.getStatus() == AsyncTask.Status.FINISHED) {
+				weatherTask.displayWeatherData();
 			}
 		} else {
 			bindService();
@@ -46,8 +46,8 @@ public class WeatherActivity extends Activity {
 	}
 	
 	protected void downloadWeatherData() {
-		diTask = new DownloadWeatherTask(this, httpService);
-		diTask.execute(URL);
+		weatherTask = new DownloadWeatherTask(this, httpService);
+		weatherTask.execute(URL);
 	}
 	
 	private final ServiceConnection serConn = new ServiceConnection() {
@@ -70,7 +70,18 @@ public class WeatherActivity extends Activity {
 	// to our AsyncTask.
 	@Override
 	public Object onRetainNonConfigurationInstance() {
-		return diTask;
+		return weatherTask;
+	}
+	
+	@Override
+	protected void onDestroy() {
+		try {
+			weatherTask.shutdown();
+		}
+		catch (InterruptedException e) {
+			Log.e(TAG, "InterruptedException encountered: " + e);
+		}
+		super.onDestroy();
 	}
 	
 }

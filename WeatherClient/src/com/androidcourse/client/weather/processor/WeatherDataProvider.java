@@ -6,14 +6,15 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import com.androidcourse.client.weather.data.WeatherDTO;
+import com.arya.androidcourse.service.http.IHttpService;
 
 public class WeatherDataProvider {
 	ScheduledExecutorService scheduler;
 	WeatherDataGenerator[] weatherDataGenerator;
 	ScheduledFuture<?>[] futures;
 	
-	public WeatherDataProvider() {
-		initWeatherDataGeneratorArray();
+	public WeatherDataProvider(IHttpService httpService) {
+		initWeatherDataGeneratorArray(httpService);
 		initScheduledExecutor();
 		startWeatherDataGeneration();
 	}
@@ -37,11 +38,11 @@ public class WeatherDataProvider {
 		}
 	}
 	
-	protected void initWeatherDataGeneratorArray() {
+	protected void initWeatherDataGeneratorArray(IHttpService httpService) {
 		weatherDataGenerator = new WeatherDataGenerator[WeatherDays.values().length];
 		int i = 0;
 		for (WeatherDays day : WeatherDays.values()) {
-			weatherDataGenerator[i] = new WeatherDataGenerator(day);
+			weatherDataGenerator[i] = new WeatherDataGenerator(httpService, day);
 			i++;
 		}
 	}

@@ -34,4 +34,16 @@ public class WeatherDTO {
 		return "WeatherDTO [celsiusTemp=" + celsiusTemp + ", farenheitTemp="
 				+ farenheitTemp + ", conditions=" + conditions + "]";
 	}
+	
+	public Float getCelsiusTemp() {
+		return celsiusTemp;
+	}
+	
+	public Float getFarenheitTemp() {
+		return farenheitTemp;
+	}
+	
+	public String getConditions() {
+		return conditions;
+	}
 }
