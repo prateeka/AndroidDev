@@ -48,11 +48,12 @@ class WeatherDataGenerator implements Runnable {
 	
 	private String downloadWeatherUsingHTTP() throws RemoteException {
 		String url;
-		if (day == WeatherDays.TODAY) {
+		url = "http://api.wunderground.com/api/b3a987070762aec0/conditions/q/98105.json";
+		/*-if (day == WeatherDays.TODAY) {
 			url = "http://api.wunderground.com/api/b3a987070762aec0/conditions/q/98105.json";
 		} else {
 			url = "http://api.wunderground.com/api/b3a987070762aec0/forecast/q/98105.json";
-		}
+		}*/
 		String response = httpService.getFeed(url);
 		return response;
 	}

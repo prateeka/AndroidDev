@@ -1,5 +1,8 @@
 package com.androidcourse.client.weather.activity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -12,25 +15,46 @@ import com.androidcourse.client.weather.processor.WeatherDays;
 import com.arya.androidcourse.service.http.IHttpService;
 
 public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> {
-	private final String TAG = "DownloadWeatherTask";
+	private static final String TAG = "DownloadWeatherTask";
 	
-	private final WeatherDataProvider weatherDataProvider;
 	private WeatherDTO weatherDTO;
 	private TextView conditionsText;
 	private TextView celsiusTempText;
 	private TextView farenTempText;
 	final WeatherDays day;
+	final Integer index;
+	static final String CONDITIONS = "conditions";
+	static final String CELSIUSTEMP = "celsiusTemp";
+	static final String FARENTEMP = "farenTemp";
+	
+	private static WeatherDataProvider weatherDataProvider;
+	private static final Map<String, Integer> viewMap = new HashMap<String, Integer>();
+	
+	static {
+		viewMap.put(CONDITIONS + "0", R.id.conditions0);
+		viewMap.put(CELSIUSTEMP + "0", R.id.celsiusTemp0);
+		viewMap.put(FARENTEMP + "0", R.id.farenTemp0);
+		viewMap.put(CONDITIONS + "1", R.id.conditions1);
+		viewMap.put(CELSIUSTEMP + "1", R.id.celsiusTemp1);
+		viewMap.put(FARENTEMP + "1", R.id.farenTemp1);
+		
+		/*-		for (String key : viewMap.keySet()) {
+		 Log.d(TAG, "key:value is " + key + ":" + viewMap.get(key));
+		 }
+		 */}
 	
 	DownloadWeatherTask(Context context, IHttpService httpService,
-			WeatherDays day, int zip) {
-		initViews(context);
-		weatherDataProvider = new WeatherDataProvider(httpService);
+			WeatherDays day, int index, int zip) {
 		this.day = day;
+		this.index = index;
+		if (weatherDataProvider == null) {
+			weatherDataProvider = new WeatherDataProvider(httpService);
+		}
+		initViews(context);
 	}
 	
 	// Called from main thread to re-attach
 	protected void setContext(Context context) {
-		Log.v(TAG, "setContext called");
 		initViews(context);
 		if (getStatus() == AsyncTask.Status.FINISHED) {
 			displayWeatherData();
@@ -41,11 +65,22 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 	
 	protected void initViews(Context context) {
 		conditionsText = (TextView)
-				((Activity) context).findViewById(R.id.conditions);
+				((Activity) context).findViewById(viewMap.get(CONDITIONS
+						+ index));
+		/*-		Log.d(TAG, "this:conditionsText for day  " + day + " is " + this + ":"
+		 + conditionsText);
+		 Log.d(TAG, "this:celsiusTempText for day " + day + " is " + this + ":"
+		 + celsiusTempText);Log.d(TAG, "this:farenTempTextfor day " + day + " is " + this + ":"
+		 + farenTempText);
+		 */
 		celsiusTempText = (TextView)
-				((Activity) context).findViewById(R.id.celsiusTemp);
+				((Activity) context).findViewById(viewMap.get(CELSIUSTEMP
+						+ index));
+		
 		farenTempText = (TextView)
-				((Activity) context).findViewById(R.id.farenTemp);
+				((Activity) context).findViewById(viewMap.get(FARENTEMP
+						+ index));
+		
 	}
 	
 	@Override
@@ -55,7 +90,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 	
 	@Override
 	protected WeatherDTO doInBackground(String... urls) {
-		Log.d(TAG, "initiating downloading weather data");
+		Log.d(TAG, "initiating downloading weather data for day  " + day);
 		return downloadWeatherData();
 	}
 	
@@ -91,12 +126,13 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 	protected void displayWeatherData() {
 		if (weatherDTO != null) {
 			setTextMsg(conditionsText, weatherDTO.getConditions());
-			setTextMsg(celsiusTempText, weatherDTO.getCelsiusTemp().toString());
-			setTextMsg(farenTempText, weatherDTO.getFarenheitTemp().toString());
+			setTextMsg(celsiusTempText, weatherDTO.getCelsiusTemp());
+			setTextMsg(farenTempText, weatherDTO.getFarenheitTemp());
 		}
 	}
 	
 	protected void setTextMsg(TextView view, String msg) {
+		// Log.d(TAG, "view:msg is " + view + ":" + msg);
 		view.setText(msg);
 	}
 	
@@ -106,7 +142,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 	
 	private WeatherDTO downloadWeatherData() {
 		WeatherDTO weatherDTO = null;
-		final int INVALID_SLEEP_INTERVAL = 5000;
+		final int INVALID_SLEEP_INTERVAL = 5000; // millisec
 		
 		while (true) {
 			if ((weatherDTO != null) && weatherDTO.isValid()) {
@@ -129,7 +165,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 			Thread.sleep(msecs);
 		}
 		catch (InterruptedException e) {
-			Log.e(TAG, "sleep interrupted");
+			Log.e(TAG, "sleep interrupted for day  " + day);
 		}
 	}
 }

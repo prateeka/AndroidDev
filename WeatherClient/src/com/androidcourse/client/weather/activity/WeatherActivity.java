@@ -18,7 +18,7 @@ public class WeatherActivity extends Activity {
 	private final String TAG = "WeatherActivity";
 	private IHttpService httpService = null;
 	
-	private DownloadWeatherTask weatherTask;
+	private DownloadWeatherTask[] weatherTasks;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -26,11 +26,13 @@ public class WeatherActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-		if ((weatherTask = (DownloadWeatherTask) getLastNonConfigurationInstance()) != null) {
-			weatherTask.setContext(this);  // Give my AsyncTask the new Activity
-											// reference
-			if (weatherTask.getStatus() == AsyncTask.Status.FINISHED) {
-				weatherTask.displayWeatherData();
+		if ((weatherTasks = (DownloadWeatherTask[]) getLastNonConfigurationInstance()) != null) {
+			for (DownloadWeatherTask weatherTask : weatherTasks) {
+				weatherTask.setContext(this);  // Give my AsyncTask the new
+												// Activity reference
+				if (weatherTask.getStatus() == AsyncTask.Status.FINISHED) {
+					weatherTask.displayWeatherData();
+				}
 			}
 		} else {
 			bindService();
@@ -46,12 +48,17 @@ public class WeatherActivity extends Activity {
 	}
 	
 	protected void downloadWeatherData() {
-		weatherTask = new DownloadWeatherTask(
-				this,
-				httpService,
-				WeatherDays.TODAY,
-				98105);
-		weatherTask.execute();
+		weatherTasks = new DownloadWeatherTask[WeatherDays.values().length];
+		
+		for (int i = 0; i < weatherTasks.length; i++) {
+			weatherTasks[i] = new DownloadWeatherTask(
+					this,
+					httpService,
+					WeatherDays.values()[i],
+					i,
+					98105);
+			weatherTasks[i].execute();
+		}
 	}
 	
 	private final ServiceConnection serConn = new ServiceConnection() {
@@ -74,13 +81,15 @@ public class WeatherActivity extends Activity {
 	// to our AsyncTask.
 	@Override
 	public Object onRetainNonConfigurationInstance() {
-		return weatherTask;
+		return weatherTasks;
 	}
 	
 	@Override
 	protected void onDestroy() {
 		try {
-			weatherTask.shutdown();
+			for (DownloadWeatherTask weatherTask : weatherTasks) {
+				weatherTask.shutdown();
+			}
 		}
 		catch (InterruptedException e) {
 			Log.e(TAG, "InterruptedException encountered: " + e);
