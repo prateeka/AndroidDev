@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.androidcourse.client.weather.processor.WeatherDays;
 import com.arya.androidcourse.service.http.IHttpService;
 
 public class WeatherActivity extends Activity {
@@ -45,7 +46,11 @@ public class WeatherActivity extends Activity {
 	}
 	
 	protected void downloadWeatherData() {
-		weatherTask = new DownloadWeatherTask(this, httpService);
+		weatherTask = new DownloadWeatherTask(
+				this,
+				httpService,
+				WeatherDays.TODAY,
+				98105);
 		weatherTask.execute();
 	}
 	

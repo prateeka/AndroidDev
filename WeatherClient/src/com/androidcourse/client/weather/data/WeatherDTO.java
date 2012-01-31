@@ -1,17 +1,22 @@
 package com.androidcourse.client.weather.data;
 
 public class WeatherDTO {
-	Float celsiusTemp;
-	Float farenheitTemp;
+	String celsiusTemp;
+	String farenheitTemp;
 	String conditions;
 	
-	public WeatherDTO() {
+	public WeatherDTO(String tempCelsius, String tempFarenheit,
+			String conditions) {
+		celsiusTemp = tempCelsius;
+		farenheitTemp = tempFarenheit;
+		this.conditions = conditions;
 	}
 	
 	public WeatherDTO(WeatherDTO weatherDTO) {
-		celsiusTemp = weatherDTO.celsiusTemp;
-		farenheitTemp = weatherDTO.farenheitTemp;
-		conditions = weatherDTO.conditions;
+		this(
+				weatherDTO.celsiusTemp,
+				weatherDTO.farenheitTemp,
+				weatherDTO.conditions);
 	}
 	
 	public boolean isValid() {
@@ -23,11 +28,11 @@ public class WeatherDTO {
 		}
 	}
 	
-	public void setCelsiusTemp(Float celsiusTemp) {
+	public void setCelsiusTemp(String celsiusTemp) {
 		this.celsiusTemp = celsiusTemp;
 	}
 	
-	public void setFarenheitTemp(Float farenheitTemp) {
+	public void setFarenheitTemp(String farenheitTemp) {
 		this.farenheitTemp = farenheitTemp;
 	}
 	
@@ -41,11 +46,11 @@ public class WeatherDTO {
 				+ farenheitTemp + ", conditions=" + conditions + "]";
 	}
 	
-	public Float getCelsiusTemp() {
+	public String getCelsiusTemp() {
 		return celsiusTemp;
 	}
 	
-	public Float getFarenheitTemp() {
+	public String getFarenheitTemp() {
 		return farenheitTemp;
 	}
 	

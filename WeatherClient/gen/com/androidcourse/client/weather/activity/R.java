@@ -16,7 +16,6 @@ public final class R {
     public static final class id {
         public static final int celsiusTemp=0x7f050001;
         public static final int conditions=0x7f050000;
-        public static final int errorMsg=0x7f050003;
         public static final int farenTemp=0x7f050002;
     }
     public static final class layout {

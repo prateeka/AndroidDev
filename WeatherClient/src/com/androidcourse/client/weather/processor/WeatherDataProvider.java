@@ -30,7 +30,7 @@ public class WeatherDataProvider {
 	 */
 	private void startWeatherDataGeneration() {
 		futures = new ScheduledFuture[WeatherDays.values().length];
-		final int delay = 5;
+		final int delay = 10; // This is in minutes
 		for (int i = 0; i < futures.length; i++) {
 			futures[i] = scheduler.scheduleWithFixedDelay(
 					weatherDataGenerator[i],

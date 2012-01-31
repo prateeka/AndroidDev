@@ -1,5 +1,7 @@
 package com.androidcourse.client.weather.processor;
 
+import org.json.JSONException;
+
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -7,15 +9,12 @@ import com.androidcourse.client.weather.data.WeatherDTO;
 import com.arya.androidcourse.service.http.IHttpService;
 
 class WeatherDataGenerator implements Runnable {
-	final String TAG = "WeatherDataGenerator ";
-	
-	final WeatherDTO weatherDTO;
+	final String TAG = "WeatherDataGenerator";
+	WeatherDTO weatherDTO;
 	final WeatherDays day;
 	final IHttpService httpService;
-	final String URL = "http://google.com";
 	
 	WeatherDataGenerator(IHttpService httpService, WeatherDays day) {
-		weatherDTO = new WeatherDTO();
 		this.day = day;
 		this.httpService = httpService;
 		if (httpService == null) {
@@ -27,30 +26,34 @@ class WeatherDataGenerator implements Runnable {
 	public void run() {
 		try {
 			String response = downloadWeatherUsingHTTP();
-			processResponse(response);
+			weatherDTO = processResponse(response);
 		}
 		catch (RemoteException e) {
 			Log.e(TAG, "RemoteException encountered : " + e);
 		}
+		catch (JSONException e) {
+			Log.e(TAG, "JSONException encountered : " + e);
+		}
 	}
 	
-	private void processResponse(String response) {
+	private WeatherDTO processResponse(String response) throws JSONException {
 		Log.d(TAG, "outside synch processResponse");
 		synchronized (day) {
 			Log.d(TAG, "inside processResponse");
-			weatherDTO
-					.setCelsiusTemp((float) System.currentTimeMillis());
-			weatherDTO
-					.setFarenheitTemp((float) System.currentTimeMillis());
-			weatherDTO
-					.setConditions(String.valueOf(System
-							.currentTimeMillis()
-							+ day.getRelativeDay()));
+			WeatherJSONParser jsonParser = new WeatherJSONParser();
+			WeatherDTO weatherDTO = jsonParser.parseCurrentConditions(response);
+			return weatherDTO;
 		}
 	}
 	
 	private String downloadWeatherUsingHTTP() throws RemoteException {
-		String response = httpService.getFeed(URL);
+		String url;
+		if (day == WeatherDays.TODAY) {
+			url = "http://api.wunderground.com/api/b3a987070762aec0/conditions/q/98105.json";
+		} else {
+			url = "http://api.wunderground.com/api/b3a987070762aec0/forecast/q/98105.json";
+		}
+		String response = httpService.getFeed(url);
 		return response;
 	}
 	

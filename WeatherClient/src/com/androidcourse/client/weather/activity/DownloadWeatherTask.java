@@ -14,17 +14,18 @@ import com.arya.androidcourse.service.http.IHttpService;
 public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> {
 	private final String TAG = "DownloadWeatherTask";
 	
-	private final String DownLoadingData = "Downloading Data";
 	private final WeatherDataProvider weatherDataProvider;
 	private WeatherDTO weatherDTO;
 	private TextView conditionsText;
 	private TextView celsiusTempText;
 	private TextView farenTempText;
-	private TextView errorMsg;
+	final WeatherDays day;
 	
-	DownloadWeatherTask(Context context, IHttpService httpService) {
+	DownloadWeatherTask(Context context, IHttpService httpService,
+			WeatherDays day, int zip) {
 		initViews(context);
 		weatherDataProvider = new WeatherDataProvider(httpService);
+		this.day = day;
 	}
 	
 	// Called from main thread to re-attach
@@ -34,7 +35,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 		if (getStatus() == AsyncTask.Status.FINISHED) {
 			displayWeatherData();
 		} else {
-			displayDownloadingDataMsg();
+			displayDownloadingMsg();
 		}
 	}
 	
@@ -45,40 +46,21 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 				((Activity) context).findViewById(R.id.celsiusTemp);
 		farenTempText = (TextView)
 				((Activity) context).findViewById(R.id.farenTemp);
-		errorMsg = (TextView)
-				((Activity) context).findViewById(R.id.errorMsg);
 	}
 	
 	@Override
 	protected void onPreExecute() {
-		displayDownloadingDataMsg();
-	}
-	
-	protected void displayDownloadingDataMsg() {
-		setTextMsg(conditionsText, DownLoadingData);
-		setTextMsg(celsiusTempText, DownLoadingData);
-		setTextMsg(farenTempText, DownLoadingData);
+		displayDownloadingMsg();
 	}
 	
 	@Override
 	protected WeatherDTO doInBackground(String... urls) {
-		Log.v(TAG, "initiating downloading weather data");
-		return downloadWeatherData(WeatherDays.TODAY);
-		/*-try {
-		 return parseFeed(urls[0]);
-		 }
-		 catch (JSONException e) {
-		 Log.e(TAG, "JSONException thrown " + e);
-		 }
-		 catch (RemoteException e) {
-		 Log.e(TAG, "RemoteException thrown " + e);
-		 }
-		 return null;*/
+		Log.d(TAG, "initiating downloading weather data");
+		return downloadWeatherData();
 	}
 	
 	@Override
 	protected void onProgressUpdate(Integer... progress) {
-		conditionsText.setText("Progress so far: " + progress[0]);
 	}
 	
 	@Override
@@ -88,9 +70,22 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 			displayWeatherData();
 		}
 		else {
-			errorMsg
-					.setText("Problem downloading weather data. Please try later.");
+			displayErrorMsg();
 		}
+	}
+	
+	private void displayErrorMsg() {
+		final String ERROR_MSG = "Problem downloading weather data. Please try later";
+		setTextMsg(conditionsText, ERROR_MSG);
+		setTextMsg(celsiusTempText, ERROR_MSG);
+		setTextMsg(farenTempText, ERROR_MSG);
+	}
+	
+	protected void displayDownloadingMsg() {
+		final String DOWNLOADING_DATA = "Downloading Data";
+		setTextMsg(conditionsText, DOWNLOADING_DATA);
+		setTextMsg(celsiusTempText, DOWNLOADING_DATA);
+		setTextMsg(farenTempText, DOWNLOADING_DATA);
 	}
 	
 	protected void displayWeatherData() {
@@ -109,8 +104,9 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 		weatherDataProvider.shutdown();
 	}
 	
-	private WeatherDTO downloadWeatherData(WeatherDays day) {
+	private WeatherDTO downloadWeatherData() {
 		WeatherDTO weatherDTO = null;
+		final int INVALID_SLEEP_INTERVAL = 5000;
 		
 		while (true) {
 			if ((weatherDTO != null) && weatherDTO.isValid()) {
@@ -123,7 +119,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 						+ " is invalid : " + weatherDTO);
 				weatherDTO = weatherDataProvider.getWeather(day);
 			}
-			sleepFor(5000);
+			sleepFor(INVALID_SLEEP_INTERVAL);
 		}
 		return weatherDTO;
 	}
@@ -133,19 +129,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 			Thread.sleep(msecs);
 		}
 		catch (InterruptedException e) {
-			Log.v("sleep", "interrupted");
+			Log.e(TAG, "sleep interrupted");
 		}
 	}
 }
-
-/*-private Integer parseFeed(String url) throws JSONException, RemoteException {
- String feed = httpService.getFeed(url);
- JSONArray jsonArray = new JSONArray(feed);
- Log.i(TAG,
- "Number of entries " + jsonArray.length());
- for (int i = 0; i < jsonArray.length(); i++) {
- JSONObject jsonObject = jsonArray.getJSONObject(i);
- Log.i(TAG, jsonObject.getString("text"));
- }
- return feed.length();
- }*/

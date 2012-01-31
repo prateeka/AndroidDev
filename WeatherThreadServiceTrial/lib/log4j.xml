@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!-- 
+    <param name="BasePath" value="Optional. Used as part of directory structure. Default is /opt/psbatch/logging/"/>
+    <param name="DateTimeFormatFilename" value="Optional. Used as base filename. Must be valid
+                    SimpleDateFormat if overridden here."/>
+ -->
+     
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+  <!-- log all logs to a separate log file every day -->  
+  <appender name="CrawlerLog" class="com.androidcourse.client.weather.util.FileNameWithTimestampAppender">
+    <param name="file" value="./logging/log" />
+    <param name="append" value="false" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%m%n"/>
+    </layout>
+  </appender>
+  
+  <appender name="async" class="org.apache.log4j.AsyncAppender">
+     <param name="BufferSize" value="1024"/>
+     <param name="Blocking" value="true"/>
+     <appender-ref ref="CrawlerLog" />
+  </appender>
+  
+  <root>
+    <level value="info"/>
+    <appender-ref ref="CrawlerLog" />
+  </root>  
+  
+</log4j:configuration>
