@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
 
 import com.androidcourse.client.weather.processor.WeatherDays;
 import com.arya.androidcourse.service.http.IHttpService;
@@ -95,6 +96,10 @@ public class WeatherActivity extends Activity {
 			Log.e(TAG, "InterruptedException encountered: " + e);
 		}
 		super.onDestroy();
+	}
+	
+	public void getWeather(View view) {
+		Log.d(TAG, "Button clicked");
 	}
 	
 }

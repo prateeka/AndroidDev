@@ -4,61 +4,87 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/editText1"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </EditText>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/editZipCode"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" 
+            android:maxLength="5"
+            android:inputType="number">
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonLabel"
+     		android:onClick="getWeather" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/conditions0"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/celsiusTemp0"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/farenTemp0"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
-   
-   <TextView
+
+    <TextView
         android:id="@+id/conditions1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/celsiusTemp1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/farenTemp1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
-    
+
     <TextView
         android:id="@+id/conditions2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/celsiusTemp2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/farenTemp2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
-    
+
     <TextView
         android:id="@+id/conditions3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/celsiusTemp3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/farenTemp3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
 </LinearLayout>
