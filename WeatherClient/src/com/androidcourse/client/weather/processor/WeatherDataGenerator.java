@@ -41,12 +41,12 @@ class WeatherDataGenerator implements Runnable {
 		WeatherDTO lWeatherDTO = null;
 		synchronized (day) {
 			Log.d(TAG, "inside processResponse");
-			WeatherJSONParser jsonParser = new WeatherJSONParser();
+			WeatherJSONParser jsonParser = WeatherJSONParser.getInstance();
 			if (day == WeatherDays.TODAY) {
-				lWeatherDTO = jsonParser.parseCurrentConditions(response);
+				lWeatherDTO = jsonParser.parseWeather(response, day);
 			}
 			else {
-				lWeatherDTO = jsonParser.parseForecastConditions(response);
+				lWeatherDTO = jsonParser.parseWeather(response, day);
 			}
 		}
 		return lWeatherDTO;

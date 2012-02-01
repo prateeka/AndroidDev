@@ -37,6 +37,12 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 		viewMap.put(CONDITIONS + "1", R.id.conditions1);
 		viewMap.put(CELSIUSTEMP + "1", R.id.celsiusTemp1);
 		viewMap.put(FARENTEMP + "1", R.id.farenTemp1);
+		viewMap.put(CONDITIONS + "2", R.id.conditions2);
+		viewMap.put(CELSIUSTEMP + "2", R.id.celsiusTemp2);
+		viewMap.put(FARENTEMP + "2", R.id.farenTemp2);
+		viewMap.put(CONDITIONS + "3", R.id.conditions3);
+		viewMap.put(CELSIUSTEMP + "3", R.id.celsiusTemp3);
+		viewMap.put(FARENTEMP + "3", R.id.farenTemp3);
 		
 		/*-		for (String key : viewMap.keySet()) {
 		 Log.d(TAG, "key:value is " + key + ":" + viewMap.get(key));

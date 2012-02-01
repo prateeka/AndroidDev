@@ -11,8 +11,30 @@ import com.androidcourse.client.weather.data.WeatherDTO;
 
 class WeatherJSONParser {
 	final String TAG = "WeatherJSONParser";
+	static WeatherJSONParser weatherJSONParser = null;
 	
-	WeatherDTO parseCurrentConditions(String stringtoParse)
+	private WeatherJSONParser() {
+	}
+	
+	static WeatherJSONParser getInstance() {
+		if (weatherJSONParser == null) {
+			weatherJSONParser = new WeatherJSONParser();
+		}
+		return weatherJSONParser;
+	}
+	
+	WeatherDTO parseWeather(String stringtoParse, WeatherDays day)
+			throws JSONException {
+		WeatherDTO lWeatherDTO = null;
+		if (day == WeatherDays.TODAY) {
+			lWeatherDTO = parseCurrentConditions(stringtoParse);
+		} else {
+			lWeatherDTO = parseForecastConditions(stringtoParse, day);
+		}
+		return lWeatherDTO;
+	}
+	
+	protected WeatherDTO parseCurrentConditions(String stringtoParse)
 			throws JSONException {
 		
 		JSONObject jsonObject = getJSONObject(stringtoParse);
@@ -31,13 +53,8 @@ class WeatherJSONParser {
 		return new WeatherDTO(temp_c, temp_f, conditions);
 	}
 	
-	protected void logValues(String temp_f, String temp_c, String conditions) {
-		Log.d(TAG, "value for temp_f is " + temp_f);
-		Log.d(TAG, "value for temp_c is " + temp_c);
-		Log.d(TAG, "value for conditions is " + conditions);
-	}
-	
-	WeatherDTO parseForecastConditions(String stringtoParse)
+	protected WeatherDTO parseForecastConditions(String stringtoParse,
+			WeatherDays day)
 			throws JSONException {
 		JSONObject jsonObject = getJSONObject(stringtoParse);
 		
@@ -52,7 +69,8 @@ class WeatherJSONParser {
 		jsonObject = jsonObject.getJSONObject(FORECAST);
 		jsonObject = jsonObject.getJSONObject(SIMPLEFORECAST);
 		JSONArray jsonArray = jsonObject.getJSONArray(FORECASTDAY);
-		jsonObject = jsonArray.getJSONObject(1);
+		Integer idx = day.getRelativeDay();
+		jsonObject = jsonArray.getJSONObject(idx);
 		JSONObject cjsonObject = jsonObject.getJSONObject(HIGH);
 		
 		String temp_f = cjsonObject.getString(FAHRENHEIT);
@@ -68,5 +86,11 @@ class WeatherJSONParser {
 		
 		return (JSONObject) new JSONTokener(stringtoParse)
 				.nextValue();
+	}
+	
+	protected void logValues(String temp_f, String temp_c, String conditions) {
+		Log.d(TAG, "value for temp_f is " + temp_f);
+		Log.d(TAG, "value for temp_c is " + temp_c);
+		Log.d(TAG, "value for conditions is " + conditions);
 	}
 }
