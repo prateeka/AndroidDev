@@ -38,29 +38,42 @@ class WeatherDataGenerator implements Runnable {
 	
 	private WeatherDTO processResponse(String response) throws JSONException {
 		Log.d(TAG, "outside synch processResponse");
+		WeatherDTO lWeatherDTO = null;
 		synchronized (day) {
 			Log.d(TAG, "inside processResponse");
 			WeatherJSONParser jsonParser = new WeatherJSONParser();
-			WeatherDTO weatherDTO = jsonParser.parseCurrentConditions(response);
-			return weatherDTO;
+			if (day == WeatherDays.TODAY) {
+				lWeatherDTO = jsonParser.parseCurrentConditions(response);
+			}
+			else {
+				lWeatherDTO = jsonParser.parseForecastConditions(response);
+			}
 		}
+		return lWeatherDTO;
 	}
 	
 	private String downloadWeatherUsingHTTP() throws RemoteException {
 		String url;
-		url = "http://api.wunderground.com/api/b3a987070762aec0/conditions/q/98105.json";
-		/*-if (day == WeatherDays.TODAY) {
+		// url =
+		// "http://api.wunderground.com/api/b3a987070762aec0/conditions/q/98105.json";
+		if (day == WeatherDays.TODAY) {
 			url = "http://api.wunderground.com/api/b3a987070762aec0/conditions/q/98105.json";
 		} else {
 			url = "http://api.wunderground.com/api/b3a987070762aec0/forecast/q/98105.json";
-		}*/
+		}
 		String response = httpService.getFeed(url);
 		return response;
 	}
 	
 	public WeatherDTO getWeather() {
+		WeatherDTO lWeatherDTO = null;
 		synchronized (day) {
-			return new WeatherDTO(weatherDTO);
+			if (weatherDTO != null) {
+				lWeatherDTO = new WeatherDTO(weatherDTO);
+			} else {
+				lWeatherDTO = new WeatherDTO();
+			}
 		}
+		return lWeatherDTO;
 	}
 }

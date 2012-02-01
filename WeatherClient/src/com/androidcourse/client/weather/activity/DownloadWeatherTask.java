@@ -27,7 +27,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 	static final String CELSIUSTEMP = "celsiusTemp";
 	static final String FARENTEMP = "farenTemp";
 	
-	private static WeatherDataProvider weatherDataProvider;
+	private final WeatherDataProvider weatherDataProvider;
 	private static final Map<String, Integer> viewMap = new HashMap<String, Integer>();
 	
 	static {
@@ -47,9 +47,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 			WeatherDays day, int index, int zip) {
 		this.day = day;
 		this.index = index;
-		if (weatherDataProvider == null) {
-			weatherDataProvider = new WeatherDataProvider(httpService);
-		}
+		weatherDataProvider = WeatherDataProvider.getInstance(httpService);
 		initViews(context);
 	}
 	
@@ -152,7 +150,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 			}
 			else {
 				Log.v(TAG, "weatherDTO for :" + day
-						+ " is invalid : " + weatherDTO);
+						+ " is invalid ");
 				weatherDTO = weatherDataProvider.getWeather(day);
 			}
 			sleepFor(INVALID_SLEEP_INTERVAL);

@@ -19,6 +19,10 @@ public class WeatherDTO {
 				weatherDTO.conditions);
 	}
 	
+	public WeatherDTO() {
+		this(null, null, null);
+	}
+	
 	public boolean isValid() {
 		if ((celsiusTemp != null) && (farenheitTemp != null)
 				&& (conditions != null) && (conditions.trim() != "")) {

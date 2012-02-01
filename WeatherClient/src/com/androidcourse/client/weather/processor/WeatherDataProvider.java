@@ -12,11 +12,19 @@ public class WeatherDataProvider {
 	ScheduledExecutorService scheduler;
 	WeatherDataGenerator[] weatherDataGenerator;
 	ScheduledFuture<?>[] futures;
+	static WeatherDataProvider weatherDataProvider;
 	
-	public WeatherDataProvider(IHttpService httpService) {
+	private WeatherDataProvider(IHttpService httpService) {
 		initWeatherDataGeneratorArray(httpService);
 		initScheduledExecutor();
 		startWeatherDataGeneration();
+	}
+	
+	public static WeatherDataProvider getInstance(IHttpService httpService) {
+		if (weatherDataProvider == null) {
+			weatherDataProvider = new WeatherDataProvider(httpService);
+		}
+		return weatherDataProvider;
 	}
 	
 	protected void initScheduledExecutor() {
