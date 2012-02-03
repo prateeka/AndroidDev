@@ -1,23 +1,24 @@
 package com.androidcourse.client.weather.processor;
 
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import com.androidcourse.client.weather.data.WeatherDTO;
 import com.arya.androidcourse.service.http.IHttpService;
 
 public class WeatherDataProvider {
-	ScheduledExecutorService scheduler;
-	WeatherDataGenerator[] weatherDataGenerator;
-	ScheduledFuture<?>[] futures;
+	ExecutorService executor;
+	WeatherDataGenerator[] weatherDataGenerators;
+	Future<?>[] futures;
+	final IHttpService httpService;
 	static WeatherDataProvider weatherDataProvider;
 	
 	private WeatherDataProvider(IHttpService httpService) {
-		initWeatherDataGeneratorArray(httpService);
-		initScheduledExecutor();
-		startWeatherDataGeneration();
+		initThreadExecutorService();
+		this.httpService = httpService;
+		initWeatherDataGeneratorArray();
 	}
 	
 	public static WeatherDataProvider getInstance(IHttpService httpService) {
@@ -27,9 +28,9 @@ public class WeatherDataProvider {
 		return weatherDataProvider;
 	}
 	
-	protected void initScheduledExecutor() {
+	protected void initThreadExecutorService() {
 		final int corePoolSize = 4;
-		scheduler = Executors.newScheduledThreadPool(corePoolSize);
+		executor = Executors.newFixedThreadPool(corePoolSize);
 	}
 	
 	/*
@@ -37,38 +38,48 @@ public class WeatherDataProvider {
 	 * weather data is retrieved as per below specified time delay.
 	 */
 	private void startWeatherDataGeneration() {
-		futures = new ScheduledFuture[WeatherDays.values().length];
-		final int delay = 10; // This is in minutes
+		futures = new Future[WeatherDays.values().length];
 		for (int i = 0; i < futures.length; i++) {
-			futures[i] = scheduler.scheduleWithFixedDelay(
-					weatherDataGenerator[i],
-					0, delay, TimeUnit.MINUTES);
+			futures[i] = executor.submit(weatherDataGenerators[i]);
 		}
 	}
 	
-	protected void initWeatherDataGeneratorArray(IHttpService httpService) {
-		weatherDataGenerator = new WeatherDataGenerator[WeatherDays.values().length];
+	protected void initWeatherDataGeneratorArray() {
+		weatherDataGenerators = new WeatherDataGenerator[WeatherDays.values().length];
 		int i = 0;
 		for (WeatherDays day : WeatherDays.values()) {
-			weatherDataGenerator[i] = new WeatherDataGenerator(httpService, day);
+			weatherDataGenerators[i] = new WeatherDataGenerator(
+					httpService,
+					day);
 			i++;
 		}
 	}
 	
 	public WeatherDTO getWeather(WeatherDays day) {
-		return weatherDataGenerator[day.getRelativeDay()].getWeather();
+		return weatherDataGenerators[day.getRelativeDay()].getWeather();
 	}
 	
 	public void shutdown() throws InterruptedException {
 		cancelFutures();
-		scheduler.shutdownNow();
+		executor.shutdownNow();
 		final int timeout = 30;
-		scheduler.awaitTermination(timeout, TimeUnit.SECONDS);
+		executor.awaitTermination(timeout, TimeUnit.SECONDS);
 	}
 	
 	private void cancelFutures() {
-		for (ScheduledFuture<?> future : futures) {
+		for (Future<?> future : futures) {
 			future.cancel(true);
+		}
+	}
+	
+	public void initiateWeatherDownload(String zipCode) {
+		setZipCodeIntoWeatherDataGenerator(zipCode);
+		startWeatherDataGeneration();
+	}
+	
+	void setZipCodeIntoWeatherDataGenerator(String zipCode) {
+		for (WeatherDataGenerator weatherDataGenerator : weatherDataGenerators) {
+			weatherDataGenerator.setZipcode(zipCode);
 		}
 	}
 }

@@ -10,7 +10,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.androidcourse.client.weather.processor.WeatherDataProvider;
 import com.androidcourse.client.weather.processor.WeatherDays;
 import com.arya.androidcourse.service.http.IHttpService;
 
@@ -18,6 +21,10 @@ public class WeatherActivity extends Activity {
 	
 	private final String TAG = "WeatherActivity";
 	private IHttpService httpService = null;
+	private EditText zipCodeView;
+	private Button goButton;
+	private WeatherDataProviderRetrievor weatherDataProviderRetrievor;
+	private Boolean[] weathersDisplayed;
 	
 	private DownloadWeatherTask[] weatherTasks;
 	
@@ -26,6 +33,7 @@ public class WeatherActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		initViews();
 		
 		if ((weatherTasks = (DownloadWeatherTask[]) getLastNonConfigurationInstance()) != null) {
 			for (DownloadWeatherTask weatherTask : weatherTasks) {
@@ -40,6 +48,19 @@ public class WeatherActivity extends Activity {
 		}
 	}
 	
+	protected void initViews() {
+		zipCodeView = (EditText) findViewById(R.id.zipCodeText);
+		goButton = (Button) findViewById(R.id.goButton);
+		weathersDisplayed = new Boolean[WeatherDays.values().length];
+		resetWeathersDisplayed();
+	}
+	
+	protected void resetWeathersDisplayed() {
+		for (int idx = 0; idx < weathersDisplayed.length; idx++) {
+			weathersDisplayed[idx] = false;
+		}
+	}
+	
 	private void bindService() {
 		Log.i(TAG, "calling bindService");
 		bindService(new Intent(IHttpService.class
@@ -48,18 +69,31 @@ public class WeatherActivity extends Activity {
 		Log.i(TAG, "bind service returning");
 	}
 	
-	protected void downloadWeatherData() {
+	protected void downloadWeatherData(String zipCode) {
+		enableZipCodeView(false);
+		WeatherDataProvider weatherDataProvider = getWeatherDataProvider(zipCode);
 		weatherTasks = new DownloadWeatherTask[WeatherDays.values().length];
 		
 		for (int i = 0; i < weatherTasks.length; i++) {
 			weatherTasks[i] = new DownloadWeatherTask(
 					this,
-					httpService,
 					WeatherDays.values()[i],
-					i,
-					98105);
+					i, weatherDataProvider);
 			weatherTasks[i].execute();
 		}
+	}
+	
+	private WeatherDataProvider getWeatherDataProvider(String zipCode) {
+		weatherDataProviderRetrievor = WeatherDataProviderRetrievor
+				.getInstance();
+		return weatherDataProviderRetrievor.getWeatherDataProvider(
+				httpService,
+				zipCode);
+	}
+	
+	private void downloadWeatherData() {
+		final String DEFAULT_ZIP_CODE = "98105";
+		downloadWeatherData(DEFAULT_ZIP_CODE);
 	}
 	
 	private final ServiceConnection serConn = new ServiceConnection() {
@@ -88,9 +122,7 @@ public class WeatherActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		try {
-			for (DownloadWeatherTask weatherTask : weatherTasks) {
-				weatherTask.shutdown();
-			}
+			weatherDataProviderRetrievor.shutDownWeatherDataProvider();
 		}
 		catch (InterruptedException e) {
 			Log.e(TAG, "InterruptedException encountered: " + e);
@@ -98,8 +130,31 @@ public class WeatherActivity extends Activity {
 		super.onDestroy();
 	}
 	
-	public void getWeather(View view) {
-		Log.d(TAG, "Button clicked");
+	public void onClickGetWeather(View view) {
+		String zipCode = zipCodeView.getText().toString();
+		Log.d(TAG, "Button clicked with zipCode " + zipCode);
+		downloadWeatherData(zipCode);
+	}
+	
+	void checkAndEnableZipCodeView(Integer downloadWeatherTaskID) {
+		boolean flag = true;
+		weathersDisplayed[downloadWeatherTaskID] = true;
+		
+		for (Boolean weatherDisplayed : weathersDisplayed) {
+			if (!weatherDisplayed) {
+				flag = false;
+				break;
+			}
+		}
+		if (flag) {
+			enableZipCodeView(true);
+			resetWeathersDisplayed();
+		}
+	}
+	
+	protected void enableZipCodeView(boolean flag) {
+		zipCodeView.setEnabled(flag);
+		goButton.setEnabled(flag);
 	}
 	
 }

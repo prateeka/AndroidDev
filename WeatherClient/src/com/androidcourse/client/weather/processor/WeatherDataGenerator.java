@@ -13,6 +13,7 @@ class WeatherDataGenerator implements Runnable {
 	WeatherDTO weatherDTO;
 	final WeatherDays day;
 	final IHttpService httpService;
+	String zipCode = null;
 	
 	WeatherDataGenerator(IHttpService httpService, WeatherDays day) {
 		this.day = day;
@@ -24,42 +25,43 @@ class WeatherDataGenerator implements Runnable {
 	
 	@Override
 	public void run() {
-		try {
-			String response = downloadWeatherUsingHTTP();
-			weatherDTO = processResponse(response);
-		}
-		catch (RemoteException e) {
-			Log.e(TAG, "RemoteException encountered : " + e);
-		}
-		catch (JSONException e) {
-			Log.e(TAG, "JSONException encountered : " + e);
+		synchronized (this) {
+			try {
+				String response = downloadWeatherUsingHTTP();
+				processResponse(response);
+			}
+			catch (RemoteException e) {
+				Log.e(TAG, "RemoteException encountered : " + e);
+			}
+			catch (JSONException e) {
+				Log.e(TAG, "JSONException encountered : " + e);
+			}
 		}
 	}
 	
-	private WeatherDTO processResponse(String response) throws JSONException {
-		Log.d(TAG, "outside synch processResponse");
+	private void processResponse(String response) throws JSONException {
 		WeatherDTO lWeatherDTO = null;
-		synchronized (day) {
-			Log.d(TAG, "inside processResponse");
-			WeatherJSONParser jsonParser = WeatherJSONParser.getInstance();
-			if (day == WeatherDays.TODAY) {
-				lWeatherDTO = jsonParser.parseWeather(response, day);
-			}
-			else {
-				lWeatherDTO = jsonParser.parseWeather(response, day);
-			}
+		WeatherJSONParser jsonParser = WeatherJSONParser.getInstance();
+		if (day == WeatherDays.TODAY) {
+			lWeatherDTO = jsonParser.parseWeather(response, day);
 		}
-		return lWeatherDTO;
+		else {
+			lWeatherDTO = jsonParser.parseWeather(response, day);
+		}
+		
+		synchronized (day) {
+			weatherDTO = lWeatherDTO;
+		}
 	}
 	
 	private String downloadWeatherUsingHTTP() throws RemoteException {
 		String url;
-		// url =
-		// "http://api.wunderground.com/api/b3a987070762aec0/conditions/q/98105.json";
 		if (day == WeatherDays.TODAY) {
-			url = "http://api.wunderground.com/api/b3a987070762aec0/conditions/q/98105.json";
+			url = "http://api.wunderground.com/api/b3a987070762aec0/conditions/q/"
+					+ zipCode + ".json";
 		} else {
-			url = "http://api.wunderground.com/api/b3a987070762aec0/forecast/q/98105.json";
+			url = "http://api.wunderground.com/api/b3a987070762aec0/forecast/q/"
+					+ zipCode + ".json";
 		}
 		String response = httpService.getFeed(url);
 		return response;
@@ -75,5 +77,20 @@ class WeatherDataGenerator implements Runnable {
 			}
 		}
 		return lWeatherDTO;
+	}
+	
+	void setZipcode(String zipCode) {
+		synchronized (this) {
+			this.zipCode = zipCode;
+			resetWeatherDTO();
+		}
+	}
+	
+	void resetWeatherDTO() {
+		synchronized (day) {
+			if (weatherDTO != null) {
+				weatherDTO.reset();
+			}
+		}
 	}
 }

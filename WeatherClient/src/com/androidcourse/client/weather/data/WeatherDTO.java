@@ -5,10 +5,10 @@ public class WeatherDTO {
 	String farenheitTemp;
 	String conditions;
 	
-	public WeatherDTO(String tempCelsius, String tempFarenheit,
+	public WeatherDTO(String celsiusTemp, String farenheitTemp,
 			String conditions) {
-		celsiusTemp = tempCelsius;
-		farenheitTemp = tempFarenheit;
+		this.celsiusTemp = celsiusTemp;
+		this.farenheitTemp = farenheitTemp;
 		this.conditions = conditions;
 	}
 	
@@ -24,12 +24,17 @@ public class WeatherDTO {
 	}
 	
 	public boolean isValid() {
-		if ((celsiusTemp != null) && (farenheitTemp != null)
-				&& (conditions != null) && (conditions.trim() != "")) {
+		if (isNonNullAndNonEmpty(celsiusTemp)
+				&& isNonNullAndNonEmpty(farenheitTemp)
+				&& isNonNullAndNonEmpty(conditions)) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	protected boolean isNonNullAndNonEmpty(String param) {
+		return (param != null) && (param.trim().length() != 0);
 	}
 	
 	public void setCelsiusTemp(String celsiusTemp) {
@@ -60,5 +65,11 @@ public class WeatherDTO {
 	
 	public String getConditions() {
 		return conditions;
+	}
+	
+	public void reset() {
+		celsiusTemp = null;
+		farenheitTemp = null;
+		conditions = null;
 	}
 }

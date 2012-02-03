@@ -12,11 +12,11 @@ import android.widget.TextView;
 import com.androidcourse.client.weather.data.WeatherDTO;
 import com.androidcourse.client.weather.processor.WeatherDataProvider;
 import com.androidcourse.client.weather.processor.WeatherDays;
-import com.arya.androidcourse.service.http.IHttpService;
 
 public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> {
 	private static final String TAG = "DownloadWeatherTask";
 	
+	private WeatherActivity weatherActivity;
 	private WeatherDTO weatherDTO;
 	private TextView conditionsText;
 	private TextView celsiusTempText;
@@ -49,11 +49,12 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 		 }
 		 */}
 	
-	DownloadWeatherTask(Context context, IHttpService httpService,
-			WeatherDays day, int index, int zip) {
+	DownloadWeatherTask(Context context,
+			WeatherDays day, int index, WeatherDataProvider weatherDataProvider) {
 		this.day = day;
 		this.index = index;
-		weatherDataProvider = WeatherDataProvider.getInstance(httpService);
+		this.weatherDataProvider = weatherDataProvider;
+		weatherActivity = (WeatherActivity) context;
 		initViews(context);
 	}
 	
@@ -65,6 +66,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 		} else {
 			displayDownloadingMsg();
 		}
+		weatherActivity = (WeatherActivity) context;
 	}
 	
 	protected void initViews(Context context) {
@@ -107,6 +109,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 		if (result != null) {
 			weatherDTO = result;
 			displayWeatherData();
+			weatherActivity.checkAndEnableZipCodeView(index);
 		}
 		else {
 			displayErrorMsg();
@@ -140,13 +143,9 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 		view.setText(msg);
 	}
 	
-	public void shutdown() throws InterruptedException {
-		weatherDataProvider.shutdown();
-	}
-	
 	private WeatherDTO downloadWeatherData() {
 		WeatherDTO weatherDTO = null;
-		final int INVALID_SLEEP_INTERVAL = 5000; // millisec
+		final int INVALID_SLEEP_INTERVAL = 2500; // millisec
 		
 		while (true) {
 			if ((weatherDTO != null) && weatherDTO.isValid()) {
