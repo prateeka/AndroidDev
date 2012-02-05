@@ -1,85 +1,64 @@
 package com.androidcourse.client.weather.processor;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import android.os.RemoteException;
+import android.util.Log;
 
 import com.androidcourse.client.weather.data.WeatherDTO;
 import com.arya.androidcourse.service.http.IHttpService;
 
-public class WeatherDataProvider {
-	ExecutorService executor;
-	WeatherDataGenerator[] weatherDataGenerators;
-	Future<?>[] futures;
-	final IHttpService httpService;
-	static WeatherDataProvider weatherDataProvider;
+class WeatherDataProvider implements Runnable {
+	final String TAG = "WeatherDataProvider";
+	WeatherDTO weatherDTO;
+	final WeatherDays day;
+	final WeatherDataGenerator weatherDataGenerator;
 	
-	private WeatherDataProvider(IHttpService httpService) {
-		initThreadExecutorService();
-		this.httpService = httpService;
-		initWeatherDataGeneratorArray();
-	}
-	
-	public static WeatherDataProvider getInstance(IHttpService httpService) {
-		if (weatherDataProvider == null) {
-			weatherDataProvider = new WeatherDataProvider(httpService);
-		}
-		return weatherDataProvider;
-	}
-	
-	protected void initThreadExecutorService() {
-		final int corePoolSize = 4;
-		executor = Executors.newFixedThreadPool(corePoolSize);
-	}
-	
-	/*
-	 * This method starts the weather data retrieval and ensure the latest
-	 * weather data is retrieved as per below specified time delay.
-	 */
-	private void startWeatherDataGeneration() {
-		futures = new Future[WeatherDays.values().length];
-		for (int i = 0; i < futures.length; i++) {
-			futures[i] = executor.submit(weatherDataGenerators[i]);
+	WeatherDataProvider(IHttpService httpService, WeatherDays day) {
+		this.day = day;
+		weatherDataGenerator = new WeatherDataGenerator(httpService, day);
+		if (httpService == null) {
+			Log.e(TAG, "httpService is null..cannot execute normally ");
 		}
 	}
 	
-	protected void initWeatherDataGeneratorArray() {
-		weatherDataGenerators = new WeatherDataGenerator[WeatherDays.values().length];
-		int i = 0;
-		for (WeatherDays day : WeatherDays.values()) {
-			weatherDataGenerators[i] = new WeatherDataGenerator(
-					httpService,
-					day);
-			i++;
+	@Override
+	public void run() {
+		synchronized (this) {
+			try {
+				WeatherDTO lWeatherDTO = weatherDataGenerator.getWeatherDTO();
+				synchronized (day) {
+					weatherDTO = lWeatherDTO;
+				}
+			}
+			catch (RemoteException e) {
+				Log.e(TAG, "RemoteException encountered : " + e);
+			}
 		}
 	}
 	
-	public WeatherDTO getWeather(WeatherDays day) {
-		return weatherDataGenerators[day.getRelativeDay()].getWeather();
+	public WeatherDTO getWeather() {
+		WeatherDTO lWeatherDTO = null;
+		synchronized (day) {
+			if (weatherDTO != null) {
+				lWeatherDTO = WeatherDTO.getCopy(weatherDTO);
+			} else {
+				lWeatherDTO = WeatherDTO.getInstance();
+			}
+		}
+		return lWeatherDTO;
 	}
 	
-	public void shutdown() throws InterruptedException {
-		cancelFutures();
-		executor.shutdownNow();
-		final int timeout = 30;
-		executor.awaitTermination(timeout, TimeUnit.SECONDS);
-	}
-	
-	private void cancelFutures() {
-		for (Future<?> future : futures) {
-			future.cancel(true);
+	void setZipCode(String zipCode) {
+		synchronized (this) {
+			weatherDataGenerator.setZipCode(zipCode);
+			resetWeatherDTO();
 		}
 	}
 	
-	public void initiateWeatherDownload(String zipCode) {
-		setZipCodeIntoWeatherDataGenerator(zipCode);
-		startWeatherDataGeneration();
-	}
-	
-	void setZipCodeIntoWeatherDataGenerator(String zipCode) {
-		for (WeatherDataGenerator weatherDataGenerator : weatherDataGenerators) {
-			weatherDataGenerator.setZipcode(zipCode);
+	void resetWeatherDTO() {
+		synchronized (day) {
+			if (weatherDTO != null) {
+				weatherDTO.reset();
+			}
 		}
 	}
 }

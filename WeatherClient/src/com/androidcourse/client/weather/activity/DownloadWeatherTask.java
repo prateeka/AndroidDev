@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.androidcourse.client.weather.data.State;
 import com.androidcourse.client.weather.data.WeatherDTO;
-import com.androidcourse.client.weather.processor.WeatherDataProvider;
+import com.androidcourse.client.weather.processor.WeatherDataManager;
 import com.androidcourse.client.weather.processor.WeatherDays;
 
 public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> {
@@ -28,7 +28,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 	static final String CELSIUSTEMP = "celsiusTemp";
 	static final String FARENTEMP = "farenTemp";
 	
-	private final WeatherDataProvider weatherDataProvider;
+	private final WeatherDataManager weatherDataManager;
 	private static final Map<String, Integer> viewMap = new HashMap<String, Integer>();
 	
 	static {
@@ -51,10 +51,10 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 		 */}
 	
 	DownloadWeatherTask(Context context,
-			WeatherDays day, int index, WeatherDataProvider weatherDataProvider) {
+			WeatherDays day, int index, WeatherDataManager weatherDataManager) {
 		this.day = day;
 		this.index = index;
-		this.weatherDataProvider = weatherDataProvider;
+		this.weatherDataManager = weatherDataManager;
 		weatherActivity = (WeatherActivity) context;
 		initViews(context);
 	}
@@ -162,7 +162,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 			else {
 				Log.v(TAG, "weatherDTO for :" + day
 						+ " is still downloading...");
-				weatherDTO = weatherDataProvider.getWeather(day);
+				weatherDTO = weatherDataManager.getWeather(day);
 			}
 			sleepFor(INVALID_SLEEP_INTERVAL);
 		}

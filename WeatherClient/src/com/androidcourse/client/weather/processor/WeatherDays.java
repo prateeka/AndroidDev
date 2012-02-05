@@ -3,7 +3,7 @@ package com.androidcourse.client.weather.processor;
 /*
  * This class helps to provide a locking mechanism for the WeatherDTO to be
  * updated/read in thread safe manner. The reader thread is WeatherDriver or
- * Activity thread and the writer thread is the WeatherDataGenerator.
+ * Activity thread and the writer thread is the WeatherDataProvider.
  */
 public enum WeatherDays {
 	TODAY(0),

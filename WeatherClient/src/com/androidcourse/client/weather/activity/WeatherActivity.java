@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.androidcourse.client.weather.processor.WeatherDataProvider;
+import com.androidcourse.client.weather.processor.WeatherDataManager;
 import com.androidcourse.client.weather.processor.WeatherDays;
 import com.arya.androidcourse.service.http.IHttpService;
 
@@ -71,19 +71,19 @@ public class WeatherActivity extends Activity {
 	
 	protected void downloadWeatherData(String zipCode) {
 		enableZipCodeView(false);
-		WeatherDataProvider weatherDataProvider = getWeatherDataProvider(zipCode);
+		WeatherDataManager weatherDataManager = getWeatherDataProvider(zipCode);
 		weatherTasks = new DownloadWeatherTask[WeatherDays.values().length];
 		
 		for (int i = 0; i < weatherTasks.length; i++) {
 			weatherTasks[i] = new DownloadWeatherTask(
 					this,
 					WeatherDays.values()[i],
-					i, weatherDataProvider);
+					i, weatherDataManager);
 			weatherTasks[i].execute();
 		}
 	}
 	
-	private WeatherDataProvider getWeatherDataProvider(String zipCode) {
+	private WeatherDataManager getWeatherDataProvider(String zipCode) {
 		weatherDataProviderRetrievor = WeatherDataProviderRetrievor
 				.getInstance();
 		return weatherDataProviderRetrievor.getWeatherDataProvider(

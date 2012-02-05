@@ -1,10 +1,10 @@
 package com.androidcourse.client.weather.activity;
 
-import com.androidcourse.client.weather.processor.WeatherDataProvider;
+import com.androidcourse.client.weather.processor.WeatherDataManager;
 import com.arya.androidcourse.service.http.IHttpService;
 
 class WeatherDataProviderRetrievor {
-	WeatherDataProvider weatherDataProvider = null;
+	WeatherDataManager weatherDataManager = null;
 	static WeatherDataProviderRetrievor weatherDataProviderRetrievor;
 	
 	static WeatherDataProviderRetrievor getInstance() {
@@ -14,17 +14,17 @@ class WeatherDataProviderRetrievor {
 		return weatherDataProviderRetrievor;
 	}
 	
-	WeatherDataProvider getWeatherDataProvider(IHttpService httpService,
+	WeatherDataManager getWeatherDataProvider(IHttpService httpService,
 			String zipCode) {
-		if (weatherDataProvider == null) {
-			weatherDataProvider = WeatherDataProvider.getInstance(httpService);
+		if (weatherDataManager == null) {
+			weatherDataManager = WeatherDataManager.getInstance(httpService);
 		}
-		weatherDataProvider.initiateWeatherDownload(zipCode);
-		return weatherDataProvider;
+		weatherDataManager.initiateWeatherDownload(zipCode);
+		return weatherDataManager;
 	}
 	
 	void shutDownWeatherDataProvider() throws InterruptedException {
-		weatherDataProvider.shutdown();
+		weatherDataManager.shutdown();
 	}
 	
 }
