@@ -1,7 +1,5 @@
 package com.androidcourse.client.weather.processor;
 
-import org.json.JSONException;
-
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -33,13 +31,10 @@ class WeatherDataGenerator implements Runnable {
 			catch (RemoteException e) {
 				Log.e(TAG, "RemoteException encountered : " + e);
 			}
-			catch (JSONException e) {
-				Log.e(TAG, "JSONException encountered : " + e);
-			}
 		}
 	}
 	
-	private void processResponse(String response) throws JSONException {
+	private void processResponse(String response) {
 		WeatherDTO lWeatherDTO = null;
 		WeatherJSONParser jsonParser = WeatherJSONParser.getInstance();
 		if (day == WeatherDays.TODAY) {
@@ -48,7 +43,6 @@ class WeatherDataGenerator implements Runnable {
 		else {
 			lWeatherDTO = jsonParser.parseWeather(response, day);
 		}
-		
 		synchronized (day) {
 			weatherDTO = lWeatherDTO;
 		}
@@ -63,7 +57,7 @@ class WeatherDataGenerator implements Runnable {
 			url = "http://api.wunderground.com/api/b3a987070762aec0/forecast/q/"
 					+ zipCode + ".json";
 		}
-		String response = httpService.getFeed(url);
+		String response = httpService.getTextContent(url);
 		return response;
 	}
 	
@@ -71,9 +65,9 @@ class WeatherDataGenerator implements Runnable {
 		WeatherDTO lWeatherDTO = null;
 		synchronized (day) {
 			if (weatherDTO != null) {
-				lWeatherDTO = new WeatherDTO(weatherDTO);
+				lWeatherDTO = WeatherDTO.getCopy(weatherDTO);
 			} else {
-				lWeatherDTO = new WeatherDTO();
+				lWeatherDTO = WeatherDTO.getInstance();
 			}
 		}
 		return lWeatherDTO;

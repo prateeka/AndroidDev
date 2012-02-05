@@ -4,33 +4,36 @@ public class WeatherDTO {
 	String celsiusTemp;
 	String farenheitTemp;
 	String conditions;
+	State state;
 	
-	public WeatherDTO(String celsiusTemp, String farenheitTemp,
-			String conditions) {
+	private WeatherDTO(String celsiusTemp, String farenheitTemp,
+			String conditions, State state) {
 		this.celsiusTemp = celsiusTemp;
 		this.farenheitTemp = farenheitTemp;
 		this.conditions = conditions;
+		this.state = state;
 	}
 	
-	public WeatherDTO(WeatherDTO weatherDTO) {
+	private WeatherDTO(WeatherDTO weatherDTO) {
 		this(
 				weatherDTO.celsiusTemp,
 				weatherDTO.farenheitTemp,
-				weatherDTO.conditions);
+				weatherDTO.conditions,
+				weatherDTO.state);
 	}
 	
-	public WeatherDTO() {
-		this(null, null, null);
+	public static WeatherDTO getCopy(WeatherDTO weatherDTO) {
+		return new WeatherDTO(weatherDTO);
 	}
 	
-	public boolean isValid() {
-		if (isNonNullAndNonEmpty(celsiusTemp)
-				&& isNonNullAndNonEmpty(farenheitTemp)
-				&& isNonNullAndNonEmpty(conditions)) {
-			return true;
-		} else {
-			return false;
-		}
+	public static WeatherDTO getInstance() {
+		return new WeatherDTO(null, null, null, State.INACTIVE);
+	}
+	
+	public static WeatherDTO getInstance(String celsiusTemp,
+			String farenheitTemp,
+			String conditions, State state) {
+		return new WeatherDTO(celsiusTemp, farenheitTemp, conditions, state);
 	}
 	
 	protected boolean isNonNullAndNonEmpty(String param) {
@@ -52,7 +55,8 @@ public class WeatherDTO {
 	@Override
 	public String toString() {
 		return "WeatherDTO [celsiusTemp=" + celsiusTemp + ", farenheitTemp="
-				+ farenheitTemp + ", conditions=" + conditions + "]";
+				+ farenheitTemp + ", conditions=" + conditions + ", state="
+				+ state + "]";
 	}
 	
 	public String getCelsiusTemp() {
@@ -71,5 +75,10 @@ public class WeatherDTO {
 		celsiusTemp = null;
 		farenheitTemp = null;
 		conditions = null;
+		state = State.INACTIVE;
+	}
+	
+	public State getState() {
+		return state;
 	}
 }

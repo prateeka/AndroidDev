@@ -12,13 +12,19 @@ public class HttpService extends Service {
 		HttpProcessor httpProcessor = getHttpProcessor();
 		
 		@Override
-		public String getFeed(String url) throws RemoteException {
+		public String getTextContent(String url) throws RemoteException {
 			return httpProcessor.getFeed(url);
+		}
+		
+		@Override
+		public String getImageContent(String url) throws RemoteException {
+			return null;
 		}
 		
 		private HttpProcessor getHttpProcessor() {
 			return new HttpProcessor();
 		}
+		
 	};
 	
 	@Override

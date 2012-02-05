@@ -42,12 +42,22 @@ case INTERFACE_TRANSACTION:
 reply.writeString(DESCRIPTOR);
 return true;
 }
-case TRANSACTION_getFeed:
+case TRANSACTION_getTextContent:
 {
 data.enforceInterface(DESCRIPTOR);
 java.lang.String _arg0;
 _arg0 = data.readString();
-java.lang.String _result = this.getFeed(_arg0);
+java.lang.String _result = this.getTextContent(_arg0);
+reply.writeNoException();
+reply.writeString(_result);
+return true;
+}
+case TRANSACTION_getImageContent:
+{
+data.enforceInterface(DESCRIPTOR);
+java.lang.String _arg0;
+_arg0 = data.readString();
+java.lang.String _result = this.getImageContent(_arg0);
 reply.writeNoException();
 reply.writeString(_result);
 return true;
@@ -70,7 +80,7 @@ public java.lang.String getInterfaceDescriptor()
 {
 return DESCRIPTOR;
 }
-public java.lang.String getFeed(java.lang.String url) throws android.os.RemoteException
+public java.lang.String getTextContent(java.lang.String url) throws android.os.RemoteException
 {
 android.os.Parcel _data = android.os.Parcel.obtain();
 android.os.Parcel _reply = android.os.Parcel.obtain();
@@ -78,7 +88,25 @@ java.lang.String _result;
 try {
 _data.writeInterfaceToken(DESCRIPTOR);
 _data.writeString(url);
-mRemote.transact(Stub.TRANSACTION_getFeed, _data, _reply, 0);
+mRemote.transact(Stub.TRANSACTION_getTextContent, _data, _reply, 0);
+_reply.readException();
+_result = _reply.readString();
+}
+finally {
+_reply.recycle();
+_data.recycle();
+}
+return _result;
+}
+public java.lang.String getImageContent(java.lang.String url) throws android.os.RemoteException
+{
+android.os.Parcel _data = android.os.Parcel.obtain();
+android.os.Parcel _reply = android.os.Parcel.obtain();
+java.lang.String _result;
+try {
+_data.writeInterfaceToken(DESCRIPTOR);
+_data.writeString(url);
+mRemote.transact(Stub.TRANSACTION_getImageContent, _data, _reply, 0);
 _reply.readException();
 _result = _reply.readString();
 }
@@ -89,7 +117,9 @@ _data.recycle();
 return _result;
 }
 }
-static final int TRANSACTION_getFeed = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);
+static final int TRANSACTION_getTextContent = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);
+static final int TRANSACTION_getImageContent = (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);
 }
-public java.lang.String getFeed(java.lang.String url) throws android.os.RemoteException;
+public java.lang.String getTextContent(java.lang.String url) throws android.os.RemoteException;
+public java.lang.String getImageContent(java.lang.String url) throws android.os.RemoteException;
 }

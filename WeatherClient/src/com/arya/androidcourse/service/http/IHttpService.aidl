@@ -3,5 +3,7 @@ package com.arya.androidcourse.service.http;
 
 interface IHttpService
 {
-    String getFeed(String url);
+    String getTextContent(String url);
+    
+    String getImageContent(String url);
 }

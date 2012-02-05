@@ -7,6 +7,7 @@ import org.json.JSONTokener;
 
 import android.util.Log;
 
+import com.androidcourse.client.weather.data.State;
 import com.androidcourse.client.weather.data.WeatherDTO;
 
 class WeatherJSONParser {
@@ -24,14 +25,29 @@ class WeatherJSONParser {
 	}
 	
 	WeatherDTO parseWeather(String stringtoParse, WeatherDays day)
-			throws JSONException {
+	{
 		WeatherDTO lWeatherDTO = null;
-		if (day == WeatherDays.TODAY) {
-			lWeatherDTO = parseCurrentConditions(stringtoParse);
-		} else {
-			lWeatherDTO = parseForecastConditions(stringtoParse, day);
+		try {
+			if (day == WeatherDays.TODAY) {
+				lWeatherDTO = parseCurrentConditions(stringtoParse);
+			} else {
+				lWeatherDTO = parseForecastConditions(stringtoParse, day);
+			}
+		}
+		catch (JSONException e) {
+			Log.e(TAG, "JSONException encountered : " + e);
+			lWeatherDTO = setWeatherDTOInvalid();
 		}
 		return lWeatherDTO;
+	}
+	
+	protected WeatherDTO setWeatherDTOInvalid() {
+		final String Data_Not_Available = "Data not available";
+		return WeatherDTO.getInstance(
+				Data_Not_Available,
+				Data_Not_Available,
+				Data_Not_Available,
+				State.INVALID);
 	}
 	
 	protected WeatherDTO parseCurrentConditions(String stringtoParse)
@@ -50,7 +66,7 @@ class WeatherJSONParser {
 		String conditions = jsonObject.getString(CONDITIONS);
 		
 		logValues(temp_f, temp_c, conditions);
-		return new WeatherDTO(temp_c, temp_f, conditions);
+		return WeatherDTO.getInstance(temp_c, temp_f, conditions, State.READY);
 	}
 	
 	protected WeatherDTO parseForecastConditions(String stringtoParse,
@@ -78,7 +94,7 @@ class WeatherJSONParser {
 		String conditions = jsonObject.getString(CONDITIONS);
 		
 		logValues(temp_f, temp_c, conditions);
-		return new WeatherDTO(temp_c, temp_f, conditions);
+		return WeatherDTO.getInstance(temp_c, temp_f, conditions, State.READY);
 	}
 	
 	protected JSONObject getJSONObject(String stringtoParse)

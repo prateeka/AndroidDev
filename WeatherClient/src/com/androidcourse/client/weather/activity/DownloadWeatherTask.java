@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.androidcourse.client.weather.data.State;
 import com.androidcourse.client.weather.data.WeatherDTO;
 import com.androidcourse.client.weather.processor.WeatherDataProvider;
 import com.androidcourse.client.weather.processor.WeatherDays;
@@ -148,14 +149,19 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 		final int INVALID_SLEEP_INTERVAL = 2500; // millisec
 		
 		while (true) {
-			if ((weatherDTO != null) && weatherDTO.isValid()) {
-				Log.d(TAG, "weatherDTO for :" + day + " is valid as : "
+			if ((weatherDTO != null) && (weatherDTO.getState() == State.READY)) {
+				Log.d(TAG, "weatherDTO for :" + day + " is downloaded as : "
+						+ weatherDTO);
+				break;
+			} else if ((weatherDTO != null)
+					&& (weatherDTO.getState() == State.INVALID)) {
+				Log.d(TAG, "weatherDTO for :" + day + " is invalid as : "
 						+ weatherDTO);
 				break;
 			}
 			else {
 				Log.v(TAG, "weatherDTO for :" + day
-						+ " is invalid ");
+						+ " is still downloading...");
 				weatherDTO = weatherDataProvider.getWeather(day);
 			}
 			sleepFor(INVALID_SLEEP_INTERVAL);
