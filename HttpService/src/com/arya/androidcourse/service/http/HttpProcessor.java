@@ -11,29 +11,62 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
 
 public class HttpProcessor {
 	public final String TAG = "HttpProcessor";
 	
-	public String getFeed(String url) {
+	String getTextContent(String url) {
 		String feed = null;
 		HttpEntity entity = null;
 		try {
 			entity = getHttpEntity(url);
-			feed = getFeed(entity);
+			feed = processTextStream(entity);
 		}
 		catch (IOException e) {
+			Log.e(TAG, "IOException occured for url: " + url);
 			throw new RuntimeException(e);
 		}
 		catch (IllegalStateException e) {
+			Log.e(TAG, "IllegalStateException occured for url: " + url);
 			throw new RuntimeException(e);
 		}
 		return feed;
 	}
 	
-	private String getFeed(HttpEntity entity) throws IllegalStateException,
+	ParseableByteArray getImageContent(String url) {
+		Log.d(TAG, "getImageContent called for url: " + url);
+		
+		byte[] imageBytes = null;
+		HttpEntity entity = null;
+		try {
+			entity = getHttpEntity(url);
+			Log.d(TAG, "getImageContent successfully obtained entity for url: "
+					+ url);
+			imageBytes = processImageStream(entity);
+			Log.d(
+					TAG,
+					"getImageContent successfully obtained imageBytes of length : "
+							+ imageBytes.length + " for url: "
+							+ url);
+		}
+		catch (IOException e) {
+			Log.e(TAG, "IOException occured for url: " + url);
+			throw new RuntimeException(e);
+		}
+		
+		return new ParseableByteArray(imageBytes);
+	}
+	
+	private byte[] processImageStream(HttpEntity entity) throws IOException {
+		byte[] image = EntityUtils.toByteArray(entity);
+		return image;
+	}
+	
+	private String processTextStream(HttpEntity entity)
+			throws IllegalStateException,
 			IOException {
 		StringBuilder builder = new StringBuilder();
 		
@@ -49,7 +82,6 @@ public class HttpProcessor {
 	
 	private HttpEntity getHttpEntity(String url) throws IOException {
 		HttpEntity entity = null;
-		
 		HttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(url);
 		HttpResponse response = client.execute(httpGet);
@@ -66,7 +98,6 @@ public class HttpProcessor {
 					TAG,
 					"Failed to get response status=200 for URL: " + url);
 		}
-		
 		return entity;
 	}
 }

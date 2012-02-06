@@ -41,8 +41,4 @@ public class ParseableByteArray implements Parcelable
 	public void writeToParcel(Parcel out, int flags) {
 		out.writeByteArray(byteArray);
 	}
-	
-	public byte[] getByteArray() {
-		return byteArray;
-	}
 }

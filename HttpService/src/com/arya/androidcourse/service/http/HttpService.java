@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 
 public class HttpService extends Service {
 	public final String TAG = "HttpService";
@@ -13,12 +14,15 @@ public class HttpService extends Service {
 		
 		@Override
 		public String getTextContent(String url) throws RemoteException {
-			return httpProcessor.getFeed(url);
+			Log.d(TAG, "entering into getTextContent for url " + url);
+			return httpProcessor.getTextContent(url);
 		}
 		
 		@Override
-		public String getImageContent(String url) throws RemoteException {
-			return null;
+		public ParseableByteArray getImageContent(String url)
+				throws RemoteException {
+			Log.d(TAG, "entering into getImageContent for url " + url);
+			return httpProcessor.getImageContent(url);
 		}
 		
 		private HttpProcessor getHttpProcessor() {

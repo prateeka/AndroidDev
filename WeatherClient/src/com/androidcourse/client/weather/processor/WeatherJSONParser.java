@@ -73,7 +73,7 @@ class WeatherJSONParser {
 				temp_c,
 				temp_f,
 				conditions,
-				State.READY,
+				State.TEXT_DOWNLOADED,
 				imageURL,
 				null);
 	}

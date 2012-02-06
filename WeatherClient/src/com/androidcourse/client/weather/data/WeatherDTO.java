@@ -93,4 +93,11 @@ public class WeatherDTO {
 				+ state + ", iconURL=" + iconURL + ", bitmap=" + bitmap + "]";
 	}
 	
+	public void setBitmap(Bitmap bitmap) {
+		this.bitmap = bitmap;
+	}
+	
+	public void setState(State state) {
+		this.state = state;
+	}
 }
