@@ -53,17 +53,6 @@ public class WeatherDTO {
 				bitmap);
 	}
 	
-	public static WeatherDTO getInstance(String celsiusTemp,
-			String farenheitTemp,
-			String conditions,
-			State state) {
-		return getInstance(celsiusTemp,
-				farenheitTemp,
-				conditions,
-				state,
-				null, null);
-	}
-	
 	public String getCelsiusTemp() {
 		return celsiusTemp;
 	}

@@ -47,7 +47,8 @@ class WeatherJSONParser {
 				Data_Not_Available,
 				Data_Not_Available,
 				Data_Not_Available,
-				State.INVALID);
+				State.INVALID,
+				null, null);
 	}
 	
 	protected WeatherDTO parseCurrentConditions(String stringtoParse)
@@ -59,14 +60,22 @@ class WeatherJSONParser {
 		final String TEMP_F = "temp_f";
 		final String TEMP_C = "temp_c";
 		final String CONDITIONS = "weather";
+		final String IMAGE_URL = "icon_url";
 		
 		jsonObject = jsonObject.getJSONObject(CURRENT_OBSERVATION);
 		String temp_f = jsonObject.getString(TEMP_F);
 		String temp_c = jsonObject.getString(TEMP_C);
 		String conditions = jsonObject.getString(CONDITIONS);
+		String imageURL = jsonObject.getString(IMAGE_URL);
 		
-		logValues(temp_f, temp_c, conditions);
-		return WeatherDTO.getInstance(temp_c, temp_f, conditions, State.READY);
+		logValues(temp_f, temp_c, conditions, imageURL);
+		return WeatherDTO.getInstance(
+				temp_c,
+				temp_f,
+				conditions,
+				State.READY,
+				imageURL,
+				null);
 	}
 	
 	protected WeatherDTO parseForecastConditions(String stringtoParse,
@@ -93,8 +102,14 @@ class WeatherJSONParser {
 		String temp_c = cjsonObject.getString(CELSIUS);
 		String conditions = jsonObject.getString(CONDITIONS);
 		
-		logValues(temp_f, temp_c, conditions);
-		return WeatherDTO.getInstance(temp_c, temp_f, conditions, State.READY);
+		logValues(temp_f, temp_c, conditions, null);
+		return WeatherDTO.getInstance(
+				temp_c,
+				temp_f,
+				conditions,
+				State.READY,
+				null,
+				null);
 	}
 	
 	protected JSONObject getJSONObject(String stringtoParse)
@@ -104,9 +119,11 @@ class WeatherJSONParser {
 				.nextValue();
 	}
 	
-	protected void logValues(String temp_f, String temp_c, String conditions) {
+	protected void logValues(String temp_f, String temp_c, String conditions,
+			String imageURL) {
 		Log.d(TAG, "value for temp_f is " + temp_f);
 		Log.d(TAG, "value for temp_c is " + temp_c);
 		Log.d(TAG, "value for conditions is " + conditions);
+		Log.d(TAG, "value for imageURL is " + imageURL);
 	}
 }
