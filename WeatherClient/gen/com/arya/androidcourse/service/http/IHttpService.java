@@ -57,9 +57,15 @@ case TRANSACTION_getImageContent:
 data.enforceInterface(DESCRIPTOR);
 java.lang.String _arg0;
 _arg0 = data.readString();
-java.lang.String _result = this.getImageContent(_arg0);
+com.arya.androidcourse.service.http.ParseableByteArray _result = this.getImageContent(_arg0);
 reply.writeNoException();
-reply.writeString(_result);
+if ((_result!=null)) {
+reply.writeInt(1);
+_result.writeToParcel(reply, android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE);
+}
+else {
+reply.writeInt(0);
+}
 return true;
 }
 }
@@ -98,17 +104,22 @@ _data.recycle();
 }
 return _result;
 }
-public java.lang.String getImageContent(java.lang.String url) throws android.os.RemoteException
+public com.arya.androidcourse.service.http.ParseableByteArray getImageContent(java.lang.String url) throws android.os.RemoteException
 {
 android.os.Parcel _data = android.os.Parcel.obtain();
 android.os.Parcel _reply = android.os.Parcel.obtain();
-java.lang.String _result;
+com.arya.androidcourse.service.http.ParseableByteArray _result;
 try {
 _data.writeInterfaceToken(DESCRIPTOR);
 _data.writeString(url);
 mRemote.transact(Stub.TRANSACTION_getImageContent, _data, _reply, 0);
 _reply.readException();
-_result = _reply.readString();
+if ((0!=_reply.readInt())) {
+_result = com.arya.androidcourse.service.http.ParseableByteArray.CREATOR.createFromParcel(_reply);
+}
+else {
+_result = null;
+}
 }
 finally {
 _reply.recycle();
@@ -121,5 +132,5 @@ static final int TRANSACTION_getTextContent = (android.os.IBinder.FIRST_CALL_TRA
 static final int TRANSACTION_getImageContent = (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);
 }
 public java.lang.String getTextContent(java.lang.String url) throws android.os.RemoteException;
-public java.lang.String getImageContent(java.lang.String url) throws android.os.RemoteException;
+public com.arya.androidcourse.service.http.ParseableByteArray getImageContent(java.lang.String url) throws android.os.RemoteException;
 }

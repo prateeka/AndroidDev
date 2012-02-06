@@ -2,6 +2,7 @@ package com.androidcourse.client.weather.processor;
 
 import android.os.RemoteException;
 
+import com.androidcourse.client.weather.data.State;
 import com.androidcourse.client.weather.data.WeatherDTO;
 import com.arya.androidcourse.service.http.IHttpService;
 
@@ -17,18 +18,31 @@ class WeatherDataGenerator {
 	}
 	
 	WeatherDTO getWeatherDTO() throws RemoteException {
-		String response = downloadWeatherUsingHTTP();
+		WeatherDTO weatherDTO = downloadTempAndConditions();
+		if (weatherDTO.getState() == State.DOWNLOADING) {
+			downloadConditionsImage(weatherDTO);
+		}
+		return weatherDTO;
+	}
+	
+	protected WeatherDTO downloadConditionsImage(WeatherDTO weatherDTO) {
+		// String response = downloadWeatherUsingHTTP();
+		return null;
+	}
+	
+	protected WeatherDTO downloadTempAndConditions() throws RemoteException {
+		String url = generateURLForTempAndConditions();
+		String response = downloadData(url);
 		WeatherDTO weatherDTO = processResponse(response);
 		return weatherDTO;
 	}
 	
-	private String downloadWeatherUsingHTTP() throws RemoteException {
-		String url = generateURL();
+	private String downloadData(String url) throws RemoteException {
 		String response = httpService.getTextContent(url);
 		return response;
 	}
 	
-	protected String generateURL() {
+	protected String generateURLForTempAndConditions() {
 		String url;
 		if (day == WeatherDays.TODAY) {
 			url = "http://api.wunderground.com/api/b3a987070762aec0/conditions/q/"

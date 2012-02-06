@@ -146,7 +146,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Integer, WeatherDTO> 
 	
 	private WeatherDTO downloadWeatherData() {
 		WeatherDTO weatherDTO = null;
-		final int INVALID_SLEEP_INTERVAL = 2500; // millisec
+		final int INVALID_SLEEP_INTERVAL = 1500; // millisec
 		
 		while (true) {
 			if ((weatherDTO != null) && (weatherDTO.getState() == State.READY)) {
