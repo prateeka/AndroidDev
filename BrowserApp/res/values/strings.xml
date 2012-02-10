@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, BrowserAppActivity!</string>
+    <string name="app_name">BrowserApp</string>
+    <string name="goButton">Go</string>
+    <string name="actionType">actionType</string>
+    <string name="displaySource">displaySource</string>
+
+</resources>
