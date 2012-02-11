@@ -18,8 +18,10 @@ public class BrowserAppActivity extends Activity {
 	private final int TOAST_DURATION = 10;
 	private final int ID_DISPLAY_SOURCE_COOKIE = 1;
 	
-	WebView mWebView;
-	EditText urlText;
+	private WebView mWebView;
+	private EditText urlText;
+	
+	private String url;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -28,7 +30,8 @@ public class BrowserAppActivity extends Activity {
 		setContentView(R.layout.main);
 		initViews();
 		setWebViewConfig();
-		populateWebView(DEFAULT_URL);
+		url = DEFAULT_URL;
+		populateWebView(url);
 	}
 	
 	@Override
@@ -54,7 +57,7 @@ public class BrowserAppActivity extends Activity {
 	}
 	
 	public void goToLink(View view) {
-		String url = urlText.getText().toString();
+		url = urlText.getText().toString();
 		populateWebView(url);
 	}
 	
@@ -71,7 +74,7 @@ public class BrowserAppActivity extends Activity {
 			Intent intent = new Intent(
 					this,
 					DisplaySourceOrCookieActivity.class);
-			addDataToIntent(
+			addActionAndURLToIntent(
 					intent,
 					getResources().getString(R.string.displaySource));
 			this.startActivityForResult(intent, ID_DISPLAY_SOURCE_COOKIE);
@@ -80,8 +83,10 @@ public class BrowserAppActivity extends Activity {
 		return handled;
 	}
 	
-	private void addDataToIntent(Intent intent, String action) {
+	private void addActionAndURLToIntent(Intent intent, String action) {
 		intent.putExtra(getResources().getString(R.string.actionType),
 				action);
+		intent.putExtra(getResources().getString(R.string.url),
+				url);
 	}
 }

@@ -1,20 +1,34 @@
 package com.arya.browser.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
 public class DisplaySourceOrCookieActivity extends Activity {
-	private TextView display;
+	String url;
+	String action;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.displaysourcecookie);
-		initViews();
+		populateTextView();
 	}
 	
-	protected void initViews() {
-		display = (TextView) findViewById(R.id.textView1);
+	private void populateTextView() {
+		String[] params = retrieveActionAndURL();
+		HTTPTask task = new HTTPTask(this);
+		task.execute(params);
+	}
+	
+	private String[] retrieveActionAndURL() {
+		String[] strArray = new String[2];
+		Intent intent = getIntent();
+		strArray[0] = intent.getStringExtra(getResources().getString(
+				R.string.actionType));
+		strArray[1] = intent.getStringExtra(getResources().getString(
+				R.string.url));
+		
+		return strArray;
 	}
 }

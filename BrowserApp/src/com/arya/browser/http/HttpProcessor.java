@@ -16,8 +16,19 @@ import android.util.Log;
 
 public class HttpProcessor {
 	public final String TAG = "HttpProcessor";
+	private static HttpProcessor thisInstance;
 	
-	public String getSource(String url) {
+	private HttpProcessor() {
+	}
+	
+	public static HttpProcessor getInstance() {
+		if (thisInstance == null) {
+			thisInstance = new HttpProcessor();
+		}
+		return thisInstance;
+	}
+	
+	public String getPageSource(String url) {
 		String feed = null;
 		HttpEntity entity = null;
 		try {
