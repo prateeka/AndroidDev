@@ -71,9 +71,14 @@ public class BrowserAppActivity extends Activity {
 				TOAST_DURATION)
 				.show();
 		if (item.getItemId() == R.id.menu_ViewSource) {
-			Intent intent = new Intent(
-					this,
-					DisplaySourceOrCookieActivity.class);
+			Intent intent = getIntentForNextActivity(DisplaySourceOrCookieActivity.class);
+			addActionAndURLToIntent(
+					intent,
+					getResources().getString(R.string.displaySource));
+			this.startActivityForResult(intent, ID_DISPLAY_SOURCE_COOKIE);
+			handled = true;
+		} else if (item.getItemId() == R.id.menu_ViewCookie) {
+			Intent intent = getIntentForNextActivity(DisplaySourceOrCookieActivity.class);
 			addActionAndURLToIntent(
 					intent,
 					getResources().getString(R.string.displaySource));
@@ -81,6 +86,13 @@ public class BrowserAppActivity extends Activity {
 			handled = true;
 		}
 		return handled;
+	}
+	
+	protected Intent getIntentForNextActivity(
+			Class<DisplaySourceOrCookieActivity> classActivity) {
+		return new Intent(
+				this,
+				classActivity);
 	}
 	
 	private void addActionAndURLToIntent(Intent intent, String action) {

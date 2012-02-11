@@ -17,6 +17,7 @@ public final class R {
         public static final int SCROLLER_ID=0x7f060000;
         public static final int editText1=0x7f060003;
         public static final int menuGroup_Main=0x7f060004;
+        public static final int menu_ViewCookie=0x7f060006;
         public static final int menu_ViewSource=0x7f060005;
         public static final int textView1=0x7f060001;
         public static final int webview=0x7f060002;
@@ -31,6 +32,7 @@ public final class R {
     public static final class string {
         public static final int actionType=0x7f040003;
         public static final int app_name=0x7f040001;
+        public static final int displayCookie=0x7f040006;
         public static final int displaySource=0x7f040004;
         public static final int goButton=0x7f040002;
         public static final int hello=0x7f040000;

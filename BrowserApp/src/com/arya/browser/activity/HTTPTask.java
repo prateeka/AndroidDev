@@ -10,12 +10,11 @@ import com.arya.browser.http.HttpProcessor;
 public class HTTPTask extends AsyncTask<String, Void, String> {
 	private static final String TAG = "DownloadWeatherTask";
 	private TextView displayTextView;
-	private final String downloadSource;
+	private final Activity activity;
 	
 	HTTPTask(Activity activity) {
 		initViews(activity);
-		downloadSource = activity.getResources().getString(
-				R.string.displaySource);
+		this.activity = activity;
 	}
 	
 	protected void initViews(Activity activity) {
@@ -29,11 +28,19 @@ public class HTTPTask extends AsyncTask<String, Void, String> {
 	
 	@Override
 	protected String doInBackground(String... str) {
+		String displaySource = activity.getResources().getString(
+				R.string.displaySource);
+		String displayCookie = activity.getResources().getString(
+				R.string.displayCookie);
+		
 		String action = str[0];
 		String url = str[1];
+		
 		Log.d(TAG, "initiating downloading data for url  " + url);
-		if (action.equals(downloadSource)) {
+		if (action.equals(displaySource)) {
 			return downloadPageSource(url);
+		} else if (action.equals(displayCookie)) {
+			return downloadPageCookies(url);
 		}
 		return null;
 	}
@@ -68,9 +75,18 @@ public class HTTPTask extends AsyncTask<String, Void, String> {
 	}
 	
 	private String downloadPageSource(String url) {
-		HttpProcessor httpProcessor = HttpProcessor.getInstance();
+		HttpProcessor httpProcessor = getHttpProcessor();
 		String strToDisplay = httpProcessor.getPageSource(url);
 		return strToDisplay;
+	}
+	
+	private String downloadPageCookies(String url) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	protected HttpProcessor getHttpProcessor() {
+		return HttpProcessor.getInstance();
 	}
 	
 }

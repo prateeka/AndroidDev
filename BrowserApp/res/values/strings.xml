@@ -7,5 +7,6 @@
     <string name="actionType">actionType</string>
     <string name="displaySource">displaySource</string>
     <string name="url">url</string>
+    <string name="displayCookie">displayCookie</string>
 
 </resources>
