@@ -5,7 +5,9 @@ import android.os.Parcelable;
 
 public class ParseableByteArray implements Parcelable
 {
-	private byte[] byteArray = null;
+	private int byteArrayLength;
+	private byte[] byteArray;
+	
 	public static final Parcelable.Creator<ParseableByteArray> CREATOR =
 			new Parcelable.Creator<ParseableByteArray>()
 			{
@@ -29,6 +31,8 @@ public class ParseableByteArray implements Parcelable
 	}
 	
 	private void readFromParcel(Parcel in) {
+		byteArrayLength = in.readInt();
+		byteArray = new byte[byteArrayLength];
 		in.readByteArray(byteArray);
 	}
 	
@@ -39,10 +43,15 @@ public class ParseableByteArray implements Parcelable
 	
 	@Override
 	public void writeToParcel(Parcel out, int flags) {
+		out.writeInt(byteArray.length);
 		out.writeByteArray(byteArray);
 	}
 	
 	public byte[] getByteArray() {
 		return byteArray;
+	}
+	
+	public void setByteArray(byte[] byteArray) {
+		this.byteArray = byteArray;
 	}
 }

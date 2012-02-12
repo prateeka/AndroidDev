@@ -13,9 +13,10 @@
         <EditText
             android:id="@+id/zipCodeText"
             android:layout_width="200dp"
-            android:layout_height="wrap_content" 
-            android:maxLength="5"
-            android:inputType="number">
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="5" >
+
             <requestFocus />
         </EditText>
 
@@ -23,8 +24,8 @@
             android:id="@+id/goButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/buttonLabel"
-     		android:onClick="onClickGetWeather" />
+            android:onClick="onClickGetWeather"
+            android:text="@string/buttonLabel" />
     </LinearLayout>
 
     <TextView
@@ -39,6 +40,11 @@
 
     <TextView
         android:id="@+id/farenTemp0"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/conditionImage0"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
@@ -57,6 +63,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
+    <ImageView
+        android:id="@+id/conditionImage1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/conditions2"
         android:layout_width="fill_parent"
@@ -72,6 +83,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
+    <ImageView
+        android:id="@+id/conditionImage2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/conditions3"
         android:layout_width="fill_parent"
@@ -84,6 +100,11 @@
 
     <TextView
         android:id="@+id/farenTemp3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/conditionImage3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
