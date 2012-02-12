@@ -10,6 +10,14 @@ import com.androidcourse.client.weather.data.WeatherDTO;
 import com.arya.androidcourse.service.http.IHttpService;
 import com.arya.androidcourse.service.http.ParseableByteArray;
 
+/*
+ * This class is responsible for generating the WeatherDTO by talking to:
+ * 1. Talking to HttpService to retrieve the text content (Temperature and
+ * conditions) for Current and Forecast.
+ * 2. Talking to JSONParser to parse the HTTP JSON response and retrieve the
+ * text content (Temperature and conditions) for Current and Forecast.
+ * 3. Talking to HttpService to retrieve the Images for Current and Forecast.
+ */
 class WeatherDataGenerator {
 	
 	final IHttpService httpService;
@@ -57,18 +65,17 @@ class WeatherDataGenerator {
 	
 	protected WeatherDTO downloadTempAndConditions() throws RemoteException {
 		String url = generateURLForTempAndConditions();
-		String response = downloadData(url);
-		WeatherDTO weatherDTO = processResponse(response);
+		String response = downloadTextData(url);
+		WeatherDTO weatherDTO = processJSONResponse(response);
 		return weatherDTO;
 	}
 	
-	private String downloadData(String url) throws RemoteException {
+	private String downloadTextData(String url) throws RemoteException {
 		String response = httpService.getTextContent(url);
 		return response;
 	}
 	
 	private ParseableByteArray downloadImage(String url) throws RemoteException {
-		Log.d(TAG, "beginning downloadImage for url : " + url);
 		ParseableByteArray parByteArray = httpService.getImageContent(url);
 		Log.d(TAG, "returning from downloadImage for url : " + url);
 		return parByteArray;
@@ -86,7 +93,7 @@ class WeatherDataGenerator {
 		return url;
 	}
 	
-	private WeatherDTO processResponse(String response) {
+	private WeatherDTO processJSONResponse(String response) {
 		WeatherDTO lWeatherDTO = null;
 		WeatherJSONParser jsonParser = WeatherJSONParser.getInstance();
 		if (day == WeatherDays.TODAY) {

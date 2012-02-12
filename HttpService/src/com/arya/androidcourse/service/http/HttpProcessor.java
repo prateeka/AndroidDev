@@ -18,7 +18,7 @@ import android.util.Log;
 public class HttpProcessor {
 	public final String TAG = "HttpProcessor";
 	
-	String getTextContent(String url) {
+	protected String getTextContent(String url) {
 		String feed = null;
 		HttpEntity entity = null;
 		try {
@@ -36,7 +36,7 @@ public class HttpProcessor {
 		return feed;
 	}
 	
-	ParseableByteArray getImageContent(String url) {
+	protected ParseableByteArray getImageContent(String url) {
 		Log.d(TAG, "getImageContent called for url: " + url);
 		
 		byte[] imageBytes = null;
