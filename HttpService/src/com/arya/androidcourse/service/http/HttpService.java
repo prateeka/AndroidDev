@@ -6,8 +6,11 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.arya.androidcourse.service.http.processor.HttpProcessor;
+import com.arya.androidcourse.service.http.processor.HttpProcessorCache;
+
 public class HttpService extends Service {
-	public final String TAG = "HttpService";
+	private final String TAG = "HttpService";
 	
 	private final IHttpService.Stub mBinder = new IHttpService.Stub() {
 		HttpProcessor httpProcessor = getHttpProcessor();
@@ -26,7 +29,7 @@ public class HttpService extends Service {
 		}
 		
 		private HttpProcessor getHttpProcessor() {
-			return new HttpProcessor();
+			return HttpProcessorCache.getInstance();
 		}
 		
 	};
