@@ -9,9 +9,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.arya.browser.http.HelloWebViewClient;
+
+/*
+ * This is the activity displaying the webview for a URL.
+ * When the menu is selected for either displaying source or cookie, new
+ * activity "DisplaySourceOrCookieActivity" is started.
+ */
 
 public class BrowserAppActivity extends Activity {
 	private final String DEFAULT_URL = "http://www.usf.edu";
@@ -65,12 +70,12 @@ public class BrowserAppActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		boolean handled = false;
-		Toast.makeText(
-				this,
-				"onOptionsItemSelected selected ",
-				TOAST_DURATION)
-				.show();
-		if (item.getItemId() == R.id.menu_ViewSource) {
+		/*-		Toast.makeText(
+		 this,
+		 "onOptionsItemSelected selected ",
+		 TOAST_DURATION)
+		 .show();
+		 */if (item.getItemId() == R.id.menu_ViewSource) {
 			Intent intent = getIntentForNextActivity(DisplaySourceOrCookieActivity.class);
 			addActionAndURLToIntent(
 					intent,
@@ -81,7 +86,7 @@ public class BrowserAppActivity extends Activity {
 			Intent intent = getIntentForNextActivity(DisplaySourceOrCookieActivity.class);
 			addActionAndURLToIntent(
 					intent,
-					getResources().getString(R.string.displaySource));
+					getResources().getString(R.string.displayCookie));
 			this.startActivityForResult(intent, ID_DISPLAY_SOURCE_COOKIE);
 			handled = true;
 		}

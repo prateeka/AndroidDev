@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+/*
+ * This activity uses an AsyncTask HTTPTask to display URL's source or URL's
+ * cookie.
+ */
+
 public class DisplaySourceOrCookieActivity extends Activity {
 	String url;
 	String action;
