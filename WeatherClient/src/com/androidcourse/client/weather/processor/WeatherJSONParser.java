@@ -42,7 +42,7 @@ class WeatherJSONParser {
 	}
 	
 	private WeatherDTO setWeatherDTOInvalid() {
-		final String Data_Not_Available = "Data not available";
+		final String Data_Not_Available = "Not available";
 		return WeatherDTO.getInstance(
 				Data_Not_Available,
 				Data_Not_Available,

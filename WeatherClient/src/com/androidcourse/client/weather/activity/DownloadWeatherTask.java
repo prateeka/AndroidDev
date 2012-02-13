@@ -135,7 +135,7 @@ public class DownloadWeatherTask extends AsyncTask<String, Void, WeatherDTO> {
 	}
 	
 	private void displayErrorMsg() {
-		final String ERROR_MSG = "Problem downloading weather data. Please try later";
+		final String ERROR_MSG = "Error downloading";
 		setTextMsg(conditionsText, ERROR_MSG);
 		setTextMsg(celsiusTempText, ERROR_MSG);
 		setTextMsg(farenTempText, ERROR_MSG);
