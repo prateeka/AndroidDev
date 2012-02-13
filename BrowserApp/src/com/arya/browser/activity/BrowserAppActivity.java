@@ -10,7 +10,6 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
 
-import com.arya.browser.http.HelloWebViewClient;
 
 /*
  * This is the activity displaying the webview for a URL.

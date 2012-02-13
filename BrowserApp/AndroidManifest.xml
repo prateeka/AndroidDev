@@ -11,15 +11,18 @@
         android:label="@string/app_name" >
         <activity
             android:name=".BrowserAppActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/SampleTextTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity><activity android:name=".DisplaySourceOrCookieActivity" >
         </activity>
-
+        <activity
+            android:name=".DisplaySourceOrCookieActivity"
+            android:theme="@style/SampleTextTheme" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
