@@ -6,10 +6,10 @@ package com.androidcourse.client.weather.processor;
  * Activity thread and the writer thread is the WeatherDataProvider.
  */
 public enum WeatherDays {
-	TODAY(0)/*-,
-			TODAY_PLUS_1(1),
-			TODAY_PLUS_2(2),
-			TODAY_PLUS_3(3)*/;
+	TODAY(0),
+	TODAY_PLUS_1(1),
+	TODAY_PLUS_2(2),
+	TODAY_PLUS_3(3);
 	
 	final int idx;
 	

@@ -41,7 +41,7 @@ class WeatherJSONParser {
 		return lWeatherDTO;
 	}
 	
-	protected WeatherDTO setWeatherDTOInvalid() {
+	private WeatherDTO setWeatherDTOInvalid() {
 		final String Data_Not_Available = "Data not available";
 		return WeatherDTO.getInstance(
 				Data_Not_Available,
@@ -51,7 +51,7 @@ class WeatherJSONParser {
 				null, null);
 	}
 	
-	protected WeatherDTO parseCurrentConditions(String stringtoParse)
+	private WeatherDTO parseCurrentConditions(String stringtoParse)
 			throws JSONException {
 		
 		JSONObject jsonObject = getJSONObject(stringtoParse);
@@ -78,7 +78,7 @@ class WeatherJSONParser {
 				null);
 	}
 	
-	protected WeatherDTO parseForecastConditions(String stringtoParse,
+	private WeatherDTO parseForecastConditions(String stringtoParse,
 			WeatherDays day)
 			throws JSONException {
 		JSONObject jsonObject = getJSONObject(stringtoParse);
@@ -90,36 +90,38 @@ class WeatherJSONParser {
 		final String FAHRENHEIT = "fahrenheit";
 		final String CELSIUS = "celsius";
 		final String CONDITIONS = "conditions";
+		final String IMAGE_URL = "icon_url";
 		
 		jsonObject = jsonObject.getJSONObject(FORECAST);
 		jsonObject = jsonObject.getJSONObject(SIMPLEFORECAST);
 		JSONArray jsonArray = jsonObject.getJSONArray(FORECASTDAY);
 		Integer idx = day.getRelativeDay();
 		jsonObject = jsonArray.getJSONObject(idx);
-		JSONObject cjsonObject = jsonObject.getJSONObject(HIGH);
+		String conditions = jsonObject.getString(CONDITIONS);
+		String imageURL = jsonObject.getString(IMAGE_URL);
 		
+		JSONObject cjsonObject = jsonObject.getJSONObject(HIGH);
 		String temp_f = cjsonObject.getString(FAHRENHEIT);
 		String temp_c = cjsonObject.getString(CELSIUS);
-		String conditions = jsonObject.getString(CONDITIONS);
 		
-		logValues(temp_f, temp_c, conditions, null);
+		logValues(temp_f, temp_c, conditions, imageURL);
 		return WeatherDTO.getInstance(
 				temp_c,
 				temp_f,
 				conditions,
-				State.READY,
-				null,
+				State.TEXT_DOWNLOADED,
+				imageURL,
 				null);
 	}
 	
-	protected JSONObject getJSONObject(String stringtoParse)
+	private JSONObject getJSONObject(String stringtoParse)
 			throws JSONException {
 		
 		return (JSONObject) new JSONTokener(stringtoParse)
 				.nextValue();
 	}
 	
-	protected void logValues(String temp_f, String temp_c, String conditions,
+	private void logValues(String temp_f, String temp_c, String conditions,
 			String imageURL) {
 		Log.d(TAG, "value for temp_f is " + temp_f);
 		Log.d(TAG, "value for temp_c is " + temp_c);

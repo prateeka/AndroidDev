@@ -7,7 +7,7 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.arya.androidcourse.service.http.processor.HttpProcessor;
-import com.arya.androidcourse.service.http.processor.HttpProcessorCache;
+import com.arya.androidcourse.service.http.processor.cache.HttpProcessorCache;
 
 public class HttpService extends Service {
 	private final String TAG = "HttpService";

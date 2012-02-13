@@ -96,12 +96,7 @@ class WeatherDataGenerator {
 	private WeatherDTO processJSONResponse(String response) {
 		WeatherDTO lWeatherDTO = null;
 		WeatherJSONParser jsonParser = WeatherJSONParser.getInstance();
-		if (day == WeatherDays.TODAY) {
-			lWeatherDTO = jsonParser.parseWeather(response, day);
-		}
-		else {
-			lWeatherDTO = jsonParser.parseWeather(response, day);
-		}
+		lWeatherDTO = jsonParser.parseWeather(response, day);
 		return lWeatherDTO;
 	}
 	
