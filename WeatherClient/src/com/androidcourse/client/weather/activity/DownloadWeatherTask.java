@@ -25,9 +25,12 @@ public class DownloadWeatherTask extends AsyncTask<String, Void, WeatherDTO> {
 	private TextView celsiusTempText;
 	private TextView farenTempText;
 	private ImageView conditionsImage;
+	private TextView dateText;
 	
 	final WeatherDays day;
 	final Integer index;
+	
+	static final String DATE = "date";
 	static final String CONDITIONS = "conditions";
 	static final String CELSIUSTEMP = "celsiusTemp";
 	static final String FARENTEMP = "farenTemp";
@@ -37,21 +40,26 @@ public class DownloadWeatherTask extends AsyncTask<String, Void, WeatherDTO> {
 	private static final Map<String, Integer> viewMap = new HashMap<String, Integer>();
 	
 	static {
+		
+		viewMap.put(DATE + "0", R.id.date0);
 		viewMap.put(CONDITIONS + "0", R.id.conditions0);
 		viewMap.put(CELSIUSTEMP + "0", R.id.celsiusTemp0);
 		viewMap.put(FARENTEMP + "0", R.id.farenTemp0);
 		viewMap.put(CONDITIONSIMAGE + "0", R.id.conditionImage0);
 		
+		viewMap.put(DATE + "1", R.id.date1);
 		viewMap.put(CONDITIONS + "1", R.id.conditions1);
 		viewMap.put(CELSIUSTEMP + "1", R.id.celsiusTemp1);
 		viewMap.put(FARENTEMP + "1", R.id.farenTemp1);
 		viewMap.put(CONDITIONSIMAGE + "1", R.id.conditionImage1);
 		
+		viewMap.put(DATE + "2", R.id.date2);
 		viewMap.put(CONDITIONS + "2", R.id.conditions2);
 		viewMap.put(CELSIUSTEMP + "2", R.id.celsiusTemp2);
 		viewMap.put(FARENTEMP + "2", R.id.farenTemp2);
 		viewMap.put(CONDITIONSIMAGE + "2", R.id.conditionImage2);
 		
+		viewMap.put(DATE + "3", R.id.date3);
 		viewMap.put(CONDITIONS + "3", R.id.conditions3);
 		viewMap.put(CELSIUSTEMP + "3", R.id.celsiusTemp3);
 		viewMap.put(FARENTEMP + "3", R.id.farenTemp3);
@@ -83,15 +91,13 @@ public class DownloadWeatherTask extends AsyncTask<String, Void, WeatherDTO> {
 	}
 	
 	void initViews(Context context) {
+		dateText = (TextView)
+				((Activity) context).findViewById(viewMap.get(DATE
+						+ index));
+		
 		conditionsText = (TextView)
 				((Activity) context).findViewById(viewMap.get(CONDITIONS
 						+ index));
-		/*-		Log.d(TAG, "this:conditionsText for day  " + day + " is " + this + ":"
-		 + conditionsText);
-		 Log.d(TAG, "this:celsiusTempText for day " + day + " is " + this + ":"
-		 + celsiusTempText);Log.d(TAG, "this:farenTempTextfor day " + day + " is " + this + ":"
-		 + farenTempText);
-		 */
 		celsiusTempText = (TextView)
 				((Activity) context).findViewById(viewMap.get(CELSIUSTEMP
 						+ index));
@@ -136,10 +142,16 @@ public class DownloadWeatherTask extends AsyncTask<String, Void, WeatherDTO> {
 	}
 	
 	private void displayDownloadingMsg() {
-		final String DOWNLOADING_DATA = "Downloading Data";
+		final String DOWNLOADING_DATA = "Downloading";
+		displayDate();
 		setTextMsg(conditionsText, DOWNLOADING_DATA);
 		setTextMsg(celsiusTempText, DOWNLOADING_DATA);
 		setTextMsg(farenTempText, DOWNLOADING_DATA);
+		setImage(conditionsImage, null);
+	}
+	
+	private void displayDate() {
+		setTextMsg(dateText, day.getDate());
 	}
 	
 	void displayWeatherData() {
@@ -152,7 +164,11 @@ public class DownloadWeatherTask extends AsyncTask<String, Void, WeatherDTO> {
 	}
 	
 	private void setImage(ImageView view, Bitmap bitmap) {
-		view.setImageBitmap(bitmap);
+		if (bitmap == null) {
+			view.setImageDrawable(null);
+		} else {
+			view.setImageBitmap(bitmap);
+		}
 	}
 	
 	private void setTextMsg(TextView view, String msg) {

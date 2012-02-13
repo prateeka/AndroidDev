@@ -2,5 +2,9 @@
 <resources>
     <string name="app_name">Weather</string>
     <string name="buttonLabel">Go</string>
+    <string name="conditionLabel">Condition:</string>
+    <string name="tempHighCelsiusLabel">High Temp in Celsius:</string>
+    <string name="tempHighFarenheitLabel">High Temp in Farenheit:</string>
+    <string name="dateLabel">Date:</string>
 
 </resources>

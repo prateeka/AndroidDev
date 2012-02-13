@@ -12,8 +12,8 @@ public class WeatherDTO {
 	
 	private WeatherDTO(String celsiusTemp, String farenheitTemp,
 			String conditions, State state, String iconURL, Bitmap bitmap) {
-		this.celsiusTemp = celsiusTemp;
-		this.farenheitTemp = farenheitTemp;
+		setCelsiusTemp(celsiusTemp);
+		setFarenheitTemp(farenheitTemp);
 		this.conditions = conditions;
 		this.state = state;
 		this.iconURL = iconURL;
@@ -99,5 +99,14 @@ public class WeatherDTO {
 	
 	public void setState(State state) {
 		this.state = state;
+	}
+	
+	public void setCelsiusTemp(String celsiusTemp) {
+		
+		this.celsiusTemp = celsiusTemp;
+	}
+	
+	public void setFarenheitTemp(String farenheitTemp) {
+		this.farenheitTemp = farenheitTemp;
 	}
 }
