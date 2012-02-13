@@ -15,6 +15,7 @@ import com.arya.androidcourse.service.http.processor.HttpProcessor;
  * cache. If the content does not exist in cache, then it obtains a lock from
  * URLLockProvider and then makes a request to download the content(either text
  * or image), populates its cache with the response and then releases the lock.
+ * The locks and cache aid it to make only one request for one distinct URL.
  */
 
 public class HttpProcessorCache extends HttpProcessor {

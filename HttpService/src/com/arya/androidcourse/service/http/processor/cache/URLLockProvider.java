@@ -5,6 +5,10 @@ import java.util.Map;
 
 import android.util.Log;
 
+/*
+ * This class provides locks for the HTTPProcessorCache to download content and
+ * maintain cache
+ */
 class URLLockProvider {
 	
 	private final String TAG = "URLLockProvider";

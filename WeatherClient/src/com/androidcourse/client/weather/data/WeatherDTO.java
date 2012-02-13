@@ -2,6 +2,10 @@ package com.androidcourse.client.weather.data;
 
 import android.graphics.Bitmap;
 
+/*
+ * This class holds the Weather data to be displayed.
+ */
+
 public class WeatherDTO {
 	String celsiusTemp;
 	String farenheitTemp;

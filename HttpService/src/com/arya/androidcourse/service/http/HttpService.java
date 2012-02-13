@@ -1,5 +1,9 @@
 package com.arya.androidcourse.service.http;
 
+/*
+ * This class acts as remote service encapsulating HTTP download component which
+ * is HttpProcessorCache.
+ */
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;

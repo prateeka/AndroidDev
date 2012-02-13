@@ -10,6 +10,10 @@ import android.util.Log;
 import com.androidcourse.client.weather.data.State;
 import com.androidcourse.client.weather.data.WeatherDTO;
 
+/*
+ * This class is responsible for parsing the JSON string obtained from the
+ * Weather Service and populating WeatherDTO
+ */
 class WeatherJSONParser {
 	final String TAG = "WeatherJSONParser";
 	static WeatherJSONParser weatherJSONParser = null;

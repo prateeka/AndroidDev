@@ -17,13 +17,22 @@ import com.androidcourse.client.weather.processor.WeatherDataManager;
 import com.androidcourse.client.weather.processor.WeatherDays;
 import com.arya.androidcourse.service.http.IHttpService;
 
+/*
+ * This is the main weather activity responsible for displaying weather. There
+ * are 4 different threads downloading data for 4 days. This class
+ * co-ordinates with 4 different AsyncTask's to display the weather for 4 days.
+ * It talks to WeatherDataManagerRetrievor to retrieve the WeatherDataManager
+ * which will then help provide 4 different WeatherDataProviders corresponding
+ * to each day.
+ */
+
 public class WeatherActivity extends Activity {
 	
 	private final String TAG = "WeatherActivity";
 	private IHttpService httpService = null;
 	private EditText zipCodeView;
 	private Button goButton;
-	private WeatherDataProviderRetrievor weatherDataProviderRetrievor;
+	private WeatherDataManagerRetrievor weatherDataManagerRetrievor;
 	private Boolean[] weathersDisplayed;
 	
 	private DownloadWeatherTask[] weatherTasks;
@@ -84,9 +93,9 @@ public class WeatherActivity extends Activity {
 	}
 	
 	private WeatherDataManager getWeatherDataProvider(String zipCode) {
-		weatherDataProviderRetrievor = WeatherDataProviderRetrievor
+		weatherDataManagerRetrievor = WeatherDataManagerRetrievor
 				.getInstance();
-		return weatherDataProviderRetrievor.getWeatherDataProvider(
+		return weatherDataManagerRetrievor.getWeatherDataProvider(
 				httpService,
 				zipCode);
 	}
@@ -122,7 +131,7 @@ public class WeatherActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		try {
-			weatherDataProviderRetrievor.shutDownWeatherDataProvider();
+			weatherDataManagerRetrievor.shutDownWeatherDataProvider();
 		}
 		catch (InterruptedException e) {
 			Log.e(TAG, "InterruptedException encountered: " + e);

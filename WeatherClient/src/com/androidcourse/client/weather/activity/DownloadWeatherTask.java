@@ -16,6 +16,14 @@ import com.androidcourse.client.weather.data.WeatherDTO;
 import com.androidcourse.client.weather.processor.WeatherDataManager;
 import com.androidcourse.client.weather.processor.WeatherDays;
 
+/*
+ * This is an Async task that downloads weather for a given day and displays it.
+ * It talks to WeatherDataManger to retrieve the weather for a day. There will
+ * be 4 different instances of this class activated by the WeatherActivity,
+ * running in 4 different threads, each responsible for displaying weather for a
+ * day.
+ */
+
 public class DownloadWeatherTask extends AsyncTask<String, Void, WeatherDTO> {
 	private static final String TAG = "DownloadWeatherTask";
 	

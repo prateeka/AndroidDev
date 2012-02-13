@@ -82,12 +82,15 @@ class WeatherDataGenerator {
 	}
 	
 	protected String generateURLForTempAndConditions() {
+		String vendorKey = "1cad7edb227a5904";
 		String url;
 		if (day == WeatherDays.TODAY) {
-			url = "http://api.wunderground.com/api/b3a987070762aec0/conditions/q/"
+			url = "http://api.wunderground.com/api/" + vendorKey
+					+ "/conditions/q/"
 					+ zipCode + ".json";
 		} else {
-			url = "http://api.wunderground.com/api/b3a987070762aec0/forecast/q/"
+			url = "http://api.wunderground.com/api/" + vendorKey
+					+ "/forecast/q/"
 					+ zipCode + ".json";
 		}
 		return url;

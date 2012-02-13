@@ -5,9 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /*
- * This class helps to provide a locking mechanism for the WeatherDTO to be
- * updated/read in thread safe manner. The reader thread is WeatherDriver or
- * Activity thread and the writer thread is the WeatherDataProvider.
+ * This class represents the days for whom the weather data is to be downloaded
  */
 public enum WeatherDays {
 	TODAY(0),

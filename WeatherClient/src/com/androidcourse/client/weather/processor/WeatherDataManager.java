@@ -8,6 +8,14 @@ import java.util.concurrent.TimeUnit;
 import com.androidcourse.client.weather.data.WeatherDTO;
 import com.arya.androidcourse.service.http.IHttpService;
 
+/*
+ * This class is responsible for initiating 4 different threads of weather
+ * download with each thread responsible for downloading data for one day.
+ * It co-ordinates with WeatherDataProviders to download the weather data and
+ * later WeatherDataProviders provide the Weather data to Async tasks to be
+ * displayed.
+ */
+
 public class WeatherDataManager {
 	ExecutorService executor;
 	WeatherDataProvider[] weatherDataProviders;

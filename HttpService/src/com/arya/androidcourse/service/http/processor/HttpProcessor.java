@@ -1,5 +1,9 @@
 package com.arya.androidcourse.service.http.processor;
 
+/*
+ * This class downloads Text content or Image content for any user provided URL.
+ * It uses Apache HTTPComponents to perform its function.
+ */
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
