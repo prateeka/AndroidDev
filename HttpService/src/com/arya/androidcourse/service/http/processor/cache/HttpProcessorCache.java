@@ -21,8 +21,10 @@ public class HttpProcessorCache extends HttpProcessor {
 	private final String TAG = "HttpProcessorCache";
 	
 	private static HttpProcessorCache thisInstance;
-	private final Map<String, String> textContentMap;
 	private final URLLockProvider lockProvider;
+	
+	private final Map<String, String> textContentMap;
+	private final Map<String, ParseableByteArray> imageContentMap;
 	
 	public static HttpProcessorCache getInstance() {
 		if (thisInstance == null) {
@@ -33,6 +35,7 @@ public class HttpProcessorCache extends HttpProcessor {
 	
 	private HttpProcessorCache() {
 		textContentMap = new HashMap<String, String>();
+		imageContentMap = new HashMap<String, ParseableByteArray>();
 		lockProvider = URLLockProvider.getInstance();
 	}
 	
@@ -49,11 +52,6 @@ public class HttpProcessorCache extends HttpProcessor {
 			textContent = insertNewTextContent(url);
 		}
 		return textContent;
-	}
-	
-	@Override
-	public ParseableByteArray getImageContent(String url) {
-		return super.getImageContent(url);
 	}
 	
 	private String insertNewTextContent(String url) {
@@ -80,6 +78,47 @@ public class HttpProcessorCache extends HttpProcessor {
 	private boolean checkIfTextContentExists(String url) {
 		boolean flagTextContentExists = textContentMap.containsKey(url);
 		return flagTextContentExists;
+	}
+	
+	@Override
+	public ParseableByteArray getImageContent(String url) {
+		ParseableByteArray imageContent = null;
+		boolean isImageExists = checkIfImageContentExists(url);
+		
+		if (isImageExists) {
+			Log.i(TAG, "ImageContent cache hit for url :" + url);
+			imageContent = retrieveExistingImageContent(url);
+		} else {
+			Log.i(TAG, "ImageContent cache miss for url :" + url);
+			imageContent = insertNewImageContent(url);
+		}
+		return imageContent;
+	}
+	
+	private ParseableByteArray insertNewImageContent(String url) {
+		ParseableByteArray imageContent = null;
+		String urlLock = lockProvider.getLock(url);
+		
+		synchronized (urlLock) {
+			if (checkIfImageContentExists(urlLock)) {
+				imageContent = retrieveExistingImageContent(url);
+			}
+			else {
+				imageContent = super.getImageContent(url);
+				imageContentMap.put(url, imageContent);
+			}
+		}
+		return imageContent;
+	}
+	
+	private ParseableByteArray retrieveExistingImageContent(String url) {
+		ParseableByteArray urlImageContent = imageContentMap.get(url);
+		return urlImageContent;
+	}
+	
+	private boolean checkIfImageContentExists(String url) {
+		boolean flagImageContentExists = imageContentMap.containsKey(url);
+		return flagImageContentExists;
 	}
 	
 }
