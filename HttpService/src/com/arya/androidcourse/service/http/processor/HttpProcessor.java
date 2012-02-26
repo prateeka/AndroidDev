@@ -1,5 +1,9 @@
-package com.arya.androidcourse.service.http;
+package com.arya.androidcourse.service.http.processor;
 
+/*
+ * This class downloads Text content or Image content for any user provided URL.
+ * It uses Apache HTTPComponents to perform its function.
+ */
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,10 +19,12 @@ import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
 
+import com.arya.androidcourse.service.http.ParseableByteArray;
+
 public class HttpProcessor {
 	public final String TAG = "HttpProcessor";
 	
-	protected String getTextContent(String url) {
+	public String getTextContent(String url) {
 		String feed = null;
 		HttpEntity entity = null;
 		try {
@@ -36,7 +42,7 @@ public class HttpProcessor {
 		return feed;
 	}
 	
-	protected ParseableByteArray getImageContent(String url) {
+	public ParseableByteArray getImageContent(String url) {
 		Log.d(TAG, "getImageContent called for url: " + url);
 		
 		byte[] imageBytes = null;

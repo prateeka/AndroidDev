@@ -3,13 +3,17 @@ package com.androidcourse.client.weather.activity;
 import com.androidcourse.client.weather.processor.WeatherDataManager;
 import com.arya.androidcourse.service.http.IHttpService;
 
-class WeatherDataProviderRetrievor {
+/*
+ * This provides the WeatherDataManager to the WeatherActivity.
+ */
+
+class WeatherDataManagerRetrievor {
 	WeatherDataManager weatherDataManager = null;
-	static WeatherDataProviderRetrievor weatherDataProviderRetrievor;
+	static WeatherDataManagerRetrievor weatherDataProviderRetrievor;
 	
-	static WeatherDataProviderRetrievor getInstance() {
+	static WeatherDataManagerRetrievor getInstance() {
 		if (weatherDataProviderRetrievor == null) {
-			weatherDataProviderRetrievor = new WeatherDataProviderRetrievor();
+			weatherDataProviderRetrievor = new WeatherDataManagerRetrievor();
 		}
 		return weatherDataProviderRetrievor;
 	}

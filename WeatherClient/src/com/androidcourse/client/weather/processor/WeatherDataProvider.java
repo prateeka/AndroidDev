@@ -6,6 +6,14 @@ import android.util.Log;
 import com.androidcourse.client.weather.data.WeatherDTO;
 import com.arya.androidcourse.service.http.IHttpService;
 
+/*
+ * This class is mainly responsible for providing the weather data to be
+ * displayed by the Async tasks. It co-ordinates with WeatherDataGenerator to
+ * generate the weather data. Each instance of this class runs in a different
+ * thread such that each instance is responsible for downloading data for one
+ * day.
+ */
+
 class WeatherDataProvider implements Runnable {
 	final String TAG = "WeatherDataProvider";
 	WeatherDTO weatherDTO;
