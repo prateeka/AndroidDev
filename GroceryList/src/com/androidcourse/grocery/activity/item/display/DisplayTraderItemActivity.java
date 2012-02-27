@@ -116,7 +116,7 @@ public class DisplayTraderItemActivity extends Activity {
 	}
 	
 	protected void initTrader() {
-		traderViewHelper = new TraderViewHelper(this, groceryDAO,
+		traderViewHelper = new TraderViewHelper(this,
 				factory.getTraderViewListener(this));
 		traderViewHelper.init();
 	}
