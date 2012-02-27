@@ -26,7 +26,11 @@
 
         <provider
             android:name=".dao.TraderContentProvider"
-            android:authorities="com.androidcourse.grocery.contentprovider" >
+            android:authorities="com.androidcourse.grocery.contentprovider.trader" >
+        </provider>
+        <provider
+            android:name=".dao.ItemContentProvider"
+            android:authorities="com.androidcourse.grocery.contentprovider.item" >
         </provider>
     </application>
 

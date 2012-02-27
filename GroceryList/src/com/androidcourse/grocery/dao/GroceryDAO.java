@@ -6,7 +6,8 @@ public interface GroceryDAO {
 	
 	Cursor getTraderCursor();
 	
-	Cursor getItemCursorForTraderId(long traderId);
+	Cursor getItemCursor(String selection,
+			String[] selectionArgs);
 	
 	Cursor getItemCursorForItemId(long itemId);
 	
@@ -16,4 +17,5 @@ public interface GroceryDAO {
 	long addItem(String text, float parseFloat, String note, long traderId);
 	
 	int deleteItem(long itemid);
+	
 }

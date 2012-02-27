@@ -10,25 +10,26 @@ import android.util.Log;
 
 import com.androidcourse.grocery.factory.GroceryFactory;
 
-public class TraderContentProvider extends ContentProvider {
+public class ItemContentProvider extends ContentProvider {
 	
-	private static final String TAG = "TraderContentProvider";
+	private static final String TAG = "ItemContentProvider";
 	
 	// database
 	private GroceryDAO groceryDAO;
 	
 	// Used for the UriMacher
-	private static final int INCOMING_TRADER_COLLECTION_URI_INDICATOR = 1;
+	private static final int INCOMING_ITEMS_COLLECTION_URI_INDICATOR = 1;
+	private static final int INCOMING_SINGLE_ITEM_URI_INDICATOR = 2;
 	
-	private static final String AUTHORITY = "com.androidcourse.grocery.contentprovider.trader";
-	private static final String BASE_PATH = "traders";
+	private static final String AUTHORITY = "com.androidcourse.grocery.contentprovider.item";
+	private static final String BASE_PATH = "items";
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
 			+ "/" + BASE_PATH);
 	
 	public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
-			+ "/traders";
+			+ "/items";
 	public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
-			+ "/trader";
+			+ "/item";
 	
 	private static final UriMatcher sURIMatcher = new UriMatcher(
 			UriMatcher.NO_MATCH);
@@ -36,7 +37,11 @@ public class TraderContentProvider extends ContentProvider {
 		sURIMatcher.addURI(
 				AUTHORITY,
 				BASE_PATH,
-				INCOMING_TRADER_COLLECTION_URI_INDICATOR);
+				INCOMING_ITEMS_COLLECTION_URI_INDICATOR);
+		sURIMatcher.addURI(
+				AUTHORITY,
+				BASE_PATH + "/#",
+				INCOMING_SINGLE_ITEM_URI_INDICATOR);
 	}
 	
 	@Override
@@ -67,9 +72,10 @@ public class TraderContentProvider extends ContentProvider {
 		int uriType = sURIMatcher.match(uri);
 		Cursor cursor;
 		switch (uriType) {
-			case INCOMING_TRADER_COLLECTION_URI_INDICATOR:
-				Log.d(TAG, "querying for trader collection");
-				cursor = groceryDAO.getTraderCursor();
+			case INCOMING_ITEMS_COLLECTION_URI_INDICATOR:
+				Log.d(TAG, "querying for items collection for selection criteria " +  selection);
+				
+				cursor = groceryDAO.getItemCursor(selection, selectionArgs);
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown URI: " + uri);

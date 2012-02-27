@@ -25,6 +25,7 @@ public class GroceryFactory {
 		return factory;
 	}
 	
+	@Deprecated
 	public static GroceryFactory getFactory() {
 		if (factory == null) {
 			throw new RuntimeException(

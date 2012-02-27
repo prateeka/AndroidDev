@@ -9,6 +9,7 @@ import android.widget.SimpleCursorAdapter;
 import com.androidcourse.grocery.R;
 import com.androidcourse.grocery.dao.GroceryDAO;
 import com.androidcourse.grocery.dao.GroceryDAODBImpl;
+import com.androidcourse.grocery.dao.ItemContentProvider;
 
 public class ItemViewHelper {
 	private final DisplayTraderItemActivity activity;
@@ -36,8 +37,15 @@ public class ItemViewHelper {
 	}
 	
 	protected void refreshItemView(long traderId) {
-		itemCursor = groceryDAO
-				.getItemCursorForTraderId(traderId);
+		itemCursor = activity.getContentResolver().query(
+				ItemContentProvider.CONTENT_URI,
+				null,
+				GroceryDAODBImpl.TABLE_ITEM_COLUMN_TRADER_REF + "=" + traderId,
+				null,
+				null);
+		
+		// itemCursor = groceryDAO
+		// .getItemCursor(traderId);
 		activity.startManagingCursor(itemCursor);
 		itemAdapter = getItemAdapter(itemCursor);
 		itemListView.setAdapter(itemAdapter);

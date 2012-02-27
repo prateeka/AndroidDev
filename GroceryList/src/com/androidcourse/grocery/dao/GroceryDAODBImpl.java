@@ -93,13 +93,18 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 	}
 	
 	@Override
-	public Cursor getItemCursorForTraderId(long traderId) {
+	public Cursor getItemCursor(String selection,
+			String[] selectionArgs) {
 		// System.out.println("selectedTraderID is "
 		// + String.valueOf(selectedTraderID));
 		return database.query(TABLE_ITEM,
 				ITEM_COLUMN_ARRAY,
-				TABLE_ITEM_COLUMN_TRADER_REF + "=" + traderId,
-				null, null, null, null);
+				// TABLE_ITEM_COLUMN_TRADER_REF + "=" + traderId,
+				selection,
+				selectionArgs,
+				null,
+				null,
+				null);
 	}
 	
 	@Override
