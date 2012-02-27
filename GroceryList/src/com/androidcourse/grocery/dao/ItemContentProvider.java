@@ -99,7 +99,17 @@ public class ItemContentProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
-		throw new RuntimeException("Operation not supported");
+		int uriType = sURIMatcher.match(uri);
+		int rowsUpdated = 0;
+		switch (uriType) {
+			case INCOMING_SINGLE_ITEM_URI_INDICATOR:
+				selection = GroceryDAODBImpl.KEY_COLUMN_ID + "="
+						+ uri.getLastPathSegment();
+				rowsUpdated = groceryDAO.updateItem(values, selection);
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown URI: " + uri);
+		}
+		return rowsUpdated;
 	}
-	
 }

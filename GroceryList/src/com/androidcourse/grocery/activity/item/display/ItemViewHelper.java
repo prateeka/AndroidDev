@@ -44,8 +44,6 @@ public class ItemViewHelper {
 				null,
 				null);
 		
-		// itemCursor = groceryDAO
-		// .getItemCursor(traderId);
 		activity.startManagingCursor(itemCursor);
 		itemAdapter = getItemAdapter(itemCursor);
 		itemListView.setAdapter(itemAdapter);

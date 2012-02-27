@@ -10,8 +10,7 @@ public interface GroceryDAO {
 	Cursor getItemCursor(String selection,
 			String[] selectionArgs);
 	
-	int updateItem(long itemId, String text, float parseFloat, String note,
-			long traderId);
+	int updateItem(ContentValues updateValues, String whereClause);
 	
 	long addItem(ContentValues values);
 	

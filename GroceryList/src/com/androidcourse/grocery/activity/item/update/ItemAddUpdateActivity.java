@@ -154,18 +154,29 @@ public class ItemAddUpdateActivity extends Activity {
 				getIntent(),
 				GroceryConstants.OPERATION)
 				== GroceryConstants.UPDATE_ITEM_OPERATION) {
-			groceryDAO.updateItem(
-					GroceryUtilFunctions.getIntentData(
-							getIntent(),
-							GroceryConstants.ITEM_ID),
+			updateItem(GroceryUtilFunctions.getIntentData(
+					getIntent(),
+					GroceryConstants.ITEM_ID),
 					getText(itemName),
-					Float.parseFloat(getText(itemQty)),
+					getText(itemQty),
 					getText(itemNote),
 					GroceryUtilFunctions.getIntentData(getIntent(),
-							GroceryConstants.TRADER_ID)
-					);
+							GroceryConstants.TRADER_ID));
 			returnToParentActivity(this.getIntent());
 		}
+	}
+	
+	protected void updateItem(long itemID, String itemName, String itemQty,
+			String itemNote, long traderID) {
+		ContentValues itemToUpdate = createItemContentValues(
+				itemName, itemQty, itemNote, traderID);
+		ContentResolver cr = getContentResolver();
+		Uri uri = Uri.withAppendedPath(
+				ItemContentProvider.CONTENT_URI,
+				Long.toString(itemID));
+		Log.d(TAG, "item update uri:" + uri);
+		int rowsUpdated = cr.update(uri, itemToUpdate, null, null);
+		Log.d(TAG, "updated item row count :" + rowsUpdated);
 	}
 	
 	protected void addItem(String itemName, String itemQty, String itemNote,
@@ -177,15 +188,6 @@ public class ItemAddUpdateActivity extends Activity {
 		Log.d(TAG, "item insert uri:" + uri);
 		Uri insertedUri = cr.insert(uri, itemToAdd);
 		Log.d(TAG, "inserted uri:" + insertedUri);
-		
-		/*-		groceryDAO.addItem(
-		 getText(itemName),
-		 Float.parseFloat(getText(itemQty)),
-		 getText(itemNote),
-		 GroceryUtilFunctions.getIntentData(getIntent(),
-		 GroceryConstants.TRADER_ID)
-		 );
-		 */
 	}
 	
 	private ContentValues createItemContentValues(

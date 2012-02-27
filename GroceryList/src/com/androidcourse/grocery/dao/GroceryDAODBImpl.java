@@ -41,21 +41,14 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 	
 	@Override
 	public long addItem(ContentValues itemToAdd) {
-		// ContentValues itemToAdd = createItemContentValues(
-		// text, parseFloat, note, traderId);
 		return database.insert(TABLE_ITEM, null, itemToAdd);
 	}
 	
 	@Override
-	public int updateItem(long itemId, String text, float parseFloat,
-			String note,
-			long traderId) {
-		ContentValues updateValues = createItemContentValues(
-				text, parseFloat, note, traderId);
-		
+	public int updateItem(ContentValues updateValues, String whereClause) {
 		return database.update(TABLE_ITEM,
 				updateValues,
-				KEY_COLUMN_ID + "=" + itemId,
+				whereClause,
 				null);
 	}
 	
