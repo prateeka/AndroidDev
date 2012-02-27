@@ -73,8 +73,20 @@ public class ItemContentProvider extends ContentProvider {
 		Cursor cursor;
 		switch (uriType) {
 			case INCOMING_ITEMS_COLLECTION_URI_INDICATOR:
-				Log.d(TAG, "querying for items collection for selection criteria " +  selection);
+				Log.d(
+						TAG,
+						"querying for items collection for selection criteria "
+								+ selection);
+				cursor = groceryDAO.getItemCursor(selection, selectionArgs);
+				break;
+			case INCOMING_SINGLE_ITEM_URI_INDICATOR:
+				selection = GroceryDAODBImpl.KEY_COLUMN_ID + "="
+						+ uri.getLastPathSegment();
 				
+				Log.d(
+						TAG,
+						"querying for single items with id "
+								+ selection);
 				cursor = groceryDAO.getItemCursor(selection, selectionArgs);
 				break;
 			default:

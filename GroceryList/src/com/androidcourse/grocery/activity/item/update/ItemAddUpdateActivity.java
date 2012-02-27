@@ -3,6 +3,7 @@ package com.androidcourse.grocery.activity.item.update;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import com.androidcourse.grocery.R;
 import com.androidcourse.grocery.dao.GroceryDAO;
 import com.androidcourse.grocery.dao.GroceryDAODBImpl;
+import com.androidcourse.grocery.dao.ItemContentProvider;
 import com.androidcourse.grocery.factory.GroceryFactory;
 import com.androidcourse.grocery.util.GroceryConstants;
 import com.androidcourse.grocery.util.GroceryUtilFunctions;
@@ -108,7 +110,16 @@ public class ItemAddUpdateActivity extends Activity {
 	protected Cursor getItemCursor() {
 		long itemId = GroceryUtilFunctions.getIntentData(getIntent(),
 				GroceryConstants.ITEM_ID);
-		Cursor itemCursor = groceryDAO.getItemCursorForItemId(itemId);
+		Uri uri = Uri.withAppendedPath(
+				ItemContentProvider.CONTENT_URI,
+				Long.toString(itemId));
+		
+		Cursor itemCursor = getContentResolver().query(
+				uri, null, null, null, null);
+		// Cursor itemCursor = groceryDAO.getItemCursor(itemId);
+		if (itemCursor != null) {
+			itemCursor.moveToFirst();
+		}
 		return itemCursor;
 	}
 	

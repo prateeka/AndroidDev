@@ -12,6 +12,8 @@ import com.androidcourse.grocery.util.GroceryConstants;
 public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 		GroceryDAO {
 	
+	private static final String TAG = "GroceryDAODBImpl";
+	
 	private static final String DATABASE_NAME = "groceryApp.db";
 	private static final int DATABASE_VERSION = 1;
 	
@@ -95,11 +97,10 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 	@Override
 	public Cursor getItemCursor(String selection,
 			String[] selectionArgs) {
-		// System.out.println("selectedTraderID is "
-		// + String.valueOf(selectedTraderID));
+		Log.d(TAG, "getItemCursor called with selection criteria : "
+				+ selection);
 		return database.query(TABLE_ITEM,
 				ITEM_COLUMN_ARRAY,
-				// TABLE_ITEM_COLUMN_TRADER_REF + "=" + traderId,
 				selection,
 				selectionArgs,
 				null,
@@ -107,21 +108,22 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 				null);
 	}
 	
-	@Override
-	public Cursor getItemCursorForItemId(long itemId) {
-		Log.d(this.getClass().getName(),
-				"getItemCursorForItemId searching for items matching itemId : "
-						+ itemId);
-		Cursor cursor = database.query(TABLE_ITEM,
-				ITEM_COLUMN_ARRAY,
-				KEY_COLUMN_ID + "=" + itemId,
-				null, null, null, null);
-		
-		if (cursor != null) {
-			cursor.moveToFirst();
-		}
-		return cursor;
-	}
+	/*-	
+	 @Override
+	 public Cursor getItemCursorForItemId(long itemId) {
+	 Log.d(this.getClass().getName(),
+	 "getItemCursorForItemId searching for items matching itemId : "
+	 + itemId);
+	 Cursor cursor = database.query(TABLE_ITEM,
+	 ITEM_COLUMN_ARRAY,
+	 KEY_COLUMN_ID + "=" + itemId,
+	 null, null, null, null);
+	
+	 if (cursor != null) {
+	 cursor.moveToFirst();
+	 }
+	 return cursor;
+	 }*/
 	
 	protected void createTraderTable() {
 		/*-		final String TRADER_TABLE_DROP_STMT = "DROP TABLE IF EXISTS "

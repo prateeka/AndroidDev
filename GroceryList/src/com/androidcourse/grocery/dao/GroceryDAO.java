@@ -9,7 +9,7 @@ public interface GroceryDAO {
 	Cursor getItemCursor(String selection,
 			String[] selectionArgs);
 	
-	Cursor getItemCursorForItemId(long itemId);
+	// Cursor getItemCursorForItemId(long itemId);
 	
 	int updateItem(long itemId, String text, float parseFloat, String note,
 			long traderId);
