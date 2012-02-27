@@ -84,7 +84,6 @@ public class Compass extends Activity {
 	private class SampleView extends View {
 		private final Paint mPaint = new Paint();
 		private final Path mPath = new Path();
-		private boolean mAnimate;
 		
 		public SampleView(Context context) {
 			super(context);
