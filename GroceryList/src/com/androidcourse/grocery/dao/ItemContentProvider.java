@@ -56,7 +56,8 @@ public class ItemContentProvider extends ContentProvider {
 	
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		throw new RuntimeException("Operation not supported");
+		long id = groceryDAO.addItem(values);
+		return Uri.parse(BASE_PATH + "/" + id);
 	}
 	
 	@Override

@@ -40,10 +40,9 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 	}
 	
 	@Override
-	public long addItem(String text, float parseFloat, String note,
-			long traderId) {
-		ContentValues itemToAdd = createItemContentValues(
-				text, parseFloat, note, traderId);
+	public long addItem(ContentValues itemToAdd) {
+		// ContentValues itemToAdd = createItemContentValues(
+		// text, parseFloat, note, traderId);
 		return database.insert(TABLE_ITEM, null, itemToAdd);
 	}
 	

@@ -1,6 +1,8 @@
 package com.androidcourse.grocery.activity.item.update;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,6 +21,8 @@ import com.androidcourse.grocery.util.GroceryConstants;
 import com.androidcourse.grocery.util.GroceryUtilFunctions;
 
 public class ItemAddUpdateActivity extends Activity {
+	
+	private static final String TAG = "ItemAddUpdateActivity";
 	
 	private EditText itemName;
 	private EditText itemQty;
@@ -140,13 +144,11 @@ public class ItemAddUpdateActivity extends Activity {
 							+ ":" +
 							GroceryUtilFunctions.getIntentData(getIntent(),
 									GroceryConstants.TRADER_ID));
-			groceryDAO.addItem(
-					getText(itemName),
-					Float.parseFloat(getText(itemQty)),
+			addItem(getText(itemName),
+					getText(itemQty),
 					getText(itemNote),
 					GroceryUtilFunctions.getIntentData(getIntent(),
-							GroceryConstants.TRADER_ID)
-					);
+							GroceryConstants.TRADER_ID));
 			returnToParentActivity(this.getIntent());
 		} else if (GroceryUtilFunctions.getIntentData(
 				getIntent(),
@@ -164,6 +166,44 @@ public class ItemAddUpdateActivity extends Activity {
 					);
 			returnToParentActivity(this.getIntent());
 		}
+	}
+	
+	protected void addItem(String itemName, String itemQty, String itemNote,
+			long traderID) {
+		ContentValues itemToAdd = createItemContentValues(
+				itemName, itemQty, itemNote, traderID);
+		ContentResolver cr = getContentResolver();
+		Uri uri = ItemContentProvider.CONTENT_URI;
+		Log.d(TAG, "item insert uri:" + uri);
+		Uri insertedUri = cr.insert(uri, itemToAdd);
+		Log.d(TAG, "inserted uri:" + insertedUri);
+		
+		/*-		groceryDAO.addItem(
+		 getText(itemName),
+		 Float.parseFloat(getText(itemQty)),
+		 getText(itemNote),
+		 GroceryUtilFunctions.getIntentData(getIntent(),
+		 GroceryConstants.TRADER_ID)
+		 );
+		 */
+	}
+	
+	private ContentValues createItemContentValues(
+			String itemName, String itemQty, String itemNote, long traderId) {
+		ContentValues itemContentValues = new ContentValues();
+		itemContentValues.put(
+				GroceryDAODBImpl.TABLE_ITEM_COLUMN_ITEM_NAME,
+				itemName);
+		itemContentValues.put(
+				GroceryDAODBImpl.TABLE_ITEM_COLUMN_ITEM_QTY,
+				itemQty);
+		itemContentValues.put(
+				GroceryDAODBImpl.TABLE_ITEM_COLUMN_ITEM_NOTE,
+				itemNote);
+		itemContentValues.put(
+				GroceryDAODBImpl.TABLE_ITEM_COLUMN_TRADER_REF,
+				traderId);
+		return itemContentValues;
 	}
 	
 	private String getText(EditText editText) {
