@@ -13,10 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.androidcourse.grocery.R;
-import com.androidcourse.grocery.dao.GroceryDAO;
 import com.androidcourse.grocery.dao.GroceryDAODBImpl;
 import com.androidcourse.grocery.dao.ItemContentProvider;
-import com.androidcourse.grocery.factory.GroceryFactory;
 import com.androidcourse.grocery.util.GroceryConstants;
 import com.androidcourse.grocery.util.GroceryUtilFunctions;
 
@@ -27,8 +25,6 @@ public class ItemAddUpdateActivity extends Activity {
 	private EditText itemName;
 	private EditText itemQty;
 	private EditText itemNote;
-	private GroceryDAO groceryDAO;
-	private GroceryFactory factory;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +34,6 @@ public class ItemAddUpdateActivity extends Activity {
 	}
 	
 	private void init() {
-		factory = GroceryFactory.getFactory();
-		groceryDAO = factory.getGroceryDAO();
 		itemName = (EditText) findViewById(R.id.editText1);
 		itemQty = (EditText) findViewById(R.id.editText2);
 		itemNote = (EditText) findViewById(R.id.editText3);

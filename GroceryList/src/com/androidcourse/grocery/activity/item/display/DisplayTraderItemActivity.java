@@ -122,7 +122,7 @@ public class DisplayTraderItemActivity extends Activity {
 	}
 	
 	protected void initItem() {
-		itemViewHelper = new ItemViewHelper(this, groceryDAO,
+		itemViewHelper = new ItemViewHelper(this,
 				factory.getItemViewListener(this));
 		itemViewHelper.init();
 	}

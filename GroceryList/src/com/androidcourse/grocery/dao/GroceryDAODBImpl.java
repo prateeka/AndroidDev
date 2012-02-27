@@ -178,16 +178,6 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 				GroceryConstants.TRADER_KOHL));
 	}
 	
-	private ContentValues createItemContentValues(
-			String itemName, float itemQty, String itemNote, long traderId) {
-		ContentValues itemContentValues = new ContentValues();
-		itemContentValues.put(TABLE_ITEM_COLUMN_ITEM_NAME, itemName);
-		itemContentValues.put(TABLE_ITEM_COLUMN_ITEM_QTY, itemQty);
-		itemContentValues.put(TABLE_ITEM_COLUMN_ITEM_NOTE, itemNote);
-		itemContentValues.put(TABLE_ITEM_COLUMN_TRADER_REF, traderId);
-		return itemContentValues;
-	}
-	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 	}

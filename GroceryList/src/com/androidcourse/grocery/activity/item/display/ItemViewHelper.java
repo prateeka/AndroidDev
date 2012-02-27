@@ -7,13 +7,11 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import com.androidcourse.grocery.R;
-import com.androidcourse.grocery.dao.GroceryDAO;
 import com.androidcourse.grocery.dao.GroceryDAODBImpl;
 import com.androidcourse.grocery.dao.ItemContentProvider;
 
 public class ItemViewHelper {
 	private final DisplayTraderItemActivity activity;
-	private final GroceryDAO groceryDAO;
 	private Cursor itemCursor;
 	private BaseAdapter itemAdapter;
 	
@@ -21,11 +19,9 @@ public class ItemViewHelper {
 	private final OnItemClickListener itemViewListener;
 	
 	public ItemViewHelper(DisplayTraderItemActivity activity,
-			GroceryDAO groceryDAO,
 			OnItemClickListener itemViewListener) {
 		super();
 		this.activity = activity;
-		this.groceryDAO = groceryDAO;
 		this.itemViewListener = itemViewListener;
 	}
 	

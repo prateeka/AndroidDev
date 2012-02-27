@@ -25,15 +25,6 @@ public class GroceryFactory {
 		return factory;
 	}
 	
-	@Deprecated
-	public static GroceryFactory getFactory() {
-		if (factory == null) {
-			throw new RuntimeException(
-					"Factory has not been initialized");
-		}
-		return factory;
-	}
-	
 	private GroceryFactory(Context context) {
 		this.context = context;
 		groceryDAO = new GroceryDAODBImpl(context);
