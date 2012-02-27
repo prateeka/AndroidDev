@@ -28,7 +28,7 @@ public class GroceryFactory {
 	public static GroceryFactory getFactory() {
 		if (factory == null) {
 			throw new RuntimeException(
-					"Factory instance needs a context");
+					"Factory has not been initialized");
 		}
 		return factory;
 	}
