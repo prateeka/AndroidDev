@@ -1,5 +1,11 @@
 package com.androidcourse.grocery.activity.item.display;
 
+/*
+ * This activity displays the trader along with list of items to be bought from
+ * here.It delegates data retrieval to helper classes as: ItemViewHelper and
+ * TraderViewHelper.It delegates ViewListener events to ItemViewListener and
+ * TraderViewListener.
+ */
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

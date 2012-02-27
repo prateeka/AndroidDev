@@ -1,5 +1,9 @@
 package com.androidcourse.grocery.activity.item.update;
 
+/*
+ * Activity to capture the shopping item info. This caters to both new shopping
+ * item being created or an existing item being edited.
+ */
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;

@@ -1,5 +1,10 @@
 package com.androidcourse.grocery.activity.item.display;
 
+/*
+ * Helper class to provide trader list. It
+ * provides this data to DisplayTraderItemActivity.
+ */
+
 import android.database.Cursor;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.SimpleCursorAdapter;

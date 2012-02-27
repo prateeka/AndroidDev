@@ -100,23 +100,6 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 				null);
 	}
 	
-	/*-	
-	 @Override
-	 public Cursor getItemCursorForItemId(long itemId) {
-	 Log.d(this.getClass().getName(),
-	 "getItemCursorForItemId searching for items matching itemId : "
-	 + itemId);
-	 Cursor cursor = database.query(TABLE_ITEM,
-	 ITEM_COLUMN_ARRAY,
-	 KEY_COLUMN_ID + "=" + itemId,
-	 null, null, null, null);
-	
-	 if (cursor != null) {
-	 cursor.moveToFirst();
-	 }
-	 return cursor;
-	 }*/
-	
 	protected void createTraderTable() {
 		/*-		final String TRADER_TABLE_DROP_STMT = "DROP TABLE IF EXISTS "
 		 + TRADER_TABLE_CREATE_STMT + ";";

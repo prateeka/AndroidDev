@@ -8,6 +8,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
+
+/*
+ * Content Provider for Trader entity.
+ */
+
 import com.androidcourse.grocery.factory.GroceryFactory;
 
 public class TraderContentProvider extends ContentProvider {

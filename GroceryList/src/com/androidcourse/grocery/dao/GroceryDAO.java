@@ -3,6 +3,10 @@ package com.androidcourse.grocery.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+/*
+ * Lists the operations that can be performed for Trader and ShoppingItem
+ * entities.
+ */
 public interface GroceryDAO {
 	
 	Cursor getTraderCursor();
