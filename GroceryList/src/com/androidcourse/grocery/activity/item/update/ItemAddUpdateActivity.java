@@ -1,8 +1,15 @@
 package com.androidcourse.grocery.activity.item.update;
 
+/*
+ * Activity to capture the shopping item info. This caters to both new shopping
+ * item being created or an existing item being edited.
+ */
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,19 +17,18 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.androidcourse.grocery.R;
-import com.androidcourse.grocery.dao.GroceryDAO;
 import com.androidcourse.grocery.dao.GroceryDAODBImpl;
-import com.androidcourse.grocery.factory.GroceryFactory;
+import com.androidcourse.grocery.dao.ItemContentProvider;
 import com.androidcourse.grocery.util.GroceryConstants;
 import com.androidcourse.grocery.util.GroceryUtilFunctions;
 
 public class ItemAddUpdateActivity extends Activity {
 	
+	private static final String TAG = "ItemAddUpdateActivity";
+	
 	private EditText itemName;
 	private EditText itemQty;
 	private EditText itemNote;
-	private GroceryDAO groceryDAO;
-	private GroceryFactory factory;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -32,8 +38,6 @@ public class ItemAddUpdateActivity extends Activity {
 	}
 	
 	private void init() {
-		factory = GroceryFactory.getFactory();
-		groceryDAO = factory.getGroceryDAO();
 		itemName = (EditText) findViewById(R.id.editText1);
 		itemQty = (EditText) findViewById(R.id.editText2);
 		itemNote = (EditText) findViewById(R.id.editText3);
@@ -108,7 +112,16 @@ public class ItemAddUpdateActivity extends Activity {
 	protected Cursor getItemCursor() {
 		long itemId = GroceryUtilFunctions.getIntentData(getIntent(),
 				GroceryConstants.ITEM_ID);
-		Cursor itemCursor = groceryDAO.getItemCursorForItemId(itemId);
+		Uri uri = Uri.withAppendedPath(
+				ItemContentProvider.CONTENT_URI,
+				Long.toString(itemId));
+		
+		Cursor itemCursor = getContentResolver().query(
+				uri, null, null, null, null);
+		// Cursor itemCursor = groceryDAO.getItemCursor(itemId);
+		if (itemCursor != null) {
+			itemCursor.moveToFirst();
+		}
 		return itemCursor;
 	}
 	
@@ -129,30 +142,68 @@ public class ItemAddUpdateActivity extends Activity {
 							+ ":" +
 							GroceryUtilFunctions.getIntentData(getIntent(),
 									GroceryConstants.TRADER_ID));
-			groceryDAO.addItem(
-					getText(itemName),
-					Float.parseFloat(getText(itemQty)),
+			addItem(getText(itemName),
+					getText(itemQty),
 					getText(itemNote),
 					GroceryUtilFunctions.getIntentData(getIntent(),
-							GroceryConstants.TRADER_ID)
-					);
+							GroceryConstants.TRADER_ID));
 			returnToParentActivity(this.getIntent());
 		} else if (GroceryUtilFunctions.getIntentData(
 				getIntent(),
 				GroceryConstants.OPERATION)
 				== GroceryConstants.UPDATE_ITEM_OPERATION) {
-			groceryDAO.updateItem(
-					GroceryUtilFunctions.getIntentData(
-							getIntent(),
-							GroceryConstants.ITEM_ID),
+			updateItem(GroceryUtilFunctions.getIntentData(
+					getIntent(),
+					GroceryConstants.ITEM_ID),
 					getText(itemName),
-					Float.parseFloat(getText(itemQty)),
+					getText(itemQty),
 					getText(itemNote),
 					GroceryUtilFunctions.getIntentData(getIntent(),
-							GroceryConstants.TRADER_ID)
-					);
+							GroceryConstants.TRADER_ID));
 			returnToParentActivity(this.getIntent());
 		}
+	}
+	
+	protected void updateItem(long itemID, String itemName, String itemQty,
+			String itemNote, long traderID) {
+		ContentValues itemToUpdate = createItemContentValues(
+				itemName, itemQty, itemNote, traderID);
+		ContentResolver cr = getContentResolver();
+		Uri uri = Uri.withAppendedPath(
+				ItemContentProvider.CONTENT_URI,
+				Long.toString(itemID));
+		Log.d(TAG, "item update uri:" + uri);
+		int rowsUpdated = cr.update(uri, itemToUpdate, null, null);
+		Log.d(TAG, "updated item row count :" + rowsUpdated);
+	}
+	
+	protected void addItem(String itemName, String itemQty, String itemNote,
+			long traderID) {
+		ContentValues itemToAdd = createItemContentValues(
+				itemName, itemQty, itemNote, traderID);
+		ContentResolver cr = getContentResolver();
+		Uri uri = ItemContentProvider.CONTENT_URI;
+		Log.d(TAG, "item insert uri:" + uri);
+		Uri insertedUri = cr.insert(uri, itemToAdd);
+		Log.d(TAG, "inserted uri:" + insertedUri);
+	}
+	
+	private ContentValues createItemContentValues(
+			String itemName, String itemQty, String itemNote, long traderId) {
+		ContentValues itemContentValues = new ContentValues();
+		itemContentValues.put(
+				GroceryDAODBImpl.TABLE_ITEM_COLUMN_ITEM_NAME,
+				itemName);
+		itemContentValues.put(
+				GroceryDAODBImpl.TABLE_ITEM_COLUMN_ITEM_QTY,
+				itemQty);
+		itemContentValues.put(
+				GroceryDAODBImpl.TABLE_ITEM_COLUMN_ITEM_NOTE,
+				itemNote);
+		itemContentValues.put(
+				GroceryDAODBImpl.TABLE_ITEM_COLUMN_TRADER_REF,
+				traderId);
+		return itemContentValues;
 	}
 	
 	private String getText(EditText editText) {

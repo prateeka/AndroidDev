@@ -7,13 +7,13 @@
     <uses-sdk android:minSdkVersion="8" />
 
     <application
-        android:theme="@style/SampleTextTheme"
         android:icon="@drawable/groceryicon"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/SampleTextTheme" >
         <activity
-            android:label="@string/app_name"
-            android:name=".activity.item.display.DisplayTraderItemActivity" >
-            <intent-filter >
+            android:name=".activity.item.display.DisplayTraderItemActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" >
                 </action>
 
@@ -23,6 +23,15 @@
         </activity>
         <activity android:name=".activity.item.update.ItemAddUpdateActivity" >
         </activity>
+
+        <provider
+            android:name=".dao.TraderContentProvider"
+            android:authorities="com.androidcourse.grocery.contentprovider.trader" >
+        </provider>
+        <provider
+            android:name=".dao.ItemContentProvider"
+            android:authorities="com.androidcourse.grocery.contentprovider.item" >
+        </provider>
     </application>
 
 </manifest>

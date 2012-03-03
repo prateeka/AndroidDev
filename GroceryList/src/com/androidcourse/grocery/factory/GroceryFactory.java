@@ -25,14 +25,6 @@ public class GroceryFactory {
 		return factory;
 	}
 	
-	public static GroceryFactory getFactory() {
-		if (factory == null) {
-			throw new RuntimeException(
-					"Factory instance needs a context");
-		}
-		return factory;
-	}
-	
 	private GroceryFactory(Context context) {
 		this.context = context;
 		groceryDAO = new GroceryDAODBImpl(context);

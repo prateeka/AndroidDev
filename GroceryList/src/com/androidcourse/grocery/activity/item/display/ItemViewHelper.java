@@ -1,5 +1,9 @@
 package com.androidcourse.grocery.activity.item.display;
 
+/*
+ * Helper class to provide shopping items to be bought. It
+ * provides this data to DisplayTraderItemActivity.
+ */
 import android.database.Cursor;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -7,12 +11,11 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import com.androidcourse.grocery.R;
-import com.androidcourse.grocery.dao.GroceryDAO;
 import com.androidcourse.grocery.dao.GroceryDAODBImpl;
+import com.androidcourse.grocery.dao.ItemContentProvider;
 
 public class ItemViewHelper {
 	private final DisplayTraderItemActivity activity;
-	private final GroceryDAO groceryDAO;
 	private Cursor itemCursor;
 	private BaseAdapter itemAdapter;
 	
@@ -20,11 +23,9 @@ public class ItemViewHelper {
 	private final OnItemClickListener itemViewListener;
 	
 	public ItemViewHelper(DisplayTraderItemActivity activity,
-			GroceryDAO groceryDAO,
 			OnItemClickListener itemViewListener) {
 		super();
 		this.activity = activity;
-		this.groceryDAO = groceryDAO;
 		this.itemViewListener = itemViewListener;
 	}
 	
@@ -36,8 +37,13 @@ public class ItemViewHelper {
 	}
 	
 	protected void refreshItemView(long traderId) {
-		itemCursor = groceryDAO
-				.getItemCursorForTraderId(traderId);
+		itemCursor = activity.getContentResolver().query(
+				ItemContentProvider.CONTENT_URI,
+				null,
+				GroceryDAODBImpl.TABLE_ITEM_COLUMN_TRADER_REF + "=" + traderId,
+				null,
+				null);
+		
 		activity.startManagingCursor(itemCursor);
 		itemAdapter = getItemAdapter(itemCursor);
 		itemListView.setAdapter(itemAdapter);

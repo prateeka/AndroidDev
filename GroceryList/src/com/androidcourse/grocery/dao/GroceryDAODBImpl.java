@@ -12,6 +12,8 @@ import com.androidcourse.grocery.util.GroceryConstants;
 public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 		GroceryDAO {
 	
+	private static final String TAG = "GroceryDAODBImpl";
+	
 	private static final String DATABASE_NAME = "groceryApp.db";
 	private static final int DATABASE_VERSION = 1;
 	
@@ -38,23 +40,15 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 	}
 	
 	@Override
-	public long addItem(String text, float parseFloat, String note,
-			long traderId) {
-		ContentValues itemToAdd = createItemContentValues(
-				text, parseFloat, note, traderId);
+	public long addItem(ContentValues itemToAdd) {
 		return database.insert(TABLE_ITEM, null, itemToAdd);
 	}
 	
 	@Override
-	public int updateItem(long itemId, String text, float parseFloat,
-			String note,
-			long traderId) {
-		ContentValues updateValues = createItemContentValues(
-				text, parseFloat, note, traderId);
-		
+	public int updateItem(ContentValues updateValues, String whereClause) {
 		return database.update(TABLE_ITEM,
 				updateValues,
-				KEY_COLUMN_ID + "=" + itemId,
+				whereClause,
 				null);
 	}
 	
@@ -93,29 +87,17 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 	}
 	
 	@Override
-	public Cursor getItemCursorForTraderId(long traderId) {
-		// System.out.println("selectedTraderID is "
-		// + String.valueOf(selectedTraderID));
+	public Cursor getItemCursor(String selection,
+			String[] selectionArgs) {
+		Log.d(TAG, "getItemCursor called with selection criteria : "
+				+ selection);
 		return database.query(TABLE_ITEM,
 				ITEM_COLUMN_ARRAY,
-				TABLE_ITEM_COLUMN_TRADER_REF + "=" + traderId,
-				null, null, null, null);
-	}
-	
-	@Override
-	public Cursor getItemCursorForItemId(long itemId) {
-		Log.d(this.getClass().getName(),
-				"getItemCursorForItemId searching for items matching itemId : "
-						+ itemId);
-		Cursor cursor = database.query(TABLE_ITEM,
-				ITEM_COLUMN_ARRAY,
-				KEY_COLUMN_ID + "=" + itemId,
-				null, null, null, null);
-		
-		if (cursor != null) {
-			cursor.moveToFirst();
-		}
-		return cursor;
+				selection,
+				selectionArgs,
+				null,
+				null,
+				null);
 	}
 	
 	protected void createTraderTable() {
@@ -177,16 +159,6 @@ public class GroceryDAODBImpl extends SQLiteOpenHelper implements
 				GroceryConstants.TRADER_SAFEWAY));
 		database.execSQL(ITEM_INSERT_STMT.replaceAll(VAL_TO_REPLACE,
 				GroceryConstants.TRADER_KOHL));
-	}
-	
-	private ContentValues createItemContentValues(
-			String itemName, float itemQty, String itemNote, long traderId) {
-		ContentValues itemContentValues = new ContentValues();
-		itemContentValues.put(TABLE_ITEM_COLUMN_ITEM_NAME, itemName);
-		itemContentValues.put(TABLE_ITEM_COLUMN_ITEM_QTY, itemQty);
-		itemContentValues.put(TABLE_ITEM_COLUMN_ITEM_NOTE, itemNote);
-		itemContentValues.put(TABLE_ITEM_COLUMN_TRADER_REF, traderId);
-		return itemContentValues;
 	}
 	
 	@Override

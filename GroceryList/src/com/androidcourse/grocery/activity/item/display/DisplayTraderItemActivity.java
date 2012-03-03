@@ -1,5 +1,11 @@
 package com.androidcourse.grocery.activity.item.display;
 
+/*
+ * This activity displays the trader along with list of items to be bought from
+ * here.It delegates data retrieval to helper classes as: ItemViewHelper and
+ * TraderViewHelper.It delegates ViewListener events to ItemViewListener and
+ * TraderViewListener.
+ */
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -116,13 +122,13 @@ public class DisplayTraderItemActivity extends Activity {
 	}
 	
 	protected void initTrader() {
-		traderViewHelper = new TraderViewHelper(this, groceryDAO,
+		traderViewHelper = new TraderViewHelper(this,
 				factory.getTraderViewListener(this));
 		traderViewHelper.init();
 	}
 	
 	protected void initItem() {
-		itemViewHelper = new ItemViewHelper(this, groceryDAO,
+		itemViewHelper = new ItemViewHelper(this,
 				factory.getItemViewListener(this));
 		itemViewHelper.init();
 	}
