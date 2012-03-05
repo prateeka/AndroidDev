@@ -1,6 +1,5 @@
 package com.actionbarsherlock.sample.shakespeare.fragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.actionbarsherlock.sample.shakespeare.Notes;
 import com.actionbarsherlock.sample.shakespeare.R;
 
 public class DetailsFragment extends Fragment {
@@ -37,39 +37,16 @@ public class DetailsFragment extends Fragment {
 		return view;
 	}
 	
-	public void displayDetails(Uri articleUri) {
-		Log.d(TAG, "artcleUri received is " + articleUri);
+	public void displayDetails(int position) {
+		Log.d(TAG, "position received is " + position);
 		TextView titleView = (TextView) getActivity().findViewById(
 				R.id.title);
 		TextView contentView = (TextView) getActivity().findViewById(
 				R.id.content);
 		
-		titleView.setText("tttttttttttttt");
-		contentView.setText("ccccc");
+		titleView.setText(Notes.getTitles(position));
+		contentView.setText(Notes.getDetails(position));
 	}
-	
-	/*-@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		if (container == null) {
-			Log.d(TAG, "container is null");
-			// return null;
-		}
-		
-		View view = inflater.inflate(
-				R.layout.details,
-				container,
-				false);
-		if (view != null) {
-			TextView titleView = (TextView) getActivity().findViewById(
-					R.id.title);
-			TextView contentView = (TextView) getActivity().findViewById(
-					R.id.content);
-			contentView.setText("");
-		}
-		return view;
-		
-		}*/
 	
 	public static DetailsFragment getInstance() {
 		return thisInstance;

@@ -1,7 +1,6 @@
 package com.actionbarsherlock.sample.shakespeare.fragments;
 
-import android.net.Uri;
-
 public interface OnArticleSelectedListener {
-	public void onArticleSelected(Uri articleUri);
+	// ToDo: see if this can be replaced with a id
+	public void onArticleSelected(int position);
 }

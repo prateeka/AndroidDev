@@ -1,6 +1,5 @@
 package com.actionbarsherlock.sample.shakespeare.activities;
 
-import android.net.Uri;
 import android.util.Log;
 
 import com.actionbarsherlock.sample.shakespeare.fragments.DetailsFragment;
@@ -20,13 +19,13 @@ class TitleSelectedListener {
 		return thisInstance;
 	}
 	
-	void showDetails(Uri articleUri) {
+	void showDetails(int position) {
 		DetailsFragment detailsFragment = DetailsFragment.getInstance();
-		Log.d(TAG, "articleUripassed is " + articleUri);
+		Log.d(TAG, "position passed is " + position);
 		
 		// ToDO: Handle the case for portrait
 		if (detailsFragment != null) {
-			detailsFragment.displayDetails(articleUri);
+			detailsFragment.displayDetails(position);
 		}
 	}
 }
