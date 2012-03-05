@@ -1,21 +1,30 @@
 package com.actionbarsherlock.sample.shakespeare.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.support.v4.app.SupportActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.actionbarsherlock.sample.shakespeare.R;
 import com.actionbarsherlock.sample.shakespeare.Shakespeare;
-import com.actionbarsherlock.sample.shakespeare.activities.DetailsActivity;
 
 public class TitlesFragment extends ListFragment {
-	boolean mHasDetailsFrame;
 	int mPositionChecked = 0;
 	int mPositionShown = -1;
+	private OnArticleSelectedListener mListener;
+	
+	@Override
+	public void onAttach(SupportActivity activity) {
+		super.onAttach(activity);
+		try {
+			mListener = (OnArticleSelectedListener) activity;
+		}
+		catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement OnArticleSelectedListener");
+		}
+	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -27,8 +36,11 @@ public class TitlesFragment extends ListFragment {
 				android.R.layout.simple_list_item_1,
 				Shakespeare.TITLES));
 		
+		/*-
+		ToDo: Remove this later with initial idx for title and detail being defined elsewhere
 		// Check to see if we have a frame in which to embed the details
 		// fragment directly in the containing UI.
+		
 		View detailsFrame = getActivity().findViewById(R.id.frame_details);
 		mHasDetailsFrame = (detailsFrame != null)
 				&& (detailsFrame.getVisibility() == View.VISIBLE);
@@ -45,6 +57,15 @@ public class TitlesFragment extends ListFragment {
 			// Make sure our UI is in the correct state.
 			showDetails(mPositionChecked);
 		}
+		 */
+		
+		/*-
+		ToDo: Check how this needs ot be restored
+		// Restore last state for checked position.
+		if (savedInstanceState != null) {
+			mPositionChecked = savedInstanceState.getInt("curChoice", 0);
+			mPositionShown = savedInstanceState.getInt("shownChoice", -1);
+		}*/
 	}
 	
 	@Override
@@ -59,37 +80,42 @@ public class TitlesFragment extends ListFragment {
 	 */
 	void showDetails(int index) {
 		mPositionChecked = index;
-		
-		if (mHasDetailsFrame) {
-			// We can display everything in-place with fragments, so update
-			// the list to highlight the selected item and show the data.
-			getListView().setItemChecked(index, true);
-			
-			if (mPositionShown != mPositionChecked) {
-				// If we are not currently showing a fragment for the new
-				// position, we need to create and install a new one.
-				DetailsFragment df = DetailsFragment.newInstance(index);
-				
-				// Execute a transaction, replacing any existing fragment
-				// with this one inside the frame.
-				getFragmentManager()
-						.beginTransaction()
-						.replace(R.id.frame_details, df)
-						.setTransition(
-								FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-						.commit();
-				
-				mPositionShown = index;
-			}
-			
-		} else {
-			// Otherwise we need to launch a new activity to display
-			// the dialog fragment with selected text.
-			Intent intent = new Intent();
-			intent.setClass(getActivity(), DetailsActivity.class);
-			intent.putExtra("index", index);
-			startActivity(intent);
+		if (mPositionShown != mPositionChecked) {
+			mPositionShown = index;
+			mListener.onArticleSelected(null);
 		}
+		/*-	ToDO- See how this can accomodate for saveInstance and also for portrait mode	
+		if (mHasDetailsFrame) {
+		// We can display everything in-place with fragments, so update
+		// the list to highlight the selected item and show the data.
+		getListView().setItemChecked(index, true);
+		
+		if (mPositionShown != mPositionChecked) {
+		// If we are not currently showing a fragment for the new
+		// position, we need to create and install a new one.
+		DetailsFragment df = DetailsFragment.newInstance(index);
+		
+		// Execute a transaction, replacing any existing fragment
+		// with this one inside the frame.
+		getFragmentManager()
+		.beginTransaction()
+		.replace(R.id.frame_details, df)
+		.setTransition(
+		FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+		.commit();
+		
+		mPositionShown = index;
+		}
+		
+		} else {
+		// Otherwise we need to launch a new activity to display
+		// the dialog fragment with selected text.
+		Intent intent = new Intent();
+		intent.setClass(getActivity(), DetailsActivity.class);
+		intent.putExtra("index", index);
+		startActivity(intent);
+		}
+		 */
 	}
 	
 	@Override
@@ -99,5 +125,4 @@ public class TitlesFragment extends ListFragment {
 		outState.putInt("curChoice", mPositionChecked);
 		outState.putInt("shownChoice", mPositionShown);
 	}
-	
 }

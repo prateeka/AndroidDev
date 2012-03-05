@@ -1,6 +1,7 @@
 package com.actionbarsherlock.sample.shakespeare.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.Menu;
@@ -9,13 +10,23 @@ import android.view.MenuInflater;
 import android.widget.Toast;
 
 import com.actionbarsherlock.sample.shakespeare.R;
+import com.actionbarsherlock.sample.shakespeare.fragments.OnArticleSelectedListener;
 
-public class TitlesActivity extends FragmentActivity {
+public class TitlesActivity extends FragmentActivity implements
+		OnArticleSelectedListener {
+	
+	private TitleSelectedListener listener;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.activity_titles);
-		setContentView(R.layout.activity_titles);
+		setContentView(R.layout.main);
+		init();
+	}
+	
+	private void init() {
+		listener = TitleSelectedListener.getInstance();
 	}
 	
 	@Override
@@ -34,11 +45,6 @@ public class TitlesActivity extends FragmentActivity {
 				Intent intent = new Intent(this, TitlesActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				/*-ToDO - delete if not reqd
-				// Get rid of the slide-in animation, if possible
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
-					 OverridePendingTransition.invoke(this);
-				}*/
 			case R.id.menuAdd:
 				handled = true;
 				Toast toast = Toast.makeText(
@@ -53,5 +59,10 @@ public class TitlesActivity extends FragmentActivity {
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	@Override
+	public void onArticleSelected(Uri articleUri) {
+		listener.showDetails(articleUri);
 	}
 }
