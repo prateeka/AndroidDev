@@ -19,20 +19,18 @@ public class DetailsFragment extends Fragment {
 	private EditText contentView;
 	private Button save;
 	private Button cancel;
+	private ButtonOnClickListener listener;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		titleView = (EditText) findViewById(
-				R.id.title);
-		contentView = (EditText) findViewById(
-				R.id.content);
-		save = (Button) findViewById(R.id.save);
-		cancel = (Button) findViewById(R.id.cancel);
-	}
-	
-	public DetailsFragment() {
 		thisInstance = this;
+		listener = ButtonOnClickListener.getInstance(
+				titleView,
+				contentView,
+				save,
+				cancel);
+		initViews();
 	}
 	
 	public static DetailsFragment getInstance() {
@@ -51,15 +49,24 @@ public class DetailsFragment extends Fragment {
 		titleView.setText(Notes.getTitles(position));
 		contentView.setText(Notes.getDetails(position));
 		disableViews();
-		hideButtons();
+	}
+	
+	public void addNote() {
+		titleView.setText("");
+		contentView.setText("");
+		enableViews();
+	}
+	
+	private void enableViews() {
+		titleView.setEnabled(true);
+		contentView.setEnabled(true);
+		save.setVisibility(View.VISIBLE);
+		cancel.setVisibility(View.VISIBLE);
 	}
 	
 	private void disableViews() {
 		titleView.setEnabled(false);
 		contentView.setEnabled(false);
-	}
-	
-	private void hideButtons() {
 		save.setVisibility(View.INVISIBLE);
 		cancel.setVisibility(View.INVISIBLE);
 	}
@@ -67,4 +74,19 @@ public class DetailsFragment extends Fragment {
 	private View findViewById(int id) {
 		return getActivity().findViewById(id);
 	}
+	
+	private void initViews() {
+		titleView = (EditText) findViewById(
+				R.id.title);
+		contentView = (EditText) findViewById(
+				R.id.content);
+		save = (Button) findViewById(R.id.save);
+		cancel = (Button) findViewById(R.id.cancel);
+		setButtonOnClickListener(save);
+	}
+	
+	private void setButtonOnClickListener(Button button) {
+		button.setOnClickListener(listener);
+	}
+	
 }

@@ -14,7 +14,7 @@ import com.actionbarsherlock.sample.shakespeare.fragments.OnArticleSelectedListe
 public class TitlesActivity extends FragmentActivity implements
 		OnArticleSelectedListener {
 	
-	private TitleSelectedListener listener;
+	private DetailHandler handler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class TitlesActivity extends FragmentActivity implements
 	}
 	
 	private void init() {
-		listener = TitleSelectedListener.getInstance();
+		handler = DetailHandler.getInstance();
 	}
 	
 	@Override
@@ -46,6 +46,7 @@ public class TitlesActivity extends FragmentActivity implements
 				startActivity(intent);
 			case R.id.menuAdd:
 				handled = true;
+				handler.addNote();
 				Toast toast = Toast.makeText(
 						getApplicationContext(),
 						"Add Menu pressed",
@@ -62,6 +63,6 @@ public class TitlesActivity extends FragmentActivity implements
 	
 	@Override
 	public void onArticleSelected(int position) {
-		listener.showDetails(position);
+		handler.showDetails(position);
 	}
 }
