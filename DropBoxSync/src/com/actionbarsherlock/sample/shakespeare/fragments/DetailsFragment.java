@@ -6,7 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.actionbarsherlock.sample.shakespeare.Notes;
 import com.actionbarsherlock.sample.shakespeare.R;
@@ -14,20 +15,28 @@ import com.actionbarsherlock.sample.shakespeare.R;
 public class DetailsFragment extends Fragment {
 	private static final String TAG = "DetailsFragment";
 	private static DetailsFragment thisInstance;
+	private EditText titleView;
+	private EditText contentView;
+	private Button save;
+	private Button cancel;
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		titleView = (EditText) findViewById(
+				R.id.title);
+		contentView = (EditText) findViewById(
+				R.id.content);
+		save = (Button) findViewById(R.id.save);
+		cancel = (Button) findViewById(R.id.cancel);
+	}
 	
 	public DetailsFragment() {
 		thisInstance = this;
 	}
 	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
+	public static DetailsFragment getInstance() {
+		return thisInstance;
 	}
 	
 	@Override
@@ -39,16 +48,23 @@ public class DetailsFragment extends Fragment {
 	
 	public void displayDetails(int position) {
 		Log.d(TAG, "position received is " + position);
-		TextView titleView = (TextView) getActivity().findViewById(
-				R.id.title);
-		TextView contentView = (TextView) getActivity().findViewById(
-				R.id.content);
-		
 		titleView.setText(Notes.getTitles(position));
 		contentView.setText(Notes.getDetails(position));
+		disableViews();
+		hideButtons();
 	}
 	
-	public static DetailsFragment getInstance() {
-		return thisInstance;
+	private void disableViews() {
+		titleView.setEnabled(false);
+		contentView.setEnabled(false);
+	}
+	
+	private void hideButtons() {
+		save.setVisibility(View.INVISIBLE);
+		cancel.setVisibility(View.INVISIBLE);
+	}
+	
+	private View findViewById(int id) {
+		return getActivity().findViewById(id);
 	}
 }
