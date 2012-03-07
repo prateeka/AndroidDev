@@ -372,7 +372,7 @@ containing a value of this type.
         public static final int abs__textButton=0x7f040019;
         public static final int abs__up=0x7f040010;
         public static final int cancel=0x7f040020;
-        public static final int content=0x7f04001e;
+        public static final int detail=0x7f04001e;
         public static final int detailFragment=0x7f040021;
         public static final int fragment_details=0x7f040023;
         public static final int fragment_titles=0x7f040022;

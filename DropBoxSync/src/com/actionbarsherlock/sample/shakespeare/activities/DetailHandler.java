@@ -5,8 +5,8 @@ import android.util.Log;
 import com.actionbarsherlock.sample.shakespeare.fragments.DetailsFragment;
 
 class DetailHandler {
-	private static final String TAG = "TitleSelectedListener";
-	
+	private static final String TAG = "DetailHandler";
+	private static DetailsFragment fragment;
 	private static DetailHandler thisInstance;
 	
 	private DetailHandler() {
@@ -16,27 +16,25 @@ class DetailHandler {
 		if (thisInstance == null) {
 			thisInstance = new DetailHandler();
 		}
+		fragment = DetailsFragment.getInstance();
 		return thisInstance;
 	}
 	
-	void showDetails(int position) {
-		Log.d(TAG, "showDetails position passed is " + position);
-		DetailsFragment detailsFragment = DetailsFragment.getInstance();
+	void showDetails(String titleSelected) {
+		Log.d(TAG, "showDetails titleSelected is " + titleSelected);
 		
 		// ToDO: Handle the case for portrait
-		if (detailsFragment != null) {
-			detailsFragment.displayDetails(position);
+		if (fragment != null) {
+			fragment.displayDetails(titleSelected);
 		}
 	}
 	
 	void addNote() {
 		Log.d(TAG, "addNote called");
-		DetailsFragment detailsFragment = DetailsFragment.getInstance();
 		
 		// ToDO: Handle the case for portrait
-		if (detailsFragment != null) {
-			detailsFragment.addNote();
+		if (fragment != null) {
+			fragment.addNote();
 		}
-		
 	}
 }

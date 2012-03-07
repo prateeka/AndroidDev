@@ -9,7 +9,7 @@ import android.support.v4.view.MenuItem;
 import com.actionbarsherlock.sample.shakespeare.fragments.DetailsFragment;
 
 public class DetailsActivity extends FragmentActivity {
-	private static final String TAG = "DetailsActivity";
+	// private static final String TAG = "DetailsActivity";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

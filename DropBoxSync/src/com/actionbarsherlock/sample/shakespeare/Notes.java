@@ -1,15 +1,22 @@
 package com.actionbarsherlock.sample.shakespeare;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import android.util.Log;
 
 public final class Notes {
 	private static Map<String, String> notes = new HashMap<String, String>();
-	private static String[] titles;
+	private static List<String> titles;
+	private static Notes thisInstance;
+	
+	private static final String TAG = "Notes";
 	
 	static {
 		populateNotes();
-		populatetitles();
+		populateTitles();
 	}
 	
 	private static void populateNotes() {
@@ -22,19 +29,41 @@ public final class Notes {
 		notes.put("key7", "value7");
 	}
 	
-	private static void populatetitles() {
-		titles = notes.keySet().toArray(new String[0]);
+	public static Notes getInstance() {
+		if (thisInstance == null) {
+			thisInstance = new Notes();
+		}
+		return thisInstance;
 	}
 	
-	public synchronized static String[] getTitles() {
+	private Notes() {
+	}
+	
+	private static void populateTitles() {
+		titles = new ArrayList<String>(notes.keySet());
+		
+		// Below printing is for debugging only
+		StringBuilder tmpTitles = new StringBuilder();
+		for (String title : titles) {
+			tmpTitles.append(title);
+		}
+		Log.d(TAG, "titles available are: " + tmpTitles);
+	}
+	
+	public synchronized List<String> getTitles() {
 		return titles;
 	}
 	
-	public synchronized static String getDetails(int position) {
-		return notes.get(titles[position]);
+	public synchronized String getDetail(String titleSelected) {
+		return notes.get(titleSelected);
 	}
 	
-	public synchronized static String getTitles(int position) {
-		return titles[position];
+	/*-	public synchronized String getTitle(int position) {
+	 return titles[position];
+	 }*/
+	
+	public synchronized void saveNote(String title, String detail) {
+		notes.put(title, detail);
+		populateTitles();
 	}
 }

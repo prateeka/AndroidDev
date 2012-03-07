@@ -3,6 +3,7 @@ package com.actionbarsherlock.sample.shakespeare.fragments;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.SupportActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -13,10 +14,20 @@ public class TitlesFragment extends ListFragment {
 	int mPositionChecked = 0;
 	int mPositionShown = -1;
 	private OnArticleSelectedListener mListener;
+	private Notes notes;
+	private static TitlesFragment thisInstance;
+	private ArrayAdapter<String> titleAdapter;
+	
+	private static final String TAG = "TitlesFragment";
+	
+	public static TitlesFragment getInstance() {
+		return thisInstance;
+	}
 	
 	@Override
 	public void onAttach(SupportActivity activity) {
 		super.onAttach(activity);
+		Log.d(TAG, "onAttach called");
 		try {
 			mListener = (OnArticleSelectedListener) activity;
 		}
@@ -29,12 +40,16 @@ public class TitlesFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		Log.d(TAG, "onActivityCreated called");
+		notes = Notes.getInstance();
+		thisInstance = this;
 		
-		// Populate list with our static array of titles.
-		setListAdapter(new ArrayAdapter<String>(
+		// Populate list with array of titles.
+		titleAdapter = new ArrayAdapter<String>(
 				getActivity(),
 				android.R.layout.simple_list_item_1,
-				Notes.getTitles()));
+				notes.getTitles());
+		setListAdapter(titleAdapter);
 		
 		/*-
 		ToDo: Check how this needs to be restored
@@ -47,19 +62,11 @@ public class TitlesFragment extends ListFragment {
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		showDetails(position);
-	}
-	
-	/**
-	 * Helper function to show the details of a selected item, either by
-	 * displaying a fragment in-place in the current UI, or starting a
-	 * whole new activity in which it is displayed.
-	 */
-	void showDetails(int index) {
-		mPositionChecked = index;
+		mPositionChecked = position;
 		if (mPositionShown != mPositionChecked) {
-			mPositionShown = index;
-			mListener.onArticleSelected(index);
+			mPositionShown = position;
+			String titleSelected = titleAdapter.getItem(position);
+			showDetails(titleSelected);
 		}
 	}
 	
@@ -69,5 +76,20 @@ public class TitlesFragment extends ListFragment {
 		
 		outState.putInt("curChoice", mPositionChecked);
 		outState.putInt("shownChoice", mPositionShown);
+	}
+	
+	// Helper function to show the details of a selected item
+	void showDetails(String titleSelected) {
+		mListener.onArticleSelected(titleSelected);
+	}
+	
+	public void refreshTitles() {
+		Log.d(TAG, "refreshTitle called");
+		// ToDo: replace it with DataSetObserver
+		titleAdapter = new ArrayAdapter<String>(
+				getActivity(),
+				android.R.layout.simple_list_item_1,
+				notes.getTitles());
+		setListAdapter(titleAdapter);
 	}
 }
