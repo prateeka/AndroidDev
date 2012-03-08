@@ -379,6 +379,7 @@ containing a value of this type.
         public static final int homeAsUp=0x7f040006;
         public static final int listMode=0x7f040002;
         public static final int menuAdd=0x7f040025;
+        public static final int menuDelete=0x7f040027;
         public static final int menuGroup_Main=0x7f040024;
         public static final int menuUpdate=0x7f040026;
         public static final int normal=0x7f040001;
@@ -411,7 +412,7 @@ containing a value of this type.
         public static final int main=0x7f03000d;
     }
     public static final class menu {
-        public static final int title=0x7f0b0000;
+        public static final int actionbar=0x7f0b0000;
     }
     public static final class string {
         public static final int abs__tab_under_ab_tag=0x7f080000;

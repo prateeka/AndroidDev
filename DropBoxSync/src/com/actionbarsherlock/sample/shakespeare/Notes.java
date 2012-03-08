@@ -54,7 +54,7 @@ public final class Notes {
 		return titles;
 	}
 	
-	public synchronized String getDetail(String titleSelected) {
+	public String getDetail(String titleSelected) {
 		return notes.get(titleSelected);
 	}
 	
@@ -62,15 +62,23 @@ public final class Notes {
 	 return titles[position];
 	 }*/
 	
-	public synchronized void saveNote(String title, String detail) {
-		notes.put(title, detail);
+	public String saveNote(String title, String detail) {
+		String tmp = notes.put(title, detail);
 		populateTitles();
+		return tmp;
 	}
 	
-	public void updateNote(String titlePrevSelected, String updatedTitle,
+	public String updateNote(String titlePrevSelected, String updatedTitle,
 			String updatedDetail) {
 		notes.remove(titlePrevSelected);
-		notes.put(updatedTitle, updatedDetail);
+		String tmp = notes.put(updatedTitle, updatedDetail);
 		populateTitles();
+		return tmp;
+	}
+	
+	public String deleteNote(String titlePrevSelected) {
+		String tmp = notes.remove(titlePrevSelected);
+		populateTitles();
+		return tmp;
 	}
 }

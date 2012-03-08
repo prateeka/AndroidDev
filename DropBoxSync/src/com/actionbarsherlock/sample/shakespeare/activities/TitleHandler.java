@@ -2,7 +2,7 @@ package com.actionbarsherlock.sample.shakespeare.activities;
 
 import com.actionbarsherlock.sample.shakespeare.fragments.TitlesFragment;
 
-public class TitleHandler {
+class TitleHandler {
 	// private static final String TAG = "TitleHandler";
 	private static TitlesFragment fragment;
 	private static TitleHandler thisInstance;
@@ -18,7 +18,8 @@ public class TitleHandler {
 		return thisInstance;
 	}
 	
-	public void refreshTitles() {
+	void refreshTitles() {
 		fragment.refreshTitles();
 	}
+	
 }

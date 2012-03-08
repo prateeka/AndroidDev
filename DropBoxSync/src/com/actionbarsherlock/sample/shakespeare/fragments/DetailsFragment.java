@@ -60,13 +60,22 @@ public class DetailsFragment extends Fragment {
 		resetTitlePrevSelected();
 		populateTitleAndDetail();
 		enableTextViews();
-		showButtons();
+		showButtons(true);
 	}
 	
 	public void updateNote() {
 		Log.d(TAG, "updateNote selected ");
 		enableTextViews();
-		showButtons();
+		showButtons(true);
+	}
+	
+	public void deleteNote() {
+		Log.d(TAG, "deleteNote selected ");
+		
+		if (titlePrevSelected != null) {
+			String tmp = notes.deleteNote(titlePrevSelected);
+			resetTitleDetailViews(tmp, "DELETED");
+		}
 	}
 	
 	private void populateTitleAndDetail(String titleSelected) {
@@ -85,31 +94,33 @@ public class DetailsFragment extends Fragment {
 		detailView.setEnabled(true);
 	}
 	
+	private void disableTextViews() {
+		titleView.setEnabled(false);
+		detailView.setEnabled(false);
+		showButtons(false);
+	}
+	
 	private void showTextViews() {
 		titleView.setVisibility(View.VISIBLE);
 		detailView.setVisibility(View.VISIBLE);
 	}
 	
-	private void disableTextViews() {
-		titleView.setEnabled(false);
-		detailView.setEnabled(false);
-		hideButtons();
-	}
-	
-	private void showButtons() {
-		save.setVisibility(View.VISIBLE);
-		cancel.setVisibility(View.VISIBLE);
-	}
-	
-	private void hideButtons() {
-		save.setVisibility(View.INVISIBLE);
-		cancel.setVisibility(View.INVISIBLE);
+	private void showButtons(boolean flag) {
+		int status;
+		if (flag) {
+			status = View.VISIBLE;
+		} else {
+			status = View.INVISIBLE;
+		}
+		
+		save.setVisibility(status);
+		cancel.setVisibility(status);
 	}
 	
 	private void hideViews() {
 		titleView.setVisibility(View.INVISIBLE);
 		detailView.setVisibility(View.INVISIBLE);
-		hideButtons();
+		showButtons(false);
 	}
 	
 	private View findViewById(int id) {
@@ -126,12 +137,18 @@ public class DetailsFragment extends Fragment {
 		save.setOnClickListener(listener);
 	}
 	
-	private void refreshTitles() {
-		activity.refreshTitles();
+	private void detailWorkedOn(String titleWorkedOn, String operation) {
+		activity.detailWorkedOn(titleWorkedOn, operation);
 	}
 	
 	private void resetTitlePrevSelected() {
 		titlePrevSelected = null;
+	}
+	
+	private void resetTitleDetailViews(String titleWorkedOn, String operation) {
+		resetTitlePrevSelected();
+		hideViews();
+		detailWorkedOn(titleWorkedOn, operation);
 	}
 	
 	private class ButtonOnClickListener implements OnClickListener {
@@ -140,25 +157,22 @@ public class DetailsFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
+			String tmpTitle;
 			if (v.getId() == save.getId()) {
 				Log.d(TAG, "onClick called for save button");
 				Log.d(TAG, "title value and detail value : "
 						+ titleView.getText().toString() + ":"
 						+ detailView.getText().toString());
 				if (titlePrevSelected == null) {
-					notes.saveNote(titleView.getText().toString(),
+					tmpTitle = notes.saveNote(titleView.getText().toString(),
 							detailView.getText().toString());
 				} else {
-					notes.updateNote(titlePrevSelected,
+					tmpTitle = notes.updateNote(titlePrevSelected,
 							titleView.getText().toString(),
 							detailView.getText().toString());
 				}
+				resetTitleDetailViews(tmpTitle, "SAVED");
 			}
-			
-			resetTitlePrevSelected();
-			hideViews();
-			refreshTitles();
 		}
-		
 	}
 }

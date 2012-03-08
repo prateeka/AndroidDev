@@ -34,7 +34,7 @@ public class TitlesActivity extends FragmentActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.title, menu);
+		inflater.inflate(R.menu.actionbar, menu);
 		return true;
 	}
 	
@@ -54,12 +54,16 @@ public class TitlesActivity extends FragmentActivity implements
 				break;
 			case R.id.menuUpdate:
 				handled = true;
+				detailHandler.updateNote();
+				break;
+			case R.id.menuDelete:
+				handled = true;
 				Toast toast = Toast.makeText(
 						getApplicationContext(),
-						"Update Menu pressed",
+						"Delete Menu pressed",
 						1000);
 				toast.show();
-				detailHandler.updateNote();
+				detailHandler.deleteNote();
 				break;
 		}
 		
@@ -75,7 +79,7 @@ public class TitlesActivity extends FragmentActivity implements
 		detailHandler.showDetails(titleSelected);
 	}
 	
-	public void refreshTitles() {
+	public void detailWorkedOn(String titleWorkedOn, String operation) {
 		titleHandler.refreshTitles();
 	}
 }
