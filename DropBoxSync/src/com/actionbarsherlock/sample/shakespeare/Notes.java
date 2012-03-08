@@ -66,4 +66,11 @@ public final class Notes {
 		notes.put(title, detail);
 		populateTitles();
 	}
+	
+	public void updateNote(String titlePrevSelected, String updatedTitle,
+			String updatedDetail) {
+		notes.remove(titlePrevSelected);
+		notes.put(updatedTitle, updatedDetail);
+		populateTitles();
+	}
 }

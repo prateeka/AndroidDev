@@ -37,4 +37,13 @@ class DetailHandler {
 			fragment.addNote();
 		}
 	}
+	
+	void updateNote() {
+		Log.d(TAG, "updateNote called");
+		
+		// ToDO: Handle the case for portrait
+		if (fragment != null) {
+			fragment.updateNote();
+		}
+	}
 }

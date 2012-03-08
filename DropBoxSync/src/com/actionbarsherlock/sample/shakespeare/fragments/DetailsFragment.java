@@ -23,6 +23,7 @@ public class DetailsFragment extends Fragment {
 	private ButtonOnClickListener listener;
 	private Notes notes;
 	private TitlesActivity activity;
+	private String titlePrevSelected;
 	
 	private static final String TAG = "DetailsFragment";
 	
@@ -49,17 +50,33 @@ public class DetailsFragment extends Fragment {
 	
 	public void displayDetails(String titleSelected) {
 		Log.d(TAG, "titleSelected is " + titleSelected);
-		titleView.setText(titleSelected);
-		detailView.setText(notes.getDetail(titleSelected));
+		titlePrevSelected = titleSelected;
+		populateTitleAndDetail(titleSelected);
 		showTextViews();
 		disableTextViews();
 	}
 	
 	public void addNote() {
-		titleView.setText("");
-		detailView.setText("");
+		resetTitlePrevSelected();
+		populateTitleAndDetail();
 		enableTextViews();
 		showButtons();
+	}
+	
+	public void updateNote() {
+		Log.d(TAG, "updateNote selected ");
+		enableTextViews();
+		showButtons();
+	}
+	
+	private void populateTitleAndDetail(String titleSelected) {
+		titleView.setText(titleSelected);
+		detailView.setText(notes.getDetail(titleSelected));
+	}
+	
+	private void populateTitleAndDetail() {
+		titleView.setText("");
+		detailView.setText("");
 	}
 	
 	private void enableTextViews() {
@@ -68,7 +85,7 @@ public class DetailsFragment extends Fragment {
 		detailView.setEnabled(true);
 	}
 	
-	protected void showTextViews() {
+	private void showTextViews() {
 		titleView.setVisibility(View.VISIBLE);
 		detailView.setVisibility(View.VISIBLE);
 	}
@@ -113,27 +130,35 @@ public class DetailsFragment extends Fragment {
 		activity.refreshTitles();
 	}
 	
+	private void resetTitlePrevSelected() {
+		titlePrevSelected = null;
+	}
+	
 	private class ButtonOnClickListener implements OnClickListener {
 		
 		private final String TAG = "ButtonOnClickListener";
 		
 		@Override
 		public void onClick(View v) {
-			Log.d(TAG, "save is " + save);
-			
 			if (v.getId() == save.getId()) {
 				Log.d(TAG, "onClick called for save button");
 				Log.d(TAG, "title value and detail value : "
 						+ titleView.getText().toString() + ":"
 						+ detailView.getText().toString());
-				notes.saveNote(titleView.getText().toString(), detailView
-						.getText()
-						.toString());
+				if (titlePrevSelected == null) {
+					notes.saveNote(titleView.getText().toString(),
+							detailView.getText().toString());
+				} else {
+					notes.updateNote(titlePrevSelected,
+							titleView.getText().toString(),
+							detailView.getText().toString());
+				}
 			}
 			
+			resetTitlePrevSelected();
 			hideViews();
 			refreshTitles();
 		}
-	};
-	
+		
+	}
 }

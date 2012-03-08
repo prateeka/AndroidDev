@@ -380,6 +380,7 @@ containing a value of this type.
         public static final int listMode=0x7f040002;
         public static final int menuAdd=0x7f040025;
         public static final int menuGroup_Main=0x7f040024;
+        public static final int menuUpdate=0x7f040026;
         public static final int normal=0x7f040001;
         public static final int save=0x7f04001f;
         public static final int showCustom=0x7f040008;

@@ -47,14 +47,20 @@ public class TitlesActivity extends FragmentActivity implements
 				Intent intent = new Intent(this, TitlesActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
+				break;
 			case R.id.menuAdd:
 				handled = true;
 				detailHandler.addNote();
+				break;
+			case R.id.menuUpdate:
+				handled = true;
 				Toast toast = Toast.makeText(
 						getApplicationContext(),
-						"Add Menu pressed",
+						"Update Menu pressed",
 						1000);
 				toast.show();
+				detailHandler.updateNote();
+				break;
 		}
 		
 		if (handled) {

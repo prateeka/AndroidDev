@@ -67,6 +67,10 @@ public class TitlesFragment extends ListFragment {
 			mPositionShown = position;
 			String titleSelected = titleAdapter.getItem(position);
 			showDetails(titleSelected);
+		} else {
+			// For debugging only
+			Log.d(TAG, "prevPosition and currentPosition selected match "
+					+ mPositionShown + ":" + mPositionChecked);
 		}
 	}
 	
@@ -85,6 +89,7 @@ public class TitlesFragment extends ListFragment {
 	
 	public void refreshTitles() {
 		Log.d(TAG, "refreshTitle called");
+		mPositionShown = -1;
 		// ToDo: replace it with DataSetObserver
 		titleAdapter = new ArrayAdapter<String>(
 				getActivity(),
