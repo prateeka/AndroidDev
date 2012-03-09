@@ -25,6 +25,10 @@ public class DetailsFragment extends Fragment {
 	private TitlesActivity activity;
 	private String titlePrevSelected;
 	
+	public static final String SAVED = "SAVED";
+	public static final String CANCELLED = "CANCELLED";
+	public static final String DELETED = "DELETED";
+	
 	private static final String TAG = "DetailsFragment";
 	
 	@Override
@@ -74,7 +78,7 @@ public class DetailsFragment extends Fragment {
 		
 		if (titlePrevSelected != null) {
 			String tmp = notes.deleteNote(titlePrevSelected);
-			resetTitleDetailViews(tmp, "DELETED");
+			resetTitleDetailViews(tmp, DELETED);
 		}
 	}
 	
@@ -135,6 +139,7 @@ public class DetailsFragment extends Fragment {
 		save = (Button) findViewById(R.id.save);
 		cancel = (Button) findViewById(R.id.cancel);
 		save.setOnClickListener(listener);
+		cancel.setOnClickListener(listener);
 	}
 	
 	private void detailWorkedOn(String titleWorkedOn, String operation) {
@@ -146,9 +151,15 @@ public class DetailsFragment extends Fragment {
 	}
 	
 	private void resetTitleDetailViews(String titleWorkedOn, String operation) {
-		resetTitlePrevSelected();
-		hideViews();
-		detailWorkedOn(titleWorkedOn, operation);
+		if ((operation == SAVED) || (operation == DELETED)) {
+			resetTitlePrevSelected();
+			hideViews();
+			detailWorkedOn(titleWorkedOn, operation);
+		} else if (operation == CANCELLED) {
+			resetTitlePrevSelected();
+			hideViews();
+			detailWorkedOn(titleWorkedOn, operation);
+		}
 	}
 	
 	private class ButtonOnClickListener implements OnClickListener {
@@ -157,21 +168,23 @@ public class DetailsFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-			String tmpTitle;
 			if (v.getId() == save.getId()) {
 				Log.d(TAG, "onClick called for save button");
 				Log.d(TAG, "title value and detail value : "
 						+ titleView.getText().toString() + ":"
 						+ detailView.getText().toString());
 				if (titlePrevSelected == null) {
-					tmpTitle = notes.saveNote(titleView.getText().toString(),
+					notes.saveNote(titleView.getText().toString(),
 							detailView.getText().toString());
 				} else {
-					tmpTitle = notes.updateNote(titlePrevSelected,
+					notes.updateNote(titlePrevSelected,
 							titleView.getText().toString(),
 							detailView.getText().toString());
 				}
-				resetTitleDetailViews(tmpTitle, "SAVED");
+				resetTitleDetailViews(titleView.getText().toString(), SAVED);
+			} else if (v.getId() == cancel.getId()) {
+				Log.d(TAG, "onClick called for cancel button");
+				resetTitleDetailViews(null, CANCELLED);
 			}
 		}
 	}

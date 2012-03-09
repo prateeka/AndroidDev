@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.widget.Toast;
 
 import com.actionbarsherlock.sample.shakespeare.R;
+import com.actionbarsherlock.sample.shakespeare.fragments.DetailsFragment;
 import com.actionbarsherlock.sample.shakespeare.fragments.OnArticleSelectedListener;
 
 public class TitlesActivity extends FragmentActivity implements
@@ -16,6 +17,7 @@ public class TitlesActivity extends FragmentActivity implements
 	
 	private TitleHandler titleHandler;
 	private DetailHandler detailHandler;
+	private Menu menu;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,27 @@ public class TitlesActivity extends FragmentActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.actionbar, menu);
+		this.menu = menu;
 		return true;
+	}
+	
+	@Override
+	public void onArticleSelected(String titleSelected) {
+		detailHandler.showDetails(titleSelected);
+	}
+	
+	public void detailWorkedOn(String titleWorkedOn, String operation) {
+		if (!operation.equals(DetailsFragment.CANCELLED)) {
+			Toast toast = Toast.makeText(
+					getApplicationContext(),
+					titleWorkedOn + " " + operation,
+					1000);
+			toast.show();
+		}
+		enableMenuItem(R.id.menuAdd);
+		enableMenuItem(R.id.menuUpdate);
+		enableMenuItem(R.id.menuDelete);
+		titleHandler.refreshTitles();
 	}
 	
 	@Override
@@ -51,18 +73,17 @@ public class TitlesActivity extends FragmentActivity implements
 			case R.id.menuAdd:
 				handled = true;
 				detailHandler.addNote();
+				disableMenuItem(R.id.menuUpdate);
+				disableMenuItem(R.id.menuDelete);
 				break;
 			case R.id.menuUpdate:
 				handled = true;
 				detailHandler.updateNote();
+				disableMenuItem(R.id.menuAdd);
+				disableMenuItem(R.id.menuDelete);
 				break;
 			case R.id.menuDelete:
 				handled = true;
-				Toast toast = Toast.makeText(
-						getApplicationContext(),
-						"Delete Menu pressed",
-						1000);
-				toast.show();
 				detailHandler.deleteNote();
 				break;
 		}
@@ -74,12 +95,11 @@ public class TitlesActivity extends FragmentActivity implements
 		}
 	}
 	
-	@Override
-	public void onArticleSelected(String titleSelected) {
-		detailHandler.showDetails(titleSelected);
+	private void disableMenuItem(int item) {
+		menu.findItem(item).setEnabled(false);
 	}
 	
-	public void detailWorkedOn(String titleWorkedOn, String operation) {
-		titleHandler.refreshTitles();
+	private void enableMenuItem(int item) {
+		menu.findItem(item).setEnabled(true);
 	}
 }

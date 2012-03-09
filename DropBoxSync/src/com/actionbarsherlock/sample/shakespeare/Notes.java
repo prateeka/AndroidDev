@@ -62,10 +62,9 @@ public final class Notes {
 	 return titles[position];
 	 }*/
 	
-	public String saveNote(String title, String detail) {
-		String tmp = notes.put(title, detail);
+	public void saveNote(String title, String detail) {
+		notes.put(title, detail);
 		populateTitles();
-		return tmp;
 	}
 	
 	public String updateNote(String titlePrevSelected, String updatedTitle,

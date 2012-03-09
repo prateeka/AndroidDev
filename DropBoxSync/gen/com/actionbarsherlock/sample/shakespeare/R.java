@@ -373,15 +373,14 @@ containing a value of this type.
         public static final int abs__up=0x7f040010;
         public static final int cancel=0x7f040020;
         public static final int detail=0x7f04001e;
-        public static final int detailFragment=0x7f040021;
-        public static final int fragment_details=0x7f040023;
-        public static final int fragment_titles=0x7f040022;
+        public static final int fragment_details=0x7f040022;
+        public static final int fragment_titles=0x7f040021;
         public static final int homeAsUp=0x7f040006;
         public static final int listMode=0x7f040002;
-        public static final int menuAdd=0x7f040025;
-        public static final int menuDelete=0x7f040027;
-        public static final int menuGroup_Main=0x7f040024;
-        public static final int menuUpdate=0x7f040026;
+        public static final int menuAdd=0x7f040024;
+        public static final int menuDelete=0x7f040026;
+        public static final int menuGroup_Main=0x7f040023;
+        public static final int menuUpdate=0x7f040025;
         public static final int normal=0x7f040001;
         public static final int save=0x7f04001f;
         public static final int showCustom=0x7f040008;
@@ -408,8 +407,7 @@ containing a value of this type.
         public static final int abs__screen_simple=0x7f030009;
         public static final int abs__simple_spinner_item=0x7f03000a;
         public static final int details=0x7f03000b;
-        public static final int details_activity_layout=0x7f03000c;
-        public static final int main=0x7f03000d;
+        public static final int main=0x7f03000c;
     }
     public static final class menu {
         public static final int actionbar=0x7f0b0000;

@@ -25,9 +25,5 @@
 			</intent-filter>
 		</activity>
 		
-		<activity
-			android:name=".activities.DetailsActivity"
-			android:label="@string/activity_details" />
-		
     </application>
 </manifest>
