@@ -22,4 +22,7 @@ class TitleHandler {
 		fragment.refreshTitles();
 	}
 	
+	void resetTitlePositionSelected() {
+		fragment.resetTitlePositionSelected();
+	}
 }

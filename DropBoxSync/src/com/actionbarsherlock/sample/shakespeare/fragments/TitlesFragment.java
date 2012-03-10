@@ -5,6 +5,7 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.SupportActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -43,7 +44,7 @@ public class TitlesFragment extends ListFragment {
 		Log.d(TAG, "onActivityCreated called");
 		notes = Notes.getInstance();
 		thisInstance = this;
-		
+		getListView().setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 		// Populate list with array of titles.
 		titleAdapter = new ArrayAdapter<String>(
 				getActivity(),
@@ -89,12 +90,16 @@ public class TitlesFragment extends ListFragment {
 	
 	public void refreshTitles() {
 		Log.d(TAG, "refreshTitle called");
-		mPositionShown = -1;
+		resetTitlePositionSelected();
 		// ToDo: replace it with DataSetObserver
 		titleAdapter = new ArrayAdapter<String>(
 				getActivity(),
 				android.R.layout.simple_list_item_1,
 				notes.getTitles());
 		setListAdapter(titleAdapter);
+	}
+	
+	public void resetTitlePositionSelected() {
+		mPositionShown = -1;
 	}
 }

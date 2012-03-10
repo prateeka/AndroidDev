@@ -43,6 +43,7 @@ public class TitlesActivity extends FragmentActivity implements
 	
 	@Override
 	public void onArticleSelected(String titleSelected) {
+		enableAllMenuItems();
 		detailHandler.showDetails(titleSelected);
 	}
 	
@@ -54,9 +55,7 @@ public class TitlesActivity extends FragmentActivity implements
 					1000);
 			toast.show();
 		}
-		enableMenuItem(R.id.menuAdd);
-		enableMenuItem(R.id.menuUpdate);
-		enableMenuItem(R.id.menuDelete);
+		enableAllMenuItems();
 		titleHandler.refreshTitles();
 	}
 	
@@ -72,6 +71,7 @@ public class TitlesActivity extends FragmentActivity implements
 				break;
 			case R.id.menuAdd:
 				handled = true;
+				resetTitlePositionSelected();
 				detailHandler.addNote();
 				disableMenuItem(R.id.menuUpdate);
 				disableMenuItem(R.id.menuDelete);
@@ -95,11 +95,21 @@ public class TitlesActivity extends FragmentActivity implements
 		}
 	}
 	
+	private void resetTitlePositionSelected() {
+		titleHandler.resetTitlePositionSelected();
+	}
+	
 	private void disableMenuItem(int item) {
-		menu.findItem(item).setEnabled(false);
+		menu.findItem(item).setVisible(false);
+	}
+	
+	private void enableAllMenuItems() {
+		enableMenuItem(R.id.menuAdd);
+		enableMenuItem(R.id.menuUpdate);
+		enableMenuItem(R.id.menuDelete);
 	}
 	
 	private void enableMenuItem(int item) {
-		menu.findItem(item).setEnabled(true);
+		menu.findItem(item).setVisible(true);
 	}
 }

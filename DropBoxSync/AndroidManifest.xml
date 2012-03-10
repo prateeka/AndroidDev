@@ -17,8 +17,8 @@
 
 		<activity
 			android:name=".activities.TitlesActivity"
-			android:label="@string/application_label">
-			
+			android:label="@string/application_label"
+			android:screenOrientation="landscape">  
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
