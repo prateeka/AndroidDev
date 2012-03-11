@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.actionbarsherlock.sample.shakespeare.Notes;
 import com.actionbarsherlock.sample.shakespeare.R;
 import com.actionbarsherlock.sample.shakespeare.activities.TitlesActivity;
+import com.actionbarsherlock.sample.shakespeare.notes.NotesDAO;
 
 public class DetailsFragment extends Fragment {
 	private static DetailsFragment thisInstance;
@@ -21,7 +21,7 @@ public class DetailsFragment extends Fragment {
 	private Button save;
 	private Button cancel;
 	private ButtonOnClickListener listener;
-	private Notes notes;
+	private NotesDAO notesDAO;
 	private TitlesActivity activity;
 	private String titlePrevSelected;
 	
@@ -36,7 +36,7 @@ public class DetailsFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		thisInstance = this;
 		listener = new ButtonOnClickListener();
-		notes = Notes.getInstance();
+		notesDAO = NotesDAO.getInstance();
 		activity = (TitlesActivity) getActivity();
 		initViews();
 	}
@@ -77,14 +77,14 @@ public class DetailsFragment extends Fragment {
 		Log.d(TAG, "deleteNote selected ");
 		
 		if (titlePrevSelected != null) {
-			String tmp = notes.deleteNote(titlePrevSelected);
+			String tmp = notesDAO.deleteNote(titlePrevSelected);
 			resetTitleDetailViews(tmp, DELETED);
 		}
 	}
 	
 	private void populateTitleAndDetail(String titleSelected) {
 		titleView.setText(titleSelected);
-		detailView.setText(notes.getDetail(titleSelected));
+		detailView.setText(notesDAO.getDetail(titleSelected));
 	}
 	
 	private void populateTitleAndDetail() {
@@ -174,10 +174,10 @@ public class DetailsFragment extends Fragment {
 						+ titleView.getText().toString() + ":"
 						+ detailView.getText().toString());
 				if (titlePrevSelected == null) {
-					notes.saveNote(titleView.getText().toString(),
+					notesDAO.saveNote(titleView.getText().toString(),
 							detailView.getText().toString());
 				} else {
-					notes.updateNote(titlePrevSelected,
+					notesDAO.updateNote(titlePrevSelected,
 							titleView.getText().toString(),
 							detailView.getText().toString());
 				}

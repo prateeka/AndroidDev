@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.widget.Toast;
 
 import com.actionbarsherlock.sample.shakespeare.R;
+import com.actionbarsherlock.sample.shakespeare.email.Mail;
 import com.actionbarsherlock.sample.shakespeare.fragments.DetailsFragment;
 import com.actionbarsherlock.sample.shakespeare.fragments.OnArticleSelectedListener;
 
@@ -18,6 +20,8 @@ public class TitlesActivity extends FragmentActivity implements
 	private TitleHandler titleHandler;
 	private DetailHandler detailHandler;
 	private Menu menu;
+	
+	private static final String TAG = "TitlesActivity";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,7 @@ public class TitlesActivity extends FragmentActivity implements
 		super.onStart();
 		detailHandler = DetailHandler.getInstance();
 		titleHandler = TitleHandler.getInstance();
+		sendEmail();
 	}
 	
 	@Override
@@ -111,5 +116,16 @@ public class TitlesActivity extends FragmentActivity implements
 	
 	private void enableMenuItem(int item) {
 		menu.findItem(item).setVisible(true);
+	}
+	
+	private void sendEmail() {
+		Mail mail = new Mail();
+		try {
+			mail.send();
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			Log.e(TAG, ex.toString());
+		}
 	}
 }

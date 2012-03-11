@@ -4,5 +4,8 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="/home/asthanap/Downloads/activation.jar"/>
+	<classpathentry kind="lib" path="/home/asthanap/Downloads/additionnal.jar"/>
+	<classpathentry kind="lib" path="/home/asthanap/Downloads/mail.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -9,13 +9,13 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.actionbarsherlock.sample.shakespeare.Notes;
+import com.actionbarsherlock.sample.shakespeare.notes.NotesDAO;
 
 public class TitlesFragment extends ListFragment {
 	int mPositionChecked = 0;
 	int mPositionShown = -1;
 	private OnArticleSelectedListener mListener;
-	private Notes notes;
+	private NotesDAO notesDAO;
 	private static TitlesFragment thisInstance;
 	private ArrayAdapter<String> titleAdapter;
 	
@@ -42,14 +42,14 @@ public class TitlesFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		Log.d(TAG, "onActivityCreated called");
-		notes = Notes.getInstance();
+		notesDAO = NotesDAO.getInstance();
 		thisInstance = this;
 		getListView().setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 		// Populate list with array of titles.
 		titleAdapter = new ArrayAdapter<String>(
 				getActivity(),
 				android.R.layout.simple_list_item_1,
-				notes.getTitles());
+				notesDAO.getTitles());
 		setListAdapter(titleAdapter);
 		
 		/*-
@@ -95,7 +95,7 @@ public class TitlesFragment extends ListFragment {
 		titleAdapter = new ArrayAdapter<String>(
 				getActivity(),
 				android.R.layout.simple_list_item_1,
-				notes.getTitles());
+				notesDAO.getTitles());
 		setListAdapter(titleAdapter);
 	}
 	
