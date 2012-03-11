@@ -36,7 +36,7 @@ public class DetailsFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		thisInstance = this;
 		listener = new ButtonOnClickListener();
-		notesDAO = NotesDAO.getInstance();
+		notesDAO = NotesDAO.getInstance(getActivity().getApplicationContext());
 		activity = (TitlesActivity) getActivity();
 		initViews();
 	}
@@ -151,11 +151,8 @@ public class DetailsFragment extends Fragment {
 	}
 	
 	private void resetTitleDetailViews(String titleWorkedOn, String operation) {
-		if ((operation == SAVED) || (operation == DELETED)) {
-			resetTitlePrevSelected();
-			hideViews();
-			detailWorkedOn(titleWorkedOn, operation);
-		} else if (operation == CANCELLED) {
+		if ((operation == SAVED) || (operation == DELETED)
+				|| (operation == CANCELLED)) {
 			resetTitlePrevSelected();
 			hideViews();
 			detailWorkedOn(titleWorkedOn, operation);

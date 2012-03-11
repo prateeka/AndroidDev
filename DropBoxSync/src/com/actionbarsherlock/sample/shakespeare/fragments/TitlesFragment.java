@@ -42,7 +42,7 @@ public class TitlesFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		Log.d(TAG, "onActivityCreated called");
-		notesDAO = NotesDAO.getInstance();
+		notesDAO = NotesDAO.getInstance(getActivity().getApplicationContext());
 		thisInstance = this;
 		getListView().setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 		// Populate list with array of titles.
@@ -59,6 +59,13 @@ public class TitlesFragment extends ListFragment {
 			mPositionChecked = savedInstanceState.getInt("curChoice", 0);
 			mPositionShown = savedInstanceState.getInt("shownChoice", -1);
 		}*/
+	}
+	
+	@Override
+	public void onResume() {
+		Log.d(TAG, "onResume called");
+		super.onResume();
+		notesDAO.onFragmentResume();
 	}
 	
 	@Override
@@ -83,6 +90,12 @@ public class TitlesFragment extends ListFragment {
 		outState.putInt("shownChoice", mPositionShown);
 	}
 	
+	@Override
+	public void onStop() {
+		notesDAO.persist();
+		super.onStop();
+	}
+	
 	// Helper function to show the details of a selected item
 	void showDetails(String titleSelected) {
 		mListener.onArticleSelected(titleSelected);
@@ -102,4 +115,5 @@ public class TitlesFragment extends ListFragment {
 	public void resetTitlePositionSelected() {
 		mPositionShown = -1;
 	}
+	
 }
