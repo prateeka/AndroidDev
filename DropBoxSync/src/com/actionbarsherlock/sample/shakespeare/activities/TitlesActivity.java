@@ -13,6 +13,12 @@ import com.actionbarsherlock.sample.shakespeare.R;
 import com.actionbarsherlock.sample.shakespeare.fragments.DetailsFragment;
 import com.actionbarsherlock.sample.shakespeare.fragments.OnArticleSelectedListener;
 
+/*
+ * Main activity that consists of two fragments to display the Note title and
+ * details. It also has an action bar that lists methods such as Add, Update and
+ * Delete. It uses TitleHandler and DetailHandler to to talk to TitleFragment
+ * and DetailFragment respectively.
+ */
 public class TitlesActivity extends FragmentActivity implements
 		OnArticleSelectedListener {
 	

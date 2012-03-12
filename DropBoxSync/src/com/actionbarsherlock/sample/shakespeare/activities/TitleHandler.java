@@ -2,6 +2,10 @@ package com.actionbarsherlock.sample.shakespeare.activities;
 
 import com.actionbarsherlock.sample.shakespeare.fragments.TitlesFragment;
 
+/*
+ * Title activity uses this class to talk to Title fragment.
+ */
+
 class TitleHandler {
 	// private static final String TAG = "TitleHandler";
 	private static TitlesFragment fragment;

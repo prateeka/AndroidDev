@@ -1,5 +1,10 @@
 package com.actionbarsherlock.sample.shakespeare.fragments;
 
+/*
+ * Fragment displaying the Notes Title. It interacts with NotesDAO for
+ * fetching Titles. For onListItemClick event, it uses OnArticleSelectedListener
+ * to communicate the event to Activity.
+ */
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.SupportActivity;

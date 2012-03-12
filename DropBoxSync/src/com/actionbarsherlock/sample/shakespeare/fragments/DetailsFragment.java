@@ -1,5 +1,13 @@
 package com.actionbarsherlock.sample.shakespeare.fragments;
 
+/*
+ * Fragment displaying the Note details. It interacts with NotesDAO for
+ * fetching Details. It displays Title and Details of a note. Also, allows for
+ * new Note creation, existing Note update and Delete. Note refresh is
+ * communicated to TitleActivity which would then accordingly interact act.
+ * Depending upon the context, the Views (including buttons) are
+ * displayed/enabled.
+ */
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;

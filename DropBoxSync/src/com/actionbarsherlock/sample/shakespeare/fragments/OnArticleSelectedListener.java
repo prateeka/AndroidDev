@@ -1,6 +1,8 @@
 package com.actionbarsherlock.sample.shakespeare.fragments;
 
+/*
+ * This interface is used to communicate events from fragment to Activity.
+ */
 public interface OnArticleSelectedListener {
-	// ToDo: see if this can be replaced with a id
 	public void onArticleSelected(String titleSelected);
 }

@@ -8,12 +8,10 @@ import android.util.Log;
 import com.actionbarsherlock.sample.shakespeare.synchronizer.NotesSynchronizerManager;
 
 /*
- * This class is responsible for providing Titles/Details to NotesDAO by
- * delegating the file read to NotesReader and delegating formatting of file
- * data(from String to Map) to NotesFormatter.
- * This class is also responsible for persisting Titles/Details from NotesDAO by
- * delegating formatting of Notes data (from Map to String) to NotesFormatter
- * and delegating the file write to NotesWriter.
+ * This class is responsible for providing/storing Titles and Details by
+ * delegating the file read/write to NotesReaderWriter.
+ * This class is also responsible for initiating and ending notes
+ * synchronization.
  */
 
 class NotesProcessor {

@@ -1,6 +1,5 @@
 package com.actionbarsherlock.sample.shakespeare.notes;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +7,11 @@ import java.util.Map;
 
 import android.util.Log;
 
-public class Notes implements Serializable {
+/*
+ * This class represents Notes with each note consisting of attributes: title
+ * and detail.It has functionality to add Notes, remove Notes and update Notes.
+ */
+public class Notes {
 	
 	private static final long serialVersionUID = 4272774288661526442L;
 	
@@ -24,32 +27,6 @@ public class Notes implements Serializable {
 		notes = pnotes;
 		populateTitles();
 	}
-	
-	/*-
-	private static Notes thisInstance;
-	  public static Notes getInstance() {
-		if (thisInstance == null) {
-			thisInstance = new Notes();
-		}
-		return thisInstance;
-	}
-	
-		static {
-	 populateNotes();
-	 populateTitles();
-	 }
-	
-	private static void populateNotes() {
-		notes = new HashMap<String, String>();
-		notes.put("key1", "value1");
-		notes.put("key2", "value2");
-		notes.put("key3", "value3");
-		notes.put("key4", "value4");
-		notes.put("key5", "value5");
-		notes.put("key6", "value6");
-		notes.put("key7", "value7");
-	}
-	 */
 	
 	Map<String, String> getNotes() {
 		return notes;

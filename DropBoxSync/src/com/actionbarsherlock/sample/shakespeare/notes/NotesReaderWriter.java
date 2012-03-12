@@ -12,6 +12,11 @@ import java.io.ObjectOutputStream;
 import android.content.Context;
 import android.util.Log;
 
+/*
+ * This class is responsible for reading/writing Notes from internal storage. It
+ * uses Java serialization to persist the data.
+ */
+
 class NotesReaderWriter {
 	private static final String TAG = "NotesReaderWriter";
 	

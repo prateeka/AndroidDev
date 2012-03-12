@@ -8,6 +8,11 @@ import android.util.Log;
 
 import com.actionbarsherlock.sample.shakespeare.notes.Notes;
 
+/*
+ * It starts a thread such that the NotesStore is synchronized with a backup
+ * service at a constant time interval.This is also responsible for stopping the
+ * notes synchronization.
+ */
 public class NotesSynchronizerManager {
 	private static final String TAG = "NotesSynchronizerManager";
 	static NotesSynchronizerManager thisInstance;

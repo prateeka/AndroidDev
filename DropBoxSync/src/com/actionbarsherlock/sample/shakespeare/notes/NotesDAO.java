@@ -5,6 +5,9 @@ import java.util.List;
 import android.content.Context;
 import android.util.Log;
 
+/*
+ * Exposes functions to manipulate Notes Store (represented by class:Notes)
+ */
 public final class NotesDAO {
 	
 	private static NotesDAO thisInstance;

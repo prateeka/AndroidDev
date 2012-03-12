@@ -4,6 +4,10 @@ import android.util.Log;
 
 import com.actionbarsherlock.sample.shakespeare.fragments.DetailsFragment;
 
+/*
+ * Title activity uses this class to talk to Detail fragment.
+ */
+
 class DetailHandler {
 	private static final String TAG = "DetailHandler";
 	private static DetailsFragment fragment;

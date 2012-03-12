@@ -16,6 +16,15 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+/*
+ * This class is responsible for sending emails from gmail accounts to any other
+ * email account.
+ * In order to make it work, replace the below four fields with valid values.
+ * _user = "xxxxxx"; // username
+ * _pass = "yyyyyyy"; // password
+ * _from = "xxxxxx"; // email sent from
+ * _to = new String[] { "yyyyyyyy@gmail.com" };
+ */
 public class Mail extends javax.mail.Authenticator {
 	private String _user;
 	private String _pass;
@@ -45,9 +54,10 @@ public class Mail extends javax.mail.Authenticator {
 		_user = "prateekdvlpr"; // username
 		_pass = "6My3Janus"; // password
 		_from = "prateekdvlpr"; // email sent from
-		_subject = "test subject"; // email subject
-		_body = "test email from android client"; // email body
 		_to = new String[] { "prateekdvlpr@gmail.com" };
+		
+		_subject = "Notes Store"; // email subject
+		_body = "test email from android client"; // email body
 		
 		_debuggable = false; // debug mode on or off - default off
 		_auth = true; // smtp authentication - default on
