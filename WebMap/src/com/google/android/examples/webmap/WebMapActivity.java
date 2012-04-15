@@ -29,12 +29,12 @@ public class WebMapActivity extends Activity {
 	
 	/** Sets up the WebView object and loads the URL of the page **/
 	private void setupWebView() {
-		/*-	final String centerURL = "javascript:centerAt(" +
-					45.80271303708887 + "," +
-					-122.11906352343749 + ")";*/
+		final String centerURL = "javascript:centerAt(" +
+				45.80271303708887 + "," +
+				-122.11906352343749 + ")";
 		webView = (WebView) findViewById(R.id.webview);
 		
-		final String centerURL = "javascript:centerAt12( "
+		/*-final String centerURL = "javascript:centerAt12( "
 				+
 				"var latitude = 45.80271303708887; var longitude = -122.11906352343749;"
 				+
@@ -43,22 +43,70 @@ public class WebMapActivity extends Activity {
 				"var myOptions = {zoom: 8,center: myLatlng,mapTypeId: google.maps.MapTypeId.ROADMAP}"
 				+
 				"map = new google.maps.Map(document.getElementById(\"map_canvas\"), myOptions);}";
-		
+		 */
 		webView.getSettings().setJavaScriptEnabled(true);
 		// Wait for the page to load then send the location information
 		webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageFinished(WebView view, String url)
 			{
-				webView.loadUrl(getWebpageHTML());
+				// webView.loadUrl(centerURL);
 			}
 		});
-		webView.loadUrl(MAP_URL);
+		webView.loadData(getWebpageHTML(), "text/html", "UTF-8");
 		
 	}
 	
 	private String getWebpageHTML() {
-		return null;
+		return "<html>"
+				+
+				" <head>  "
+				+
+				" <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\" />  "
+				+
+				" <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"/>  "
+				+
+				" <title>Simple V3 Map for Android</title>  "
+				+ " <script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=true\"></script>  "
+				+ "<script type=\"text/javascript\">  "
+				+
+				"   var map; "
+				+
+				"   function initialize() { "
+				+
+				"     var latitude = 0; "
+				+
+				"     var longitude = 0; "
+				+
+				"     if (window.android){ "
+				+
+				"       latitude = window.android.getLatitude(); "
+				+
+				"       longitude = window.android.getLongitude(); "
+				+
+				"     } "
+				+
+				"     var myLatlng = new google.maps.LatLng(latitude,longitude); "
+				+
+				"     var myOptions = { "
+				+
+				"       zoom: 8, "
+				+
+				"       center: myLatlng, "
+				+
+				"       mapTypeId: google.maps.MapTypeId.ROADMAP "
+				+
+				"     } "
+				+
+				"     map = new google.maps.Map(document.getElementById(\"map_canvas\"), myOptions); "
+				+
+				"   } "
+				+ " </script> </head>  "
+				+
+				"<body style=\"margin:0px; padding:0px;\" onload=\"initialize()\"><div id=\"map_canvas\" style=\"width:100%; height:100%\"></div>"
+				+
+				"</body></html>";
+		
 	}
 	
 	/**
