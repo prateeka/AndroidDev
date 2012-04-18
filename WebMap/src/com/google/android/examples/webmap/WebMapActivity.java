@@ -1,27 +1,20 @@
 package com.google.android.examples.webmap;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.location.Criteria;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class WebMapActivity extends Activity {
 	
-	private static final String MAP_URL = "http://gmaps-samples.googlecode.com/svn/trunk/articles-android-webmap/simple-android-map.html";
 	private WebView webView;
-	
-	// private Location mostRecentLocation;;
 	
 	@Override
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		getLocation();
 		setupWebView();
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
@@ -29,102 +22,46 @@ public class WebMapActivity extends Activity {
 	
 	/** Sets up the WebView object and loads the URL of the page **/
 	private void setupWebView() {
-		final String centerURL = "javascript:centerAt(" +
-				45.80271303708887 + "," +
-				-122.11906352343749 + ")";
+		final String centerURL = getCenterCoord();
 		webView = (WebView) findViewById(R.id.webview);
 		
-		/*-final String centerURL = "javascript:centerAt12( "
-				+
-				"var latitude = 45.80271303708887; var longitude = -122.11906352343749;"
-				+
-				"var myLatlng = new google.maps.LatLng(latitude,longitude);"
-				+
-				"var myOptions = {zoom: 8,center: myLatlng,mapTypeId: google.maps.MapTypeId.ROADMAP}"
-				+
-				"map = new google.maps.Map(document.getElementById(\"map_canvas\"), myOptions);}";
-		 */
 		webView.getSettings().setJavaScriptEnabled(true);
 		// Wait for the page to load then send the location information
 		webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageFinished(WebView view, String url)
 			{
-				// webView.loadUrl(centerURL);
+				webView.loadUrl(centerURL);
 			}
 		});
-		webView.loadData(getWebpageHTML(), "text/html", "UTF-8");
-		
+		webView.loadUrl("file:///android_asset/html/map.html");
+		/** Allows JavaScript calls to access application resources **/
+		webView.addJavascriptInterface(new JavaScriptInterface(), "android");
 	}
 	
-	private String getWebpageHTML() {
-		return "<html>"
-				+
-				" <head>  "
-				+
-				" <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\" />  "
-				+
-				" <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"/>  "
-				+
-				" <title>Simple V3 Map for Android</title>  "
-				+ " <script type=\"text/javascript\" src=\"http://maps.google.com/maps/api/js?sensor=true\"></script>  "
-				+ "<script type=\"text/javascript\">  "
-				+
-				"   var map; "
-				+
-				"   function initialize() { "
-				+
-				"     var latitude = 0; "
-				+
-				"     var longitude = 0; "
-				+
-				"     if (window.android){ "
-				+
-				"       latitude = window.android.getLatitude(); "
-				+
-				"       longitude = window.android.getLongitude(); "
-				+
-				"     } "
-				+
-				"     var myLatlng = new google.maps.LatLng(latitude,longitude); "
-				+
-				"     var myOptions = { "
-				+
-				"       zoom: 8, "
-				+
-				"       center: myLatlng, "
-				+
-				"       mapTypeId: google.maps.MapTypeId.ROADMAP "
-				+
-				"     } "
-				+
-				"     map = new google.maps.Map(document.getElementById(\"map_canvas\"), myOptions); "
-				+
-				"   } "
-				+ " </script> </head>  "
-				+
-				"<body style=\"margin:0px; padding:0px;\" onload=\"initialize()\"><div id=\"map_canvas\" style=\"width:100%; height:100%\"></div>"
-				+
-				"</body></html>";
-		
+	protected String getCenterCoord() {
+		double longitude = -98.08646875;
+		double latitude = 36.9331485912115;
+		return "javascript:centerAt(" +
+				latitude + "," + longitude + ")";
 	}
 	
 	/**
-	 * The Location Manager manages location providers. This code searches
-	 * for the best provider of data (GPS, WiFi/cell phone tower lookup,
-	 * some other mechanism) and finds the last known location.
+	 * Sets up the interface for getting access to Latitude and Longitude data
+	 * from device
 	 **/
-	private void getLocation() {
-		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		Criteria criteria = new Criteria();
-		criteria.setAccuracy(Criteria.ACCURACY_FINE);
-		String provider = locationManager.getBestProvider(criteria, true);
+	private class JavaScriptInterface {
+		double longitude = -98.08646875;
+		double latitude = 36.9331485912115;
 		
-		// In order to make sure the device is getting location, request
-		// updates. locationManager.requestLocationUpdates(provider, 1, 0,
-		// this);
-		/*-		mostRecentLocation = locationManager.getLastKnownLocation(provider);
-		 System.out.println("mostRecentLocation is " + mostRecentLocation);
-		 */}
+		public double getLatitude() {
+			return latitude;
+		}
+		
+		public double getLongitude() {
+			return longitude;
+		}
+		
+	}
 	
 }
