@@ -31,7 +31,7 @@ public class WebMapActivity extends Activity {
 			@Override
 			public void onPageFinished(WebView view, String url)
 			{
-				webView.loadUrl(centerURL);
+				// webView.loadUrl(centerURL);
 			}
 		});
 		webView.loadUrl("file:///android_asset/html/map.html");
@@ -51,8 +51,11 @@ public class WebMapActivity extends Activity {
 	 * from device
 	 **/
 	private class JavaScriptInterface {
-		double longitude = -98.08646875;
-		double latitude = 36.9331485912115;
+		double latitude = 0.0;
+		double longitude = 70.0;
+		
+		// double longitude = -98.08646875;
+		// double latitude = 36.9331485912115;
 		
 		public double getLatitude() {
 			return latitude;
