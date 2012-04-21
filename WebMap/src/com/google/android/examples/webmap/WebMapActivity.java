@@ -3,10 +3,13 @@ package com.google.android.examples.webmap;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class WebMapActivity extends Activity {
+	
+	private static final String TAG = "WebMapActivity";
 	
 	private WebView webView;
 	
@@ -65,6 +68,8 @@ public class WebMapActivity extends Activity {
 			return longitude;
 		}
 		
+		public void clicked(double lat, double lng) {
+			Log.d(TAG, "clicked at " + lat + ":" + lng);
+		}
 	}
-	
 }
