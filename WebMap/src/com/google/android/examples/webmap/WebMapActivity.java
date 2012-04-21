@@ -40,6 +40,7 @@ public class WebMapActivity extends Activity {
 		webView.loadUrl("file:///android_asset/html/map.html");
 		/** Allows JavaScript calls to access application resources **/
 		webView.addJavascriptInterface(new JavaScriptInterface(), "android");
+		Log.d(TAG, "test");
 	}
 	
 	protected String getCenterCoord() {
@@ -70,6 +71,10 @@ public class WebMapActivity extends Activity {
 		
 		public void clicked(double lat, double lng) {
 			Log.d(TAG, "clicked at " + lat + ":" + lng);
+		}
+		
+		public void clicked() {
+			Log.d(TAG, "clicked at ");
 		}
 	}
 }
