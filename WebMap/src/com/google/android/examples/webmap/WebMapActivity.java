@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.ConsoleMessage;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -37,10 +39,26 @@ public class WebMapActivity extends Activity {
 				// webView.loadUrl(centerURL);
 			}
 		});
+		webView.setWebChromeClient(new WebChromeClient() {
+			@Override
+			public boolean onConsoleMessage(ConsoleMessage cm) {
+				Log.d("WebMap ", cm.message() + " -- From line "
+						+ cm.lineNumber() + " of "
+						+ cm.sourceId());
+				return true;
+			}
+			
+			@Override
+			public void onConsoleMessage(String message, int lineNumber,
+					String sourceID) {
+				Log.d("MyApplication", message + " -- From line "
+						+ lineNumber + " of "
+						+ sourceID);
+			}
+		});
 		webView.loadUrl("file:///android_asset/html/map.html");
 		/** Allows JavaScript calls to access application resources **/
 		webView.addJavascriptInterface(new JavaScriptInterface(), "android");
-		Log.d(TAG, "test");
 	}
 	
 	protected String getCenterCoord() {
@@ -58,9 +76,6 @@ public class WebMapActivity extends Activity {
 		double latitude = 0.0;
 		double longitude = 70.0;
 		
-		// double longitude = -98.08646875;
-		// double latitude = 36.9331485912115;
-		
 		public double getLatitude() {
 			return latitude;
 		}
@@ -73,8 +88,5 @@ public class WebMapActivity extends Activity {
 			Log.d(TAG, "clicked at " + lat + ":" + lng);
 		}
 		
-		public void clicked() {
-			Log.d(TAG, "clicked at ");
-		}
 	}
 }

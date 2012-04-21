@@ -1,15 +1,45 @@
 var map;
-var marker;
 
 function initialize() {
-	var latitude = 0;
-	var longitude = 0;
-	if (window.android) {
-		latitude = window.android.getLatitude();
-		longitude = window.android.getLongitude();
-	}
+	map = getMap();
+	var marker = getMarker(map);
+	addMapListeners(map, marker);
+}
 
-	var myStyle = [ {
+function getMap() {
+	var myStyle = getStyleOptions();
+
+	var myOptions = getMapOptions(getInitialLatLng());
+
+	var map = new google.maps.Map(document.getElementById("map_canvas"),
+			myOptions);
+	map.mapTypes.set('mystyle', new google.maps.StyledMapType(myStyle, {
+		name : 'My Style'
+	}));
+
+	return map;
+}
+
+function mapSingleClickListener(marker, latLng) {
+	placeMarker(marker, latLng);
+	centerAt(latLng);
+	notifyJava(latLng);
+}
+
+function centerAt(latitude, longitude) {
+	centerAt(getLatLng(latitude, longitude));
+}
+
+function centerAt(latLng) {
+	map.panTo(latLng);
+}
+
+function placeMarker(marker, location) {
+	marker.setPosition(location);
+}
+
+function getStyleOptions() {
+	return [ {
 		featureType : "administrative",
 		elementType : "labels",
 		stylers : [ {
@@ -34,40 +64,48 @@ function initialize() {
 			visibility : "off"
 		} ]
 	} ];
+}
 
-	var myLatlng = new google.maps.LatLng(latitude, longitude);
-	var myOptions = {
+function getMapOptions(latLng) {
+	return {
 		zoom : 4,
-		center : myLatlng,
+		center : latLng,
 		mapTypeControlOptions : {
 			mapTypeIds : [ 'mystyle', google.maps.MapTypeId.ROADMAP,
 					google.maps.MapTypeId.TERRAIN ]
 		},
 		mapTypeId : 'mystyle'
 	};
-	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-	map.mapTypes.set('mystyle', new google.maps.StyledMapType(myStyle, {
-		name : 'My Style'
-	}));
+}
 
-	marker = new google.maps.Marker({
+function getLatLng(latitude, longitude) {
+	return new google.maps.LatLng(latitude, longitude);
+}
+
+function getInitialLatLng() {
+	var latitude = 0;
+	var longitude = 0;
+	if (window.android) {
+		latitude = window.android.getLatitude();
+		longitude = window.android.getLongitude();
+	}
+	return getLatLng(latitude, longitude);
+}
+
+function getMarker(map) {
+	return new google.maps.Marker({
 		position : map.getCenter(),
 		map : map,
 		title : 'Click to zoom'
 	});
+}
 
+function addMapListeners(map, marker) {
 	google.maps.event.addListener(map, 'click', function(event) {
-		placeMarker(event.latLng);
+		mapSingleClickListener(marker, event.latLng);
 	});
 }
 
-function centerAt(latitude, longitude) {
-	myLatlng = new google.maps.LatLng(latitude, longitude);
-	map.panTo(myLatlng);
-}
-
-function placeMarker(location) {
-	marker.setPosition(location);
-	map.panTo(location);
-	window.android.clicked(location.lat(), location.lng());
+function notifyJava(latLng) {
+	window.android.clicked(latLng.lat(), latLng.lng());
 }
