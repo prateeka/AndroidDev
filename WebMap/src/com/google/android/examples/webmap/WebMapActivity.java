@@ -87,6 +87,5 @@ public class WebMapActivity extends Activity {
 		public void clicked(double lat, double lng) {
 			Log.d(TAG, "clicked at " + lat + ":" + lng);
 		}
-		
 	}
 }

@@ -1,42 +1,6 @@
+"use strict";
+
 var map;
-
-function initialize() {
-	map = getMap();
-	var marker = getMarker(map);
-	addMapListeners(map, marker);
-}
-
-function getMap() {
-	var myStyle = getStyleOptions();
-
-	var myOptions = getMapOptions(getInitialLatLng());
-
-	var map = new google.maps.Map(document.getElementById("map_canvas"),
-			myOptions);
-	map.mapTypes.set('mystyle', new google.maps.StyledMapType(myStyle, {
-		name : 'My Style'
-	}));
-
-	return map;
-}
-
-function mapSingleClickListener(marker, latLng) {
-	placeMarker(marker, latLng);
-	centerAt(latLng);
-	notifyJava(latLng);
-}
-
-function centerAt(latitude, longitude) {
-	centerAt(getLatLng(latitude, longitude));
-}
-
-function centerAt(latLng) {
-	map.panTo(latLng);
-}
-
-function placeMarker(marker, location) {
-	marker.setPosition(location);
-}
 
 function getStyleOptions() {
 	return [ {
@@ -66,6 +30,10 @@ function getStyleOptions() {
 	} ];
 }
 
+function getLatLng(latitude, longitude) {
+	return new google.maps.LatLng(latitude, longitude);
+}
+
 function getMapOptions(latLng) {
 	return {
 		zoom : 4,
@@ -78,19 +46,40 @@ function getMapOptions(latLng) {
 	};
 }
 
-function getLatLng(latitude, longitude) {
-	return new google.maps.LatLng(latitude, longitude);
-}
-
 function getInitialLatLng() {
-	var latitude = 0;
-	var longitude = 0;
+	var latitude = 0,
+		longitude = 0;
 	if (window.android) {
 		latitude = window.android.getLatitude();
 		longitude = window.android.getLongitude();
 	}
 	return getLatLng(latitude, longitude);
 }
+
+function getMap() {
+	var myStyle = getStyleOptions(),
+		myOptions = getMapOptions(getInitialLatLng()),
+		map = new google.maps.Map(document.getElementById("map_canvas"),
+			myOptions);
+	map.mapTypes.set('mystyle', new google.maps.StyledMapType(myStyle, {
+		name : 'My Style'
+	}));
+
+	return map;
+}
+
+function centerAt(latitude, longitude) {
+	centerAt(getLatLng(latitude, longitude));
+}
+
+function centerAt(latLng) {
+	map.panTo(latLng);
+}
+
+function placeMarker(marker, location) {
+	marker.setPosition(location);
+}
+
 
 function getMarker(map) {
 	return new google.maps.Marker({
@@ -100,12 +89,25 @@ function getMarker(map) {
 	});
 }
 
+
+function notifyJava(latLng) {
+	window.android.clicked(latLng.lat(), latLng.lng());
+}
+
+function mapSingleClickListener(marker, latLng) {
+	placeMarker(marker, latLng);
+	centerAt(latLng);
+	notifyJava(latLng);
+}
+
 function addMapListeners(map, marker) {
-	google.maps.event.addListener(map, 'click', function(event) {
+	google.maps.event.addListener(map, 'click', function (event) {
 		mapSingleClickListener(marker, event.latLng);
 	});
 }
 
-function notifyJava(latLng) {
-	window.android.clicked(latLng.lat(), latLng.lng());
+function initialize() {
+	map = getMap();
+	var marker = getMarker(map);
+	addMapListeners(map, marker);
 }
