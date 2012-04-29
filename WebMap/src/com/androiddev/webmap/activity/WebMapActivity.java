@@ -49,10 +49,10 @@ public class WebMapActivity extends Activity {
 			) {
 		double centerLongitude = -98.08646875;
 		double centerLatitude = 36.9331485912115;
+		int zoom = 6;
 		LocationProcessor locProc = new LocationProcessor(
-				centerLongitude, centerLatitude
+				centerLongitude, centerLatitude, zoom
 				);
 		return locProc;
 	}
-	
 }

@@ -32,4 +32,8 @@ public class JavaScriptInterface {
 	public double getCenterLongitude() {
 		return locProc.getCenterLongitude();
 	}
+	
+	public int getZoom() {
+		return locProc.getZoom();
+	}
 }

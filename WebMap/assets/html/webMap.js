@@ -34,9 +34,9 @@ function getLatLng(latitude, longitude) {
 	return new google.maps.LatLng(latitude, longitude);
 }
 
-function getMapOptions(latLng) {
+function getMapOptions(latLng, zoomVal) {
 	return {
-		zoom : 4,
+		zoom : zoomVal,
 		center : latLng,
 		mapTypeControlOptions : {
 			mapTypeIds : [ 'mystyle', google.maps.MapTypeId.ROADMAP,
@@ -50,6 +50,11 @@ function getInitialLatLng() {
 	var latitude = window.android.getCenterLatitude(),
 		longitude = window.android.getCenterLongitude();
 	return getLatLng(latitude, longitude);
+}
+
+function getInitialZoom() {
+	var zoomVal = window.android.getZoom();
+	return zoomVal;
 }
 
 function centerAt(latitude, longitude) {
@@ -89,9 +94,10 @@ function getMarker(map) {
 	});
 }
 
+
 function getMap() {
 	var myStyle = getStyleOptions(),
-		myOptions = getMapOptions(getInitialLatLng()),
+		myOptions = getMapOptions(getInitialLatLng(), getInitialZoom()),
 		map = new google.maps.Map(document.getElementById("map_canvas"),
 			myOptions);
 	map.mapTypes.set('mystyle', new google.maps.StyledMapType(myStyle, {
