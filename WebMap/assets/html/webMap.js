@@ -47,25 +47,9 @@ function getMapOptions(latLng) {
 }
 
 function getInitialLatLng() {
-	var latitude = 0,
-		longitude = 0;
-	if (window.android) {
-		latitude = window.android.getLatitude();
-		longitude = window.android.getLongitude();
-	}
+	var latitude = window.android.getCenterLatitude(),
+		longitude = window.android.getCenterLongitude();
 	return getLatLng(latitude, longitude);
-}
-
-function getMap() {
-	var myStyle = getStyleOptions(),
-		myOptions = getMapOptions(getInitialLatLng()),
-		map = new google.maps.Map(document.getElementById("map_canvas"),
-			myOptions);
-	map.mapTypes.set('mystyle', new google.maps.StyledMapType(myStyle, {
-		name : 'My Style'
-	}));
-
-	return map;
 }
 
 function centerAt(latitude, longitude) {
@@ -79,16 +63,6 @@ function centerAt(latLng) {
 function placeMarker(marker, location) {
 	marker.setPosition(location);
 }
-
-
-function getMarker(map) {
-	return new google.maps.Marker({
-		position : map.getCenter(),
-		map : map,
-		title : 'Click to zoom'
-	});
-}
-
 
 function notifyJava(latLng) {
 	window.android.clicked(latLng.lat(), latLng.lng());
@@ -104,6 +78,27 @@ function addMapListeners(map, marker) {
 	google.maps.event.addListener(map, 'click', function (event) {
 		mapSingleClickListener(marker, event.latLng);
 	});
+}
+
+
+function getMarker(map) {
+	return new google.maps.Marker({
+		position : map.getCenter(),
+		map : map,
+		title : 'Click to zoom'
+	});
+}
+
+function getMap() {
+	var myStyle = getStyleOptions(),
+		myOptions = getMapOptions(getInitialLatLng()),
+		map = new google.maps.Map(document.getElementById("map_canvas"),
+			myOptions);
+	map.mapTypes.set('mystyle', new google.maps.StyledMapType(myStyle, {
+		name : 'My Style'
+	}));
+
+	return map;
 }
 
 function initialize() {

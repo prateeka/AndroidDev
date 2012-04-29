@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.android.examples.webmap" >
+    package="com.androiddev.webmap.activity" >
 
     <application
         android:debuggable="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name" >
         <activity
-            android:name="WebMapActivity"
+            android:name="com.androiddev.webmap.activity.WebMapActivity"          
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
