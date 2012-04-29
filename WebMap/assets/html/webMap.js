@@ -1,6 +1,7 @@
 "use strict";
 
-var map;
+var gMap;
+var gMarker;
 
 function getStyleOptions() {
 	return [ {
@@ -62,38 +63,88 @@ function centerAt(latitude, longitude) {
 }
 
 function centerAt(latLng) {
-	map.panTo(latLng);
+	gMap.panTo(latLng);
 }
 
-function placeMarker(marker, location) {
-	marker.setPosition(location);
+function placeMarker(location) {
+	gMarker.setPosition(location);
 }
 
 function notifyJava(latLng) {
 	window.android.clicked(latLng.lat(), latLng.lng());
 }
 
-function mapSingleClickListener(marker, latLng) {
-	placeMarker(marker, latLng);
+function mapSingleClickListener(latLng) {
+	placeMarker(latLng);
 	centerAt(latLng);
-	notifyJava(latLng);
 }
 
-function addMapListeners(map, marker) {
-	google.maps.event.addListener(map, 'click', function (event) {
-		mapSingleClickListener(marker, event.latLng);
+/**
+ * The HomeControl adds a control to the map that simply
+ * returns the user to Chicago. This constructor takes
+ * the control DIV as an argument.
+ */
+
+function HomeControl(controlDiv) {
+
+	// Set CSS styles for the DIV containing the control
+	// Setting padding to 5 px will offset the control
+	// from the edge of the map.
+	controlDiv.style.padding = '5px';
+
+	// Set CSS for the control border.
+	var controlUI = document.createElement('div');
+	controlUI.style.backgroundColor = 'white';
+	controlUI.style.borderStyle = 'solid';
+	controlUI.style.borderWidth = '2px';
+	controlUI.style.cursor = 'pointer';
+	controlUI.style.textAlign = 'center';
+	controlUI.title = 'Click to set the map to Home';
+	controlDiv.appendChild(controlUI);
+
+	// Set CSS for the control interior.
+	var controlText = document.createElement('div');
+	controlText.style.fontFamily = 'Arial,sans-serif';
+	controlText.style.fontSize = '12px';
+	controlText.style.paddingLeft = '4px';
+	controlText.style.paddingRight = '4px';
+	controlText.innerHTML = '<strong>Locked<strong>';
+	controlUI.appendChild(controlText);
+	
+	// Setup the click event listeners
+	google.maps.event.addDomListener(controlUI, 'click', function() {
+		addButtonListeners();
+	});
+}
+
+function addButtonListeners() {
+	var dummyLatLng = gMarker.getPosition();
+	notifyJava(dummyLatLng);
+}
+
+function addMapListeners() {
+	google.maps.event.addListener(gMap, 'click', function (event) {
+		mapSingleClickListener(event.latLng);
 	});
 }
 
 
-function getMarker(map) {
+function getMarker() {
 	return new google.maps.Marker({
-		position : map.getCenter(),
-		map : map,
+		position : gMap.getCenter(),
+		map : gMap,
 		title : 'Click to zoom'
 	});
 }
 
+function addLockPositionButton() 
+{
+	var homeControlDiv = document.createElement('div');
+	var homeControl = new HomeControl(homeControlDiv, gMap);
+		
+	homeControlDiv.index = 1;
+	return homeControlDiv;
+}
 
 function getMap() {
 	var myStyle = getStyleOptions(),
@@ -104,11 +155,14 @@ function getMap() {
 		name : 'My Style'
 	}));
 
+	var homeControlDiv = addLockPositionButton();
+	map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
+	  
 	return map;
 }
 
 function initialize() {
-	map = getMap();
-	var marker = getMarker(map);
-	addMapListeners(map, marker);
+	gMap = getMap();
+	gMarker = getMarker();
+	addMapListeners();
 }

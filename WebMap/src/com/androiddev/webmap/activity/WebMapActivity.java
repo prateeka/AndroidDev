@@ -22,7 +22,6 @@ public class WebMapActivity extends Activity {
 		setContentView(R.layout.main);
 		setupWebView();
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		
 	}
 	
 	/** Sets up the WebView object and loads the URL of the page **/
@@ -49,7 +48,7 @@ public class WebMapActivity extends Activity {
 			) {
 		double centerLongitude = -98.08646875;
 		double centerLatitude = 36.9331485912115;
-		int zoom = 6;
+		int zoom = 3;
 		LocationProcessor locProc = new LocationProcessor(
 				centerLongitude, centerLatitude, zoom
 				);
