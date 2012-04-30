@@ -138,6 +138,14 @@ function getInitialZoom() {
 	return zoomVal;
 }
 
-function isClickedLocValid(latLng) {
-	return window.android.clickedAt(latLng.lat(), latLng.lng());
+function displayPolygon(polygonCoOrd) {
+    var polygon = new google.maps.Polygon({
+        paths: polygonCoOrd,
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 1,
+        fillColor: "#FF0000",
+        fillOpacity: 0.35        
+    });
+    polygon.setMap(gMap);
 }
