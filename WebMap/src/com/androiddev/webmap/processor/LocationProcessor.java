@@ -3,7 +3,7 @@ package com.androiddev.webmap.processor;
 import android.util.Log;
 
 /*
- * This class represents acts as processor for any lcoation. It includes:
+ * This class represents acts as processor for any location. It includes:
  * a. Co-ordinates polygon for a location
  * b. Logic to determine if a co-ordinate passed is inside the location polygon
  * c. center co-ordinates for map when trying to locate this location
