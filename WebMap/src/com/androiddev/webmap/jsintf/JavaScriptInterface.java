@@ -21,8 +21,8 @@ public class JavaScriptInterface {
 		this.locProc = locProc;
 	}
 	
-	public void clicked(double lat, double lng) {
-		locProc.isCorrectLocation(lat, lng);
+	public boolean clickedAt(double lat, double lng) {
+		return locProc.isCorrectLocation(lat, lng);
 	}
 	
 	public double getCenterLatitude() {

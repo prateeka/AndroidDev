@@ -71,7 +71,7 @@ function placeMarker(location) {
 }
 
 function notifyJava(latLng) {
-	window.android.clicked(latLng.lat(), latLng.lng());
+	return window.android.clickedAt(latLng.lat(), latLng.lng());
 }
 
 function mapSingleClickListener(latLng) {
@@ -79,7 +79,7 @@ function mapSingleClickListener(latLng) {
 	centerAt(latLng);
 }
 
-function addLockButton(label) {
+function addControl(label) {
 	var controlUI = document.createElement('div');
 	controlUI.style.backgroundColor = 'white';
 	controlUI.style.borderStyle = 'solid';
@@ -100,11 +100,24 @@ function addLockButton(label) {
 	return controlUI;
 }
 
-function addButtonListeners(lockButton, nextButton) {
+function addButtonListeners(controlDiv, lockButton) {
 	var dummyLatLng = gMarker.getPosition();
 	var validSelection = notifyJava(dummyLatLng);
+	
+	var selectionMessage;
+	
+	if (validSelection) {
+		selectionMessage = '<strong>Correct selection<strong>';
+	} else {
+		selectionMessage = '<strong>Incorrect selection.<strong>';
+	}
+	var answerLabel = addControl(selectionMessage);
+	controlDiv.appendChild(answerLabel);
+	
+	var nextButton = addControl('<strong>Next<strong>');
+	controlDiv.appendChild(nextButton);
+
 	lockButton.style.visibility = 'hidden';	
-	nextButton.style.visibility = 'visible';   
 }
 
 function addCustomControls() 
@@ -116,16 +129,12 @@ function addCustomControls()
 	// from the edge of the map.
 	controlDiv.style.padding = '5px';
 
-	var lockButton = addLockButton('<strong>Locked<strong>');
+	var lockButton = addControl('<strong>Locked<strong>');
 	controlDiv.appendChild(lockButton);
-	
-	var nextButton = addLockButton('<strong>Next<strong>');
-	controlDiv.appendChild(nextButton);
-	nextButton.style.visibility = 'hidden';   
 	
 	// Setup the click event listeners
 	google.maps.event.addDomListener(lockButton, 'click', function() {
-		addButtonListeners(lockButton, nextButton);
+		addButtonListeners(controlDiv, lockButton);
 	});
 	
 	controlDiv.index = 1;

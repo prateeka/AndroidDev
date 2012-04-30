@@ -34,7 +34,7 @@ public class LocationProcessor {
 	
 	public boolean isCorrectLocation(double lat, double lng) {
 		Log.d(TAG, "clicked at " + lat + ":" + lng);
-		return false;
+		return true;
 	}
 	
 	public int getZoom() {
