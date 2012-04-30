@@ -79,20 +79,7 @@ function mapSingleClickListener(latLng) {
 	centerAt(latLng);
 }
 
-/**
- * The HomeControl adds a control to the map that simply
- * returns the user to Chicago. This constructor takes
- * the control DIV as an argument.
- */
-
-function HomeControl(controlDiv) {
-
-	// Set CSS styles for the DIV containing the control
-	// Setting padding to 5 px will offset the control
-	// from the edge of the map.
-	controlDiv.style.padding = '5px';
-
-	// Set CSS for the control border.
+function addLockButton(label) {
 	var controlUI = document.createElement('div');
 	controlUI.style.backgroundColor = 'white';
 	controlUI.style.borderStyle = 'solid';
@@ -100,7 +87,6 @@ function HomeControl(controlDiv) {
 	controlUI.style.cursor = 'pointer';
 	controlUI.style.textAlign = 'center';
 	controlUI.title = 'Click to set the map to Home';
-	controlDiv.appendChild(controlUI);
 
 	// Set CSS for the control interior.
 	var controlText = document.createElement('div');
@@ -108,18 +94,42 @@ function HomeControl(controlDiv) {
 	controlText.style.fontSize = '12px';
 	controlText.style.paddingLeft = '4px';
 	controlText.style.paddingRight = '4px';
-	controlText.innerHTML = '<strong>Locked<strong>';
+	controlText.innerHTML = label;
 	controlUI.appendChild(controlText);
 	
-	// Setup the click event listeners
-	google.maps.event.addDomListener(controlUI, 'click', function() {
-		addButtonListeners();
-	});
+	return controlUI;
 }
 
-function addButtonListeners() {
+function addButtonListeners(lockButton, nextButton) {
 	var dummyLatLng = gMarker.getPosition();
-	notifyJava(dummyLatLng);
+	var validSelection = notifyJava(dummyLatLng);
+	lockButton.style.visibility = 'hidden';	
+	nextButton.style.visibility = 'visible';   
+}
+
+function addCustomControls() 
+{
+	var controlDiv = document.createElement('div');
+	
+	// Set CSS styles for the DIV containing the control
+	// Setting padding to 5 px will offset the control
+	// from the edge of the map.
+	controlDiv.style.padding = '5px';
+
+	var lockButton = addLockButton('<strong>Locked<strong>');
+	controlDiv.appendChild(lockButton);
+	
+	var nextButton = addLockButton('<strong>Next<strong>');
+	controlDiv.appendChild(nextButton);
+	nextButton.style.visibility = 'hidden';   
+	
+	// Setup the click event listeners
+	google.maps.event.addDomListener(lockButton, 'click', function() {
+		addButtonListeners(lockButton, nextButton);
+	});
+	
+	controlDiv.index = 1;
+	return controlDiv;
 }
 
 function addMapListeners() {
@@ -128,22 +138,12 @@ function addMapListeners() {
 	});
 }
 
-
 function getMarker() {
 	return new google.maps.Marker({
 		position : gMap.getCenter(),
 		map : gMap,
 		title : 'Click to zoom'
 	});
-}
-
-function addLockPositionButton() 
-{
-	var homeControlDiv = document.createElement('div');
-	var homeControl = new HomeControl(homeControlDiv, gMap);
-		
-	homeControlDiv.index = 1;
-	return homeControlDiv;
 }
 
 function getMap() {
@@ -155,8 +155,8 @@ function getMap() {
 		name : 'My Style'
 	}));
 
-	var homeControlDiv = addLockPositionButton();
-	map.controls[google.maps.ControlPosition.TOP_RIGHT].push(homeControlDiv);
+	var customControlDiv = addCustomControls();
+	map.controls[google.maps.ControlPosition.TOP_RIGHT].push(customControlDiv);
 	  
 	return map;
 }
