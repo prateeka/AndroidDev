@@ -113,7 +113,7 @@ function getMarker() {
 
 function getMap() {
 	var myStyle = getStyleOptions(),
-		myOptions = getMapOptions(getInitialLatLng(), getInitialZoom()),
+		myOptions = getMapOptions(getLatLngForIdx(), getZoomForIdx()),
 		map = new google.maps.Map(document.getElementById("map_canvas"),
 			myOptions);
 	map.mapTypes.set('mystyle', new google.maps.StyledMapType(myStyle, {
@@ -127,13 +127,13 @@ function getMap() {
 	return map;
 }
 
-function getInitialLatLng() {
+function getLatLngForIdx() {
 	var latitude = window.android.getCenterLatitude(),
 		longitude = window.android.getCenterLongitude();
 	return getLatLng(latitude, longitude);
 }
 
-function getInitialZoom() {
+function getZoomForIdx() {
 	var zoomVal = window.android.getZoom();
 	return zoomVal;
 }
