@@ -7,7 +7,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.androiddev.webmap.jsintf.JavaScriptInterface;
-import com.androiddev.webmap.processor.LocationProcessor;
+import com.androiddev.webmap.location.LocationProcessor;
 
 public class WebMapActivity extends Activity {
 	

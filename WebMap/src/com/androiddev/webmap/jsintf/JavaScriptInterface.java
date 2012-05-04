@@ -2,7 +2,7 @@ package com.androiddev.webmap.jsintf;
 
 import android.webkit.WebViewClient;
 
-import com.androiddev.webmap.processor.LocationProcessor;
+import com.androiddev.webmap.location.LocationProcessor;
 
 public class JavaScriptInterface {
 	/**

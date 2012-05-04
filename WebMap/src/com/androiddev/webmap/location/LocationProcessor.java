@@ -1,4 +1,4 @@
-package com.androiddev.webmap.processor;
+package com.androiddev.webmap.location;
 
 import android.util.Log;
 
