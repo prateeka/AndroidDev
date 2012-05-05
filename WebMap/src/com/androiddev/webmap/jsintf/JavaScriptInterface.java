@@ -25,15 +25,15 @@ public class JavaScriptInterface {
 		return locProc.isCorrectLocation(lat, lng);
 	}
 	
-	public double getCenterLatitude() {
+	public double getCenterLatitude(int idx) {
 		return locProc.getCenterLatitude();
 	}
 	
-	public double getCenterLongitude() {
+	public double getCenterLongitude(int idx) {
 		return locProc.getCenterLongitude();
 	}
 	
-	public int getZoom() {
+	public int getZoom(int idx) {
 		return locProc.getZoom();
 	}
 }
