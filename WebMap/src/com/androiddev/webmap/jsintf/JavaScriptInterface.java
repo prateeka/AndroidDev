@@ -2,7 +2,7 @@ package com.androiddev.webmap.jsintf;
 
 import android.webkit.WebViewClient;
 
-import com.androiddev.webmap.location.LocationProcessor;
+import com.androiddev.webmap.location.Location;
 
 public class JavaScriptInterface {
 	/**
@@ -14,10 +14,10 @@ public class JavaScriptInterface {
 	 **/
 	final WebViewClient webViewClient;
 	
-	final LocationProcessor locProc;
+	final Location locProc;
 	
 	public JavaScriptInterface(WebViewClient webViewClient,
-			LocationProcessor locProc) {
+			Location locProc) {
 		this.webViewClient = webViewClient;
 		this.locProc = locProc;
 	}

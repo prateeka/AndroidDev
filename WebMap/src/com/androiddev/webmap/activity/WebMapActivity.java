@@ -7,7 +7,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.androiddev.webmap.jsintf.JavaScriptInterface;
-import com.androiddev.webmap.location.LocationProcessor;
+import com.androiddev.webmap.location.Location;
 
 public class WebMapActivity extends Activity {
 	
@@ -34,7 +34,7 @@ public class WebMapActivity extends Activity {
 		
 		webView.setWebViewClient(webViewClient);
 		
-		LocationProcessor locProc = getLocationProcessor();
+		Location locProc = getLocationHolder();
 		JavaScriptInterface jsIntf = new JavaScriptInterface(
 				webViewClient,
 				locProc);
@@ -44,13 +44,13 @@ public class WebMapActivity extends Activity {
 		webView.loadUrl("file:///android_asset/html/map.html");
 	}
 	
-	private LocationProcessor getLocationProcessor(
+	private Location getLocationHolder(
 			) {
 		double centerLongitude = -98.08646875;
 		double centerLatitude = 36.9331485912115;
 		int zoom = 3;
-		LocationProcessor locProc = new LocationProcessor(
-				centerLongitude, centerLatitude, zoom
+		Location locProc = new Location(
+				"", centerLongitude, centerLatitude, zoom
 				);
 		return locProc;
 	}

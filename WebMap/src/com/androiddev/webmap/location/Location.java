@@ -3,22 +3,24 @@ package com.androiddev.webmap.location;
 import android.util.Log;
 
 /*
- * This class represents acts as processor for any location. It includes:
- * a. Co-ordinates polygon for a location
- * b. Logic to determine if a co-ordinate passed is inside the location polygon
- * c. center co-ordinates for map when trying to locate this location
- * d. zoom level for map when trying to locate this location
+ * This represents any location. It includes:
+ * a. location name
+ * b. edge co-ordinates defining a polygon for this location
+ * c. center co-ordinates for map
+ * d. zoom level for map
  */
-public class LocationProcessor {
+public class Location {
 	
-	private static final String TAG = "LocationProcessor";
+	private static final String TAG = "Location";
 	
+	final String name;
 	final double centerLongitude;
 	final double centerLatitude;
 	final int zoom;
 	
-	public LocationProcessor(double centerLongitude, double centerLatitude,
+	public Location(String name, double centerLongitude, double centerLatitude,
 			int zoom) {
+		this.name = name;
 		this.centerLongitude = centerLongitude;
 		this.centerLatitude = centerLatitude;
 		this.zoom = zoom;
@@ -39,5 +41,9 @@ public class LocationProcessor {
 	
 	public int getZoom() {
 		return zoom;
+	}
+	
+	public String getName() {
+		return name;
 	}
 }
