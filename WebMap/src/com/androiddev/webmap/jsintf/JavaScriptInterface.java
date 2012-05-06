@@ -9,7 +9,8 @@ public class JavaScriptInterface {
 	 * This class helps for to and for communication with Java script;
 	 * It provides initial latitude and longitude to Javascript for initial
 	 * center co-ordinates. It also receives the user chosen location
-	 * co-ordinates from Javascript.
+	 * co-ordinates from Javascript to confirm if the click is in valid
+	 * location.
 	 **/
 	final WebViewClient webViewClient;
 	
