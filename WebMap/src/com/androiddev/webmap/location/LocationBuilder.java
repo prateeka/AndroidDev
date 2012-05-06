@@ -5,6 +5,4 @@ public class LocationBuilder {
 		
 	}
 	
-	public void getLocation(String location) {
-	}
 }
