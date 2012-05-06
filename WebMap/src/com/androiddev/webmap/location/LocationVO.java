@@ -9,16 +9,16 @@ import android.util.Log;
  * c. center co-ordinates for map
  * d. zoom level for map
  */
-public class Location {
+public class LocationVO {
 	
-	private static final String TAG = "Location";
+	private static final String TAG = "LocationVO";
 	
 	final String name;
 	final double centerLongitude;
 	final double centerLatitude;
 	final int zoom;
 	
-	public Location(String name, double centerLongitude, double centerLatitude,
+	public LocationVO(String name, double centerLongitude, double centerLatitude,
 			int zoom) {
 		this.name = name;
 		this.centerLongitude = centerLongitude;
