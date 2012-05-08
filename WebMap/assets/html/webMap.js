@@ -6,12 +6,12 @@ var gMarker;
 function mapSingleClickListener(latLng) {
 	placeMarker(latLng);
 	centerAt(latLng);
-	isClickedLocValid(latLng);
+	isClickedLocValid(getIdx(), latLng);
 }
 
-function getMessageToDisplay() {
+function displayClickResultMessage() {
 	var dummyLatLng = gMarker.getPosition(), 
-		validSelection = isClickedLocValid(dummyLatLng), 
+		validSelection = isClickedLocValid(getIdx(), dummyLatLng), 
 		selectionMessage;
 	
 	if (validSelection) {
@@ -38,7 +38,7 @@ function displayLocation() {
 }
 
 function customControlClickListener(controlDiv, lockButton) {
-	var selectionMessage = getMessageToDisplay();
+	var selectionMessage = displayClickResultMessage();
 	
 	var answerLabel = addControl(selectionMessage);
 	controlDiv.appendChild(answerLabel);
@@ -51,8 +51,8 @@ function customControlClickListener(controlDiv, lockButton) {
 	displayLocation();
 }
 
-function isClickedLocValid(latLng) {
-	return window.android.clickedAt(latLng.lat(), latLng.lng());
+function isClickedLocValid(idx, latLng) {
+	return window.android.clickedAt(idx, latLng.lat(), latLng.lng());
 }
 
 function initialize() {

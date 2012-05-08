@@ -9,7 +9,7 @@ import android.util.Log;
  * c. center co-ordinates for map
  * d. zoom level for map
  */
-public class LocationVO {
+class LocationVO {
 	
 	private static final String TAG = "LocationVO";
 	
@@ -18,7 +18,8 @@ public class LocationVO {
 	final double centerLatitude;
 	final int zoom;
 	
-	public LocationVO(String name, double centerLongitude, double centerLatitude,
+	LocationVO(String name, double centerLongitude,
+			double centerLatitude,
 			int zoom) {
 		this.name = name;
 		this.centerLongitude = centerLongitude;
@@ -26,24 +27,24 @@ public class LocationVO {
 		this.zoom = zoom;
 	}
 	
-	public double getCenterLongitude() {
+	double getCenterLongitude() {
 		return centerLongitude;
 	}
 	
-	public double getCenterLatitude() {
+	double getCenterLatitude() {
 		return centerLatitude;
 	}
 	
-	public boolean isCorrectLocation(double lat, double lng) {
+	boolean isCorrectLocation(double lat, double lng) {
 		Log.d(TAG, "clicked at " + lat + ":" + lng);
 		return true;
 	}
 	
-	public int getZoom() {
+	int getZoom() {
 		return zoom;
 	}
 	
-	public String getName() {
+	String getName() {
 		return name;
 	}
 }
