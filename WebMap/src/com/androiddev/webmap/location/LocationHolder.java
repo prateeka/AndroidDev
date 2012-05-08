@@ -48,4 +48,11 @@ public class LocationHolder {
 		return false;
 	}
 	
+	public double[] getXPoints(int idx) {
+		return locationsList.get(idx).getBoundaryXPoints();
+	}
+	
+	public double[] getYPoints(int idx) {
+		return locationsList.get(idx).getBoundaryYPoints();
+	}
 }

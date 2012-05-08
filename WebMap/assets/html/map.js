@@ -151,11 +151,14 @@ function displayPolygon(polygonCoOrd) {
 }
 
 function displayLocation() {
-	var polygonCoOrd = getPolygonCoOrdinates();
+	var polygonCoOrd = getPolygonCoOrdinates(getIdx());
 	displayPolygon(polygonCoOrd);
 }
 
-function getPolygonCoOrdinates() {
+function getPolygonCoOrdinates(idx) {
+	var xPoints = window.android.getXPoints(idx),
+	yPoints = window.android.getYPoints(idx);
+	
 	var polygonCoOrd = [
 			new google.maps.LatLng(40.99725687752573,-109.05082421875),
 			new google.maps.LatLng(37.00337044713457,-109.05082421875),

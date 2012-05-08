@@ -31,6 +31,14 @@ class LocationVO {
 		this.boundaryYPoints = boundaryYPoints;
 	}
 	
+	public double[] getBoundaryXPoints() {
+		return boundaryXPoints;
+	}
+	
+	public double[] getBoundaryYPoints() {
+		return boundaryYPoints;
+	}
+	
 	double getCenterLongitude() {
 		return centerLongitude;
 	}

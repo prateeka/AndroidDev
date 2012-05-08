@@ -45,4 +45,12 @@ public class JavaScriptInterface {
 		Log.d(TAG, "getZoom is " + locHolder.getZoom(idx));
 		return locHolder.getZoom(idx);
 	}
+	
+	public double[] getXPoints(int idx) {
+		return locHolder.getXPoints(idx);
+	}
+	
+	public double[] getYPoints(int idx) {
+		return locHolder.getYPoints(idx);
+	}
 }
