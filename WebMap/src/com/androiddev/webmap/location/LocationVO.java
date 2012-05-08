@@ -17,14 +17,18 @@ class LocationVO {
 	final double centerLongitude;
 	final double centerLatitude;
 	final int zoom;
+	final double[] boundaryXPoints;
+	final double[] boundaryYPoints;
 	
 	LocationVO(String name, double centerLongitude,
-			double centerLatitude,
-			int zoom) {
+			double centerLatitude, int zoom,
+			double[] boundaryXPoints, double[] boundaryYPoints) {
 		this.name = name;
 		this.centerLongitude = centerLongitude;
 		this.centerLatitude = centerLatitude;
 		this.zoom = zoom;
+		this.boundaryXPoints = boundaryXPoints;
+		this.boundaryYPoints = boundaryYPoints;
 	}
 	
 	double getCenterLongitude() {

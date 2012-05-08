@@ -22,13 +22,24 @@ class LocationDAO {
 				"Kansas",
 				-98.08646875,
 				36.9331485912115,
-				3));
+				3,
+				new double[] { -109.05082421875, -109.05082421875,
+						-102.01957421875, -102.10746484375 },
+				new double[] { 40.99725687752573, 37.00337044713457,
+						37.0384570771806, 40.96408120506293 }));
 		return locations;
 	}
 	
 	private LocationVO
 			buildLocationVO(String name, double centerLongitude,
-					double centerLatitude, int zoom) {
-		return new LocationVO(name, centerLongitude, centerLatitude, zoom);
+					double centerLatitude, int zoom,
+					double[] xPoints, double[] yPoints) {
+		return new LocationVO(
+				name,
+				centerLongitude,
+				centerLatitude,
+				zoom,
+				xPoints,
+				yPoints);
 	}
 }

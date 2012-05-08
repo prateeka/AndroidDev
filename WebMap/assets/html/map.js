@@ -149,3 +149,18 @@ function displayPolygon(polygonCoOrd) {
     });
     polygon.setMap(gMap);
 }
+
+function displayLocation() {
+	var polygonCoOrd = getPolygonCoOrdinates();
+	displayPolygon(polygonCoOrd);
+}
+
+function getPolygonCoOrdinates() {
+	var polygonCoOrd = [
+			new google.maps.LatLng(40.99725687752573,-109.05082421875),
+			new google.maps.LatLng(37.00337044713457,-109.05082421875),
+			new google.maps.LatLng(37.0384570771806,-102.01957421875),
+			new google.maps.LatLng(40.96408120506293,-102.10746484375)
+			];
+	return polygonCoOrd;
+}
