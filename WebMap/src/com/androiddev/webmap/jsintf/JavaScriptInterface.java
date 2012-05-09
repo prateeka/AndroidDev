@@ -1,5 +1,10 @@
 package com.androiddev.webmap.jsintf;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.json.JSONArray;
+
 import android.util.Log;
 import android.webkit.WebViewClient;
 
@@ -46,11 +51,26 @@ public class JavaScriptInterface {
 		return locHolder.getZoom(idx);
 	}
 	
-	public double[] getXPoints(int idx) {
-		return locHolder.getXPoints(idx);
+	public String getXPoints(int idx) {
+		Double points[] = locHolder.getXPoints(idx);
+		
+		// conversion to JSON as unable to pass array through javascript bridge
+		List<Double> pointsList = Arrays.asList(points);
+		JSONArray jsArray = new JSONArray(pointsList);
+		// Log.d(TAG, "JSONArray xPoints being returned : " + jsArray);
+		
+		return jsArray.toString();
 	}
 	
-	public double[] getYPoints(int idx) {
-		return locHolder.getYPoints(idx);
+	public String getYPoints(int idx) {
+		Double points[] = locHolder.getYPoints(idx);
+		
+		// conversion to JSON as unable to pass array through javascript bridge
+		List<Double> pointsList = Arrays.asList(points);
+		JSONArray jsArray = new JSONArray(pointsList);
+		// Log.d(TAG, "JSONArray yPoints being returned : " + jsArray);
+		
+		return jsArray.toString();
 	}
+	
 }

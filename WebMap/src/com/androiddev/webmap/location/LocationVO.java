@@ -14,15 +14,15 @@ class LocationVO {
 	private static final String TAG = "LocationVO";
 	
 	final String name;
-	final double centerLongitude;
-	final double centerLatitude;
-	final int zoom;
-	final double[] boundaryXPoints;
-	final double[] boundaryYPoints;
+	final Double centerLongitude;
+	final Double centerLatitude;
+	final Integer zoom;
+	final Double[] boundaryXPoints;
+	final Double[] boundaryYPoints;
 	
-	LocationVO(String name, double centerLongitude,
-			double centerLatitude, int zoom,
-			double[] boundaryXPoints, double[] boundaryYPoints) {
+	LocationVO(String name, Double centerLongitude,
+			Double centerLatitude, Integer zoom,
+			Double[] boundaryXPoints, Double[] boundaryYPoints) {
 		this.name = name;
 		this.centerLongitude = centerLongitude;
 		this.centerLatitude = centerLatitude;
@@ -31,28 +31,28 @@ class LocationVO {
 		this.boundaryYPoints = boundaryYPoints;
 	}
 	
-	public double[] getBoundaryXPoints() {
+	public Double[] getBoundaryXPoints() {
 		return boundaryXPoints;
 	}
 	
-	public double[] getBoundaryYPoints() {
+	public Double[] getBoundaryYPoints() {
 		return boundaryYPoints;
 	}
 	
-	double getCenterLongitude() {
+	Double getCenterLongitude() {
 		return centerLongitude;
 	}
 	
-	double getCenterLatitude() {
+	Double getCenterLatitude() {
 		return centerLatitude;
 	}
 	
-	boolean isCorrectLocation(double lat, double lng) {
+	boolean isCorrectLocation(Double lat, Double lng) {
 		Log.d(TAG, "clicked at " + lat + ":" + lng);
 		return true;
 	}
 	
-	int getZoom() {
+	Integer getZoom() {
 		return zoom;
 	}
 	

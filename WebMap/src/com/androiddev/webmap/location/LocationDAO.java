@@ -23,17 +23,17 @@ class LocationDAO {
 				-98.08646875,
 				36.9331485912115,
 				3,
-				new double[] { -109.05082421875, -109.05082421875,
+				new Double[] { -109.05082421875, -109.05082421875,
 						-102.01957421875, -102.10746484375 },
-				new double[] { 40.99725687752573, 37.00337044713457,
+				new Double[] { 40.99725687752573, 37.00337044713457,
 						37.0384570771806, 40.96408120506293 }));
 		return locations;
 	}
 	
 	private LocationVO
-			buildLocationVO(String name, double centerLongitude,
-					double centerLatitude, int zoom,
-					double[] xPoints, double[] yPoints) {
+			buildLocationVO(String name, Double centerLongitude,
+					Double centerLatitude, Integer zoom,
+					Double[] xPoints, Double[] yPoints) {
 		return new LocationVO(
 				name,
 				centerLongitude,

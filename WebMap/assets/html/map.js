@@ -156,14 +156,21 @@ function displayLocation() {
 }
 
 function getPolygonCoOrdinates(idx) {
-	var xPoints = window.android.getXPoints(idx),
-	yPoints = window.android.getYPoints(idx);
+	var xPoints = new Array(),
+	yPoints = new Array(),
+	xPointsJSON = window.android.getXPoints(idx), 
+	yPointsJSON = window.android.getYPoints(idx);
 	
+	xPoints = 	JSON.parse(xPointsJSON);
+	yPoints = JSON.parse(yPointsJSON);;
+	
+	console.log(xPoints);
+	console.log(yPoints);
 	var polygonCoOrd = [
-			new google.maps.LatLng(40.99725687752573,-109.05082421875),
-			new google.maps.LatLng(37.00337044713457,-109.05082421875),
-			new google.maps.LatLng(37.0384570771806,-102.01957421875),
-			new google.maps.LatLng(40.96408120506293,-102.10746484375)
+			new google.maps.LatLng(yPoints[0], xPoints[0]),
+			new google.maps.LatLng(yPoints[1], xPoints[1]),
+			new google.maps.LatLng(yPoints[2], xPoints[2]),
+			new google.maps.LatLng(yPoints[3], xPoints[3])
 			];
 	return polygonCoOrd;
 }

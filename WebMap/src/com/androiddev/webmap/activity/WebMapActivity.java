@@ -3,6 +3,9 @@ package com.androiddev.webmap.activity;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
+import android.webkit.ConsoleMessage;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -11,6 +14,8 @@ import com.androiddev.webmap.location.LocationBuilder;
 import com.androiddev.webmap.location.LocationHolder;
 
 public class WebMapActivity extends Activity {
+	
+	private static final String TAG = "WebMapActivity";
 	
 	private WebView webView;
 	
@@ -28,19 +33,31 @@ public class WebMapActivity extends Activity {
 		webView = (WebView) findViewById(R.id.webview);
 		webView.getSettings().setJavaScriptEnabled(true);
 		
-		WebViewClient webViewClient = new WebViewClient() {
-		};
+		webView.setWebViewClient(new WebViewClient() {
+		});
 		
-		webView.setWebViewClient(webViewClient);
-		
+		webView.setWebChromeClient(getWebChromeClient());
 		LocationHolder locHolder = getLocationHolder();
 		JavaScriptInterface jsIntf = new JavaScriptInterface(
-				webViewClient,
+				new WebViewClient() {
+				},
 				locHolder);
 		/** Allows JavaScript calls to access application resources **/
 		webView.addJavascriptInterface(jsIntf, "android");
 		
 		webView.loadUrl("file:///android_asset/html/map.html");
+	}
+	
+	protected WebChromeClient getWebChromeClient() {
+		return new WebChromeClient() {
+			@Override
+			public boolean onConsoleMessage(ConsoleMessage cm) {
+				Log.d(TAG, cm.message() + " -- From line "
+						+ cm.lineNumber() + " of "
+						+ cm.sourceId());
+				return true;
+			}
+		};
 	}
 	
 	private LocationHolder getLocationHolder() {

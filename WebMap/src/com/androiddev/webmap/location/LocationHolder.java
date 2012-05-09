@@ -29,30 +29,30 @@ public class LocationHolder {
 		locationsList.add(location);
 	}
 	
-	public double getCenterLatitude(int idx) {
-		double centerLatitude = locationsList.get(idx).getCenterLatitude();
+	public Double getCenterLatitude(int idx) {
+		Double centerLatitude = locationsList.get(idx).getCenterLatitude();
 		return centerLatitude;
 	}
 	
-	public double getCenterLongitude(int idx) {
-		double centerLongitude = locationsList.get(idx).getCenterLongitude();
+	public Double getCenterLongitude(int idx) {
+		Double centerLongitude = locationsList.get(idx).getCenterLongitude();
 		return centerLongitude;
 	}
 	
-	public int getZoom(int idx) {
+	public Integer getZoom(int idx) {
 		int zoom = locationsList.get(idx).getZoom();
 		return zoom;
 	}
 	
-	public boolean isCorrectLocation(double lat, double lng) {
+	public boolean isCorrectLocation(Double lat, Double lng) {
 		return false;
 	}
 	
-	public double[] getXPoints(int idx) {
+	public Double[] getXPoints(int idx) {
 		return locationsList.get(idx).getBoundaryXPoints();
 	}
 	
-	public double[] getYPoints(int idx) {
+	public Double[] getYPoints(int idx) {
 		return locationsList.get(idx).getBoundaryYPoints();
 	}
 }
