@@ -30,9 +30,9 @@ public class JavaScriptInterface {
 		this.locHolder = locHolder;
 	}
 	
-	public boolean clickedAt(int idx, double lat, double lng) {
+	public void clickedAt(double lat, double lng) {
 		Log.d(TAG, "clicked At " + lat + " : " + lng);
-		return locHolder.isCorrectLocation(lat, lng);
+		// return locHolder.isCorrectLocation(lat, lng);
 	}
 	
 	public double getCenterLatitude(int idx) {
@@ -57,7 +57,7 @@ public class JavaScriptInterface {
 		// conversion to JSON as unable to pass array through javascript bridge
 		List<Double> pointsList = Arrays.asList(points);
 		JSONArray jsArray = new JSONArray(pointsList);
-		// Log.d(TAG, "JSONArray xPoints being returned : " + jsArray);
+		Log.d(TAG, "JSONArray xPoints being returned : " + jsArray);
 		
 		return jsArray.toString();
 	}
@@ -68,9 +68,14 @@ public class JavaScriptInterface {
 		// conversion to JSON as unable to pass array through javascript bridge
 		List<Double> pointsList = Arrays.asList(points);
 		JSONArray jsArray = new JSONArray(pointsList);
-		// Log.d(TAG, "JSONArray yPoints being returned : " + jsArray);
+		Log.d(TAG, "JSONArray yPoints being returned : " + jsArray);
 		
 		return jsArray.toString();
 	}
 	
+	public String getAllLocationsAttr() {
+		String allLocationsAttr = locHolder.getAllLocations();
+		// Log.d(TAG, "toString Loc object is :" + allLocationsAttr);
+		return allLocationsAttr;
+	}
 }

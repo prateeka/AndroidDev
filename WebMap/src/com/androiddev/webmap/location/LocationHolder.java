@@ -7,6 +7,8 @@ package com.androiddev.webmap.location;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+
 /**
  * @author asthanap
  */
@@ -44,9 +46,10 @@ public class LocationHolder {
 		return zoom;
 	}
 	
-	public boolean isCorrectLocation(Double lat, Double lng) {
-		return false;
-	}
+	/*-	public boolean isCorrectLocation(Double lat, Double lng) {
+	 return false;
+	 }
+	 */
 	
 	public Double[] getXPoints(int idx) {
 		return locationsList.get(idx).getBoundaryXPoints();
@@ -54,5 +57,10 @@ public class LocationHolder {
 	
 	public Double[] getYPoints(int idx) {
 		return locationsList.get(idx).getBoundaryYPoints();
+	}
+	
+	public String getAllLocations() {
+		JSONArray jsArray = new JSONArray(locationsList);
+		return jsArray.toString();
 	}
 }
