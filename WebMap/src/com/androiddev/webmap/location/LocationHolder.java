@@ -63,4 +63,5 @@ public class LocationHolder {
 		JSONArray jsArray = new JSONArray(locationsList);
 		return jsArray.toString();
 	}
+	
 }
