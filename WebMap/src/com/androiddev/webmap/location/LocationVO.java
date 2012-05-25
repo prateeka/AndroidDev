@@ -1,5 +1,12 @@
 package com.androiddev.webmap.location;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.util.Log;
 
 /*
@@ -20,7 +27,15 @@ class LocationVO {
 	final Double[] boundaryXPoints;
 	final Double[] boundaryYPoints;
 	
+	final String JSON_NAME = "NAME";
+	final String JSON_CENTER_LONGITUDE = "CENTER_LONGITUDE";
+	final String JSON_CENTER_LATITUDE = "CENTER_LATITUDE";
+	final String JSON_ZOOM = "ZOOM";
+	final String JSON_BOUNDARY_X = "BOUNDARY_X";
+	final String JSON_BOUNDARY_Y = "BOUNDARY_Y";
+	
 	LocationVO(String name, Double centerLongitude,
+			
 			Double centerLatitude, Integer zoom,
 			Double[] boundaryXPoints, Double[] boundaryYPoints) {
 		this.name = name;
@@ -58,5 +73,27 @@ class LocationVO {
 	
 	String getName() {
 		return name;
+	}
+	
+	@Override
+	public String toString() {
+		Map<String, String> attrMap = getAttrMap();
+		JSONObject jsonObj = new JSONObject(attrMap);
+		return jsonObj.toString();
+	}
+	
+	private Map<String, String> getAttrMap() {
+		Map<String, String> attrMap = new HashMap<String, String>();
+		attrMap.put(JSON_NAME, getName());
+		attrMap.put(JSON_CENTER_LONGITUDE, getCenterLongitude().toString());
+		attrMap.put(JSON_CENTER_LATITUDE, getCenterLatitude().toString());
+		attrMap.put(JSON_ZOOM, getZoom().toString());
+		attrMap.put(
+				JSON_BOUNDARY_X,
+				new JSONArray(Arrays.asList(getBoundaryXPoints())).toString());
+		attrMap.put(
+				JSON_BOUNDARY_Y,
+				new JSONArray(Arrays.asList(getBoundaryYPoints())).toString());
+		return attrMap;
 	}
 }

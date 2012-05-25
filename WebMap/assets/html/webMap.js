@@ -2,11 +2,12 @@
 
 var gMap;
 var gMarker;
+var gPolygon;
 
 function mapSingleClickListener(latLng) {
 	placeMarker(latLng);
 	centerAt(latLng);
-	isClickedLocValid(getIdx(), latLng);
+	logClickedPoint(latLng);
 }
 
 function displayClickResultMessage() {
@@ -37,7 +38,12 @@ function customControlClickListener(controlDiv, lockButton) {
 }
 
 function isClickedLocValid(idx, latLng) {
-	return window.android.clickedAt(idx, latLng.lat(), latLng.lng());
+	var polygonCoOrd = getPolygonCoOrdinates(getIdx());
+	var polygon = getPolygon(polygonCoOrd);
+	
+	var isInsidePolygon = google.maps.geometry.poly.containsLocation(latLng, polygon);
+	console.log(isInsidePolygon);
+	return isInsidePolygon; 
 }
 
 function initialize() {

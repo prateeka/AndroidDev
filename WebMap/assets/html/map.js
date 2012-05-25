@@ -138,7 +138,7 @@ function getZoomForIdx(idx) {
 	return zoomVal;
 }
 
-function displayPolygon(polygonCoOrd) {
+function getPolygon(polygonCoOrd) {
     var polygon = new google.maps.Polygon({
         paths: polygonCoOrd,
         strokeColor: "#FF0000",
@@ -147,12 +147,17 @@ function displayPolygon(polygonCoOrd) {
         fillColor: "#FF0000",
         fillOpacity: 0.35        
     });
-    polygon.setMap(gMap);
+    
+    return polygon;
 }
 
+/*
+*This displays the quizzed location on map 
+*/
 function displayLocation() {
 	var polygonCoOrd = getPolygonCoOrdinates(getIdx());
-	displayPolygon(polygonCoOrd);
+	gPolygon = getPolygon(polygonCoOrd);
+    gPolygon.setMap(gMap);
 }
 
 function getPolygonCoOrdinates(idx) {
@@ -173,4 +178,8 @@ function getPolygonCoOrdinates(idx) {
 			new google.maps.LatLng(yPoints[3], xPoints[3])
 			];
 	return polygonCoOrd;
+}
+
+function logClickedPoint(latLng) {
+	window.android.clickedAt(latLng.lat(), latLng.lng());
 }
