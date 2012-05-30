@@ -187,4 +187,15 @@ function logClickedPoint(latLng) {
 function getAllLocationsAttr() {
 	var allLocAttr = window.android.getAllLocationsAttr();
 	console.log("All location attr as obtained in JS is " + allLocAttr);
+
+	var locations = getLocationHolder(allLocAttr);
+	
+}
+
+//	Parse JSON string into location array
+function getLocationHolder(allLocAttr) {
+	var locations = new Array();
+	locations = JSON.parse(allLocAttr);
+	console.log("Number of Locations obtained is :" + locations.length);
+	
 }
