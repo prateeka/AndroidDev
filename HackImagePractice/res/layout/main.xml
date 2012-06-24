@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_weight="0.1"
         android:orientation="horizontal" >
 
@@ -21,14 +21,19 @@
             android:layout_height="match_parent"
             android:layout_weight="0.4" />
 
-        <ImageView
-            android:id="@+id/imageView"
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:adjustViewBounds="false"
-            android:scaleType="centerInside"
-            android:src="@android:drawable/alert_light_frame" />
+            android:layout_weight="0.6" >
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="false"
+                android:scaleType="centerInside"
+                android:src="@android:drawable/alert_light_frame" />
+        </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"
