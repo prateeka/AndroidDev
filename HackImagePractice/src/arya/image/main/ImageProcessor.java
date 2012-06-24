@@ -1,5 +1,6 @@
 package arya.image.main;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -7,12 +8,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 
 class ImageProcessor {
 	private static final String TAG = "ImageClickListener";
 	static final int LOAD_FROM_CAMERA = 1;
 	static final int LOAD_FROM_GALLERY = 2;
+	private Uri cameraFileSaveUri = null;
 	final HackImagePracticeActivity activity;
 	
 	ImageProcessor(HackImagePracticeActivity activity) {
@@ -35,6 +39,37 @@ class ImageProcessor {
 	}
 	
 	private void initiateImageLoadFromCamera() {
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		// create a file to save the image
+		cameraFileSaveUri = getOutputMediaFileUri();
+		// set the image file name
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraFileSaveUri);
+		// start the image capture Intent
+		activity.startActivityForResult(
+				intent, LOAD_FROM_CAMERA);
+	}
+	
+	private Uri getOutputMediaFileUri() {
+		final String IMAGE_FILE_DIR = "SnapQi";
+		final String IMAGE_FILE_NAME = "pic.jpg";
+		
+		File mediaStorageDir = new File(
+				Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+				IMAGE_FILE_DIR);
+		
+		// Create the storage directory if it does not exist
+		if (!mediaStorageDir.exists()) {
+			if (!mediaStorageDir.mkdirs()) {
+				Log.e(TAG, "failed to create directory");
+				return null;
+			}
+		}
+		
+		// Create a media file name
+		File mediaFile = new File(mediaStorageDir.getPath() + File.separator
+				+ IMAGE_FILE_NAME);
+		Uri uri = Uri.fromFile(mediaFile);
+		return uri;
 	}
 	
 	boolean flipImage() {
@@ -43,11 +78,12 @@ class ImageProcessor {
 		return true;
 	}
 	
-	void loadPicture(int loadDevice, Intent data) {
+	Uri loadPicture(int loadDevice, Intent data) {
 		Uri uri = null;
 		if (loadDevice == LOAD_FROM_GALLERY) {
 			uri = data.getData();
 		} else if (loadDevice == LOAD_FROM_CAMERA) {
+			uri = cameraFileSaveUri;
 		}
 		
 		if (uri == null) {
@@ -55,6 +91,8 @@ class ImageProcessor {
 		} else {
 			setPicFromUri(uri);
 		}
+		
+		return uri;
 	}
 	
 	private void setPicFromUri(Uri uri) {
